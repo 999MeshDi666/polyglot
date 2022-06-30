@@ -1,0 +1,54 @@
+@mixin borders($border_left, $border_right) {
+    border-left: $border_left;
+    border-right: $border_right;
+}
+.main{
+    width: 100%;
+    
+    &__switch-btns-block{
+        display: flex;
+        justify-content: center;
+    }
+    &__switch-btns{
+        // width: 160px;
+        width: 100%;
+        padding: 8px 0;
+        box-sizing: border-box;
+
+        border-radius: 5px 5px 0 0;
+        border-top: $border_blc;
+        border-bottom: 0;
+
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: 900;
+        background-color: $prpl1;
+
+        &:focus{
+            background-color: $prpl2;
+        }
+    }
+    &__switch-btns_border-left{
+        @include borders($border_blc, 0);
+    }
+    &__switch-btns_border-right{
+        @include borders(0, $border_blc);
+    }
+
+    &__contents{
+        background-color: $prpl1;
+        border-radius: 0 0 10px 10px;
+        border: $border_blc;
+        border-top: 0;
+        padding: 40px 20px;
+    }
+    &__title{
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+
+
+
+}
