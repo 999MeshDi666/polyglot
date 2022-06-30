@@ -24,9 +24,10 @@
         font-weight: 900;
         background-color: $prpl1;
 
-        &:focus{
-            background-color: $prpl2;
-        }
+       
+    }
+    .switch-btn_checked{
+        background-color: $prpl2;
     }
     &__switch-btns_border-left{
         @include borders($border_blc, 0);
@@ -47,8 +48,71 @@
         font-weight: bold;
         text-align: center;
     }
+ 
+    &__chg-img-block{
+        position: relative;
+    }
+   
+    &__chg-img-btn{
+        width: 30px;
+        height: 30px;
+        padding: 2px;
+        box-sizing: border-box;
+
+        border-radius: 50%;
+        border: $border_blc;
+        background-color: $gry1;
+
+        position: absolute;
+        bottom: -3px;
+        right: 2px;
+    }
+}
+.auth-form{
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     
+    &__input{
+        margin-top: 16px;
+        width: 180px;
+        padding: 8px 6px;
+        
+      
+
+        border-radius: 5px;
+        border: $border_blc;
+        
+        font-size: 12px;
+        background-color: $wht2;
+        text-align: center;
+        &::placeholder{
+            color: $gry3;
+        }
+    }
+    &__submit{
+        margin-top: 16px;
+        width: 160px;
+        padding: 8px 0;
+        
+        background-color: $prpl7;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        border: $border_blc;
+        border-radius: 5px;
+
+        transition: 0.6s ease-in-out;
+
+        &:active{
+            background-color: $prpl10;
+        }
 
 
+    }
 
 }

@@ -30,7 +30,7 @@ code {
 ul, ol, dd { 
   list-style:none; 
 }
-fieldset { 
+fieldset, input { 
   border-width:0; 
   outline: none;
 }
