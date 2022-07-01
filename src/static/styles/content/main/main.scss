@@ -23,8 +23,6 @@
         letter-spacing: 1px;
         font-weight: 900;
         background-color: $prpl1;
-
-       
     }
     .switch-btn_checked{
         background-color: $prpl2;
@@ -35,7 +33,6 @@
     &__switch-btns_border-right{
         @include borders(0, $border_blc);
     }
-
     &__contents{
         background-color: $prpl1;
         border-radius: 0 0 10px 10px;
@@ -48,11 +45,9 @@
         font-weight: bold;
         text-align: center;
     }
- 
     &__chg-img-block{
         position: relative;
     }
-   
     &__chg-img-btn{
         width: 30px;
         height: 30px;
@@ -66,6 +61,11 @@
         position: absolute;
         bottom: -3px;
         right: 2px;
+
+        transition: 0.2s;
+        &:active{
+            background-color: $gry4;
+        }
     }
 }
 .auth-form{
@@ -80,8 +80,6 @@
         width: 180px;
         padding: 8px 6px;
         
-      
-
         border-radius: 5px;
         border: $border_blc;
         
@@ -94,8 +92,8 @@
     }
     &__submit{
         margin-top: 16px;
-        width: 160px;
-        padding: 8px 0;
+        width: 180px;
+        padding: 8px;
         
         background-color: $prpl7;
         font-size: 12px;
@@ -106,12 +104,11 @@
         border: $border_blc;
         border-radius: 5px;
 
-        transition: 0.6s ease-in-out;
+        transition: 0.2s;
 
         &:active{
             background-color: $prpl10;
         }
-
 
     }
 

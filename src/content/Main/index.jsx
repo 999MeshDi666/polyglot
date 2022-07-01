@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import SoundBtn  from "../SoundController/index";
 
 import reaper from "../../static/images/character-icons/character01.png"
 import dogy from "../../static/images/character-icons/character02.png"
@@ -27,7 +28,7 @@ const Main = () =>{
     const handleSwitchToJoin = ()=>{  
         setSwitchContent(false)
     }
-    console.log(switchContent)
+    
     const handleChangeCharacter = (e)=>{
         e.preventDefault();
         
@@ -44,7 +45,7 @@ const Main = () =>{
     }
     const handleUserName = (event) =>{
         setUserName(event.target.value)
-        console.log(event.target.value)
+        
     }
 
     const handleUserSession = (e) =>{
@@ -99,12 +100,17 @@ const Main = () =>{
                         className="auth-form__input" 
                         placeholder="Введите код"
                         style={switchContent ? {display: 'none'} : {display: 'inline'}}
-                        required
-                        />
-                    <button type="submit" className="auth-form__submit" onClick={handleUserSession}>Создать</button>
+                        required/>
+                    <button 
+                        type="submit" 
+                        className="auth-form__submit" 
+                        onClick={handleUserSession}>
+                        {switchContent ? 'Создать': 'Присоединиться'}
+                    </button>
                 </form>
 
             </div>
+            <SoundBtn></SoundBtn>
 
         </main>
 
