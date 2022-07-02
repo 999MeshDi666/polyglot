@@ -1,26 +1,16 @@
-import {useState, useEffect} from 'react'
-
-import funnySound from "../../static/audio/Piggie-Dilly-Circus.mp3"
+import { useContext } from "react";
+import { BackgroundSound } from "../../Context";
 import play from "../../static/images/other-icons/play.png";
 import pause from "../../static/images/other-icons/pause.png";
 
-const audio = new Audio(funnySound);
 
-const SoundBtn = ()=>{
-    const [playSound, setPlaySound] = useState(true);
 
-    const handlePlaySound = () =>{
-        setPlaySound(!playSound)
-        if(playSound){
-            audio.play();
-        }else{
-            audio.pause();
-        }
-        
-    } 
+const SoundBtn = ({isPlaying})=>{
+    const {handlePlaySound} = useContext(BackgroundSound)
+   
     return(
-        <button className="sound-btn" onClick = {handlePlaySound}>
-           <img src={playSound ? play : pause}/>
+        <button className="sound-btn sound-btn_animation" onClick = {handlePlaySound}>
+           <img src={isPlaying ? play : pause}/>
         </button>
     )
 }

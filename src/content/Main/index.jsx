@@ -1,6 +1,9 @@
 import {useState, useEffect} from 'react';
 import SoundBtn  from "../SoundController/index";
 
+import {Link} from 'react-router-dom'
+
+
 import reaper from "../../static/images/character-icons/character01.png"
 import dogy from "../../static/images/character-icons/character02.png"
 import wizard from "../../static/images/character-icons/character03.png"
@@ -17,7 +20,7 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
 
-const Main = () =>{
+const Main = ({isPlaying}) =>{
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState('');
     const [switchContent, setSwitchContent] = useState(true);
@@ -48,8 +51,8 @@ const Main = () =>{
         
     }
 
-    const handleUserSession = (e) =>{
-        e.preventDefault();
+    const handleUserSession = (isPlaying) =>{
+   
         const userSession = {
             image: characterList[characterCounter],
             name: userName,
@@ -57,6 +60,7 @@ const Main = () =>{
         }
         sessionStorage.setItem('user', JSON.stringify(userSession))
         setUserName('')
+      
 
     }
 
@@ -74,7 +78,7 @@ const Main = () =>{
             </div>
             <div className='main__contents'>
                 <h1 className='main__title'>
-                    Выбери персонажа и напиши псевдоним
+                    Выбери персонажа и <br/> напиши псевдоним
                 </h1> 
                 <form className="main__auth-form auth-form">
                     <fieldset className="main__chg-img-block">
@@ -92,7 +96,6 @@ const Main = () =>{
                         value={userName}
                         onChange={handleUserName} 
                         required/>
-                    
                     <input 
                         type="text" 
                         name="join_code" 
@@ -101,18 +104,23 @@ const Main = () =>{
                         placeholder="Введите код"
                         style={switchContent ? {display: 'none'} : {display: 'inline'}}
                         required/>
-                    <button 
-                        type="submit" 
+                    <Link 
+                        to = "room"
                         className="auth-form__submit" 
                         onClick={handleUserSession}>
                         {switchContent ? 'Создать': 'Присоединиться'}
-                    </button>
+                    </Link>
                 </form>
 
             </div>
-            <SoundBtn></SoundBtn>
+            <SoundBtn isPlaying = {isPlaying}></SoundBtn>
+                    
+        
+        
 
         </main>
+      
+        
 
     )
 }

@@ -1,16 +1,53 @@
-import {Container, Row, Col} from 'react-bootstrap'
-import Main from "./content/Main/index"
+import {useState, useEffect} from 'react';
+import { BackgroundSound } from './Context';
 
+import {Container} from 'react-bootstrap'
+import {BrowserRouter,Routes,Route,} from "react-router-dom";
+
+import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
+
+import Main from "./content/Main"
+import Room from "./content/Room"
+
+const audio = new Audio(funnySound);
 function App() {
-  return (
-    <div className="App">
-      <Container className="main-container">
-        <Main></Main>
-        
 
-      </Container>
+  const [isPlaying, setPlaySound] = useState(true);
+
+  const handlePlaySound = () =>{
+      setPlaySound(!isPlaying)
+      if(isPlaying){
+          audio.play();
+      }else{
+          audio.pause();
+      }
       
-    </div>
+  } 
+  
+  useEffect(()=>{
+    window.addEventListener('load', ()=>{
+      audio.play()
+      setPlaySound(!isPlaying)
+    })
+     
+  },[])
+  console.log(isPlaying)
+
+  return (
+    <BrowserRouter>
+      <BackgroundSound.Provider value={{ handlePlaySound }}>
+        <Container className="main-container">
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<Main isPlaying={isPlaying}/>}/>
+              <Route path="room" element={<Room isPlaying={isPlaying}/>}/>
+            </Routes>
+          </div>
+        </Container>
+
+      </BackgroundSound.Provider>
+      
+    </BrowserRouter>
   );
 }
 
