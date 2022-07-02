@@ -51,7 +51,7 @@ const Main = ({isPlaying}) =>{
         
     }
 
-    const handleUserSession = (isPlaying) =>{
+    const handleUserSession = () =>{
    
         const userSession = {
             image: characterList[characterCounter],
@@ -114,10 +114,7 @@ const Main = ({isPlaying}) =>{
 
             </div>
             <SoundBtn isPlaying = {isPlaying}></SoundBtn>
-                    
-        
-        
-
+                
         </main>
       
         

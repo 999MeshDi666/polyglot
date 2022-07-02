@@ -5,34 +5,42 @@ import {Container} from 'react-bootstrap'
 import {BrowserRouter,Routes,Route,} from "react-router-dom";
 
 import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
+import play from "./static/images/other-icons/play.png";
+import pause from "./static/images/other-icons/pause.png";
+
 
 import Main from "./content/Main"
 import Room from "./content/Room"
 
 const audio = new Audio(funnySound);
 function App() {
-
-  const [isPlaying, setPlaySound] = useState(true);
+  
+  const [isPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || pause);
 
   const handlePlaySound = () =>{
-      setPlaySound(!isPlaying)
-      if(isPlaying){
-          audio.play();
-      }else{
-          audio.pause();
-      }
-      
+    if(isPlaying === pause){
+      setPlaySound(play) 
+      audio.pause()
+    }else{
+      setPlaySound(pause) 
+      audio.play() 
+    }
   } 
   
   useEffect(()=>{
-    window.addEventListener('load', ()=>{
-      audio.play()
-      setPlaySound(!isPlaying)
-    })
-     
-  },[])
-  console.log(isPlaying)
-
+    if(isPlaying === pause){
+      window.addEventListener('load', ()=>{
+        audio.play()
+        audio.loop = true;
+        audio.volume = 50;
+      })
+    }
+   
+    localStorage.setItem('audioPlaying', JSON.stringify(isPlaying))
+    
+  },[isPlaying])
+ 
+  // console.log(isPlaying)
   return (
     <BrowserRouter>
       <BackgroundSound.Provider value={{ handlePlaySound }}>
@@ -44,7 +52,6 @@ function App() {
             </Routes>
           </div>
         </Container>
-
       </BackgroundSound.Provider>
       
     </BrowserRouter>

@@ -1,7 +1,5 @@
 import { useContext } from "react";
 import { BackgroundSound } from "../../Context";
-import play from "../../static/images/other-icons/play.png";
-import pause from "../../static/images/other-icons/pause.png";
 
 
 
@@ -10,7 +8,7 @@ const SoundBtn = ({isPlaying})=>{
    
     return(
         <button className="sound-btn sound-btn_animation" onClick = {handlePlaySound}>
-           <img src={isPlaying ? play : pause}/>
+           <img src={isPlaying}/>
         </button>
     )
 }
