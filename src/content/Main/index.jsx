@@ -1,4 +1,8 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
+
+import { useContext } from 'react';
+import { UserData } from '../../Context';
+
 import SoundBtn  from "../SoundController/index";
 
 import {Link} from 'react-router-dom'
@@ -21,6 +25,9 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
 
 const Main = ({isPlaying}) =>{
+
+    const {handleUserData} = useContext(UserData)
+
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState('');
     const [switchContent, setSwitchContent] = useState(true);
@@ -44,24 +51,15 @@ const Main = ({isPlaying}) =>{
             }
             return prevChar;
         })
-
     }
     const handleUserName = (event) =>{
         setUserName(event.target.value)
-        
     }
 
-    const handleUserSession = () =>{
-   
-        const userSession = {
-            image: characterList[characterCounter],
-            name: userName,
-            isOwner: switchContent,
-        }
-        sessionStorage.setItem('user', JSON.stringify(userSession))
-        setUserName('')
-      
-
+    const userData = {
+        image: characterList[characterCounter],
+        nickname: userName,
+        isOwner: switchContent,
     }
 
     return(
@@ -105,9 +103,10 @@ const Main = ({isPlaying}) =>{
                         style={switchContent ? {display: 'none'} : {display: 'inline'}}
                         required/>
                     <Link 
+                        type='submit'
                         to = "room"
                         className="auth-form__submit" 
-                        onClick={handleUserSession}>
+                        onClick={() =>handleUserData(userData)}>
                         {switchContent ? 'Создать': 'Присоединиться'}
                     </Link>
                 </form>
