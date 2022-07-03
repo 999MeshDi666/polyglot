@@ -9,17 +9,17 @@ const gameCards = [
     {
         image:  polyglot,
         title: 'Полиглот',
-        desc: 'Lorem ipsum dolor sit amet, consectetur 4adipiscing elit ut aliquam, purus sit amet luctus venenatis.',
+        desc: 'Докажи своим друзьям, что являещься настоящим полиглотом и любой язык тебе не страшен.',
     },
     {
         image:  sparklesTongue,
         title: 'Блестящий языкт',
-        desc: 'Lorem ipsum dolor sit amet, consectetur 4adipiscing elit ut aliquam, purus sit amet luctus venenatis.',
+        desc: 'Только человек с блестящим языком способен произнести очень длинные слова.',
     },
     {
         image:  tongueTwister,
         title: 'Скороговорки',
-        desc: 'Lorem ipsum dolor sit amet, consectetur 4adipiscing elit ut aliquam, purus sit amet luctus venenatis.',
+        desc: `Произноси скороговорки пока не сотрешь себе язык. Последствия после игры: стертый язык, дурень!`,
     }
 ]
 
