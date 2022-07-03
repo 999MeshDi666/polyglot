@@ -1,8 +1,5 @@
 import {useState} from 'react';
-
-import { useContext } from 'react';
-import { UserData } from '../../Context';
-
+import {Container} from 'react-bootstrap'
 import SoundBtn  from "../SoundController/index";
 
 import {Link} from 'react-router-dom'
@@ -23,14 +20,13 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
-
+let randNicknameNum = Math.floor(Math.random() * 100)
 const Main = ({isPlaying}) =>{
 
-    const {handleUserData} = useContext(UserData)
-
     const [characterCounter, setCharacterCounter] = useState(0)
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
     const [switchContent, setSwitchContent] = useState(true);
+
 
     const handleSwitchToCreate = ()=>{  
         setSwitchContent(true)
@@ -56,65 +52,63 @@ const Main = ({isPlaying}) =>{
         setUserName(event.target.value)
     }
 
-    const userData = {
-        image: characterList[characterCounter],
-        nickname: userName,
-        isOwner: switchContent,
-    }
-
     return(
-        <main className='main'>
-            <div className='main__switch-btns-block'>
-                <button 
-                    className={`main__switch-btns main__switch-btns_border-left ${!switchContent && 'switch-btn_checked'} }`} 
-                    onClick={handleSwitchToCreate}>Создать игру
-                </button>
-                <button 
-                    className={`main__switch-btns  main__switch-btns_border-right ${switchContent && 'switch-btn_checked'} }`} 
-                    onClick={ handleSwitchToJoin}>Присоединиться
-                </button>
-            </div>
-            <div className='main__contents'>
-                <h1 className='main__title'>
-                    Выбери персонажа и <br/> напиши псевдоним
-                </h1> 
-                <form className="main__auth-form auth-form">
-                    <fieldset className="main__chg-img-block">
-                        <img src={characterList[characterCounter]} name="characters" id="characters"/>
-                        <button className="main__chg-img-btn" onClick={handleChangeCharacter}>
-                            <img src={next_arrow}/>
-                        </button>
-                    </fieldset>
-                    <input 
-                        type="text" 
-                        name="nickname" 
-                        id="nickname" 
-                        className="auth-form__input" 
-                        placeholder="Введите псевдоним"
-                        value={userName}
-                        onChange={handleUserName} 
-                        required/>
-                    <input 
-                        type="text" 
-                        name="join_code" 
-                        id="join-code" 
-                        className="auth-form__input" 
-                        placeholder="Введите код"
-                        style={switchContent ? {display: 'none'} : {display: 'inline'}}
-                        required/>
-                    <Link 
-                        type='submit'
-                        to = "room"
-                        className="auth-form__submit" 
-                        onClick={() =>handleUserData(userData)}>
-                        {switchContent ? 'Создать': 'Присоединиться'}
-                    </Link>
-                </form>
+        <Container>
+            <main className='main'>
+                <div className='main__switch-btns-block'>
+                    <button 
+                        className={`main__switch-btns main__switch-btns_border-left ${!switchContent && 'switch-btn_checked'} }`} 
+                        onClick={handleSwitchToCreate}>Создать игру
+                    </button>
+                    <button 
+                        className={`main__switch-btns  main__switch-btns_border-right ${switchContent && 'switch-btn_checked'} }`} 
+                        onClick={ handleSwitchToJoin}>Присоединиться
+                    </button>
+                </div>
+                <div className='main__contents'>
+                    <h1 className='main__title'>
+                        Выбери персонажа и <br/> напиши псевдоним
+                    </h1> 
+                    <form className="main__auth-form auth-form">
+                        <fieldset className="main__chg-img-block">
+                            <img src={characterList[characterCounter]} name="characters" id="characters"/>
+                            <button className="main__chg-img-btn" onClick={handleChangeCharacter}>
+                                <img src={next_arrow}/>
+                            </button>
+                        </fieldset>
+                        <input 
+                            type="text" 
+                            name="nickname" 
+                            id="nickname" 
+                            className="auth-form__input" 
+                            placeholder="Введите псевдоним"
+                            value={userName}
+                            onChange={handleUserName} 
+                            required/>
+                        <input 
+                            type="text" 
+                            name="join_code" 
+                            id="join-code" 
+                            className="auth-form__input" 
+                            placeholder="Введите код"
+                            style={switchContent ? {display: 'none'} : {display: 'inline'}}
+                            required/>
+                        <Link 
+                            type='submit'
+                            to = "room"
+                            className="auth-form__submit" 
+                            >
+                            {switchContent ? 'Создать': 'Присоединиться'}
+                        </Link>
+                    </form>
 
-            </div>
-            <SoundBtn isPlaying = {isPlaying}></SoundBtn>
-                
-        </main>
+                </div>
+                <SoundBtn isPlaying = {isPlaying}></SoundBtn>
+                    
+            </main>
+          
+        </Container>
+        
       
         
 

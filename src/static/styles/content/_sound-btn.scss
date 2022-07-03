@@ -1,0 +1,36 @@
+.sound-btn{
+    width: 46px;
+    height: 46px;
+    padding-bottom: 6px;
+    padding-left: 7px;
+  
+  
+    border: $border_blc;
+    border-radius: 50%;
+    
+    font-size: 24px;
+    -webkit-text-stroke: 1px $blc;
+    background-color: $prpl2;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+  
+    position: fixed;
+    top: 20px;
+    right: 6px;
+  
+    transition: .2s;
+  
+    &:active{
+      -webkit-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
+      -moz-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
+      box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
+    }
+    
+    
+  }
+  .sound-btn_room{
+    top: 142px;
+
+  }
+  

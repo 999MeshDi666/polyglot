@@ -54,62 +54,35 @@ a,button{
   color: $wht1;
 }
 
-.main-container{
+.container{
   padding: 0 20px;
 }
-
-.sound-btn{
-  width: 46px;
-  height: 46px;
-  padding-bottom: 6px;
-  padding-left: 7px;
-
-
-  border: $border_blc;
-  border-radius: 50%;
-  
-  font-size: 24px;
-  -webkit-text-stroke: 1px $blc;
-  background-color: $prpl2;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-
-  position: fixed;
-  top: 20px;
-  right: 6px;
-
-  transition: .2s;
+.general-btn {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
 
   &:active{
-    -webkit-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
-    -moz-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
-    box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
+      color: $gry1;
   }
-  
-  // &:hover{
-  //   animation-name: vibration;
-  //   animation-duration: 1s;
-  //   animation-timing-function: linear;
-  //   animation-iteration-count: infinite;
-    
-  
-  // } 
-  // @keyframes vibration {
-  //   0% {top: 1px; right: 1px;}
-  //   10% {top: -1px; right: -1px;}
-  //   20% {top: 1px; right: 1px;}
-  //   30% {top: -1px; right: -1px;}
-  //   40% {top: 1px; right: 1px;}
-  //   50% {top: -1px; right: -1px;}
-  //   60% {top: 1px; right: 1px;}
-  //   70% {top: -1px; right: -1px;}
-  //   80% {top: 1px; right: 1px;}
-  //   90% {top: -1px; right: -1px;}
-  //   100% {top: 1px; right: 1px;}
-  // }
-  
+}
+
+.title{
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
 }
 
 
 
+
+
+@media (min-width: 768px) {
+  .container{
+    padding: 0;
+  }
+  
+   
+}
