@@ -1,7 +1,8 @@
 import {Link} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
-import fbaseDB from '../../utils/firebase-config'
+import {fbaseDB, fbAuth} from '../../utils/firebase-config'
 import { ref, onValue, remove} from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from 'react';
 
 import crown from '../../static/images/other-icons/crown2.png'
@@ -21,11 +22,14 @@ const UserBar = () =>{
             console.log(userList)
             setUsers(userList) 
         });
+      
     },[])
 
     const handleRemoveUser = () =>{
+        let user = fbAuth.currentUser;
+        user.delete()
         remove(ref(fbaseDB, 'users/'))
-        console.log('removed')
+        console.log('removed')       
     }
   
     return(
