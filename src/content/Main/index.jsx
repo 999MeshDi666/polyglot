@@ -1,8 +1,13 @@
-import {useState} from 'react';
+import {useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import {Container} from 'react-bootstrap'
-import SoundBtn  from "../SoundController/index";
 
-import {Link} from 'react-router-dom'
+import fbaseDB from '../../utils/firebase-config'
+import { ref, set } from "firebase/database";
+
+import SoundBtn  from "../SoundController/index"
+
+
 
 
 import reaper from "../../static/images/character-icons/character01.png"
@@ -20,13 +25,13 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
-let randNicknameNum = Math.floor(Math.random() * 100)
+let randNicknameNum = Math.floor(Math.random() * 1000)
 const Main = ({isPlaying}) =>{
 
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
     const [switchContent, setSwitchContent] = useState(true);
-
+    const navigate = useNavigate();
 
     const handleSwitchToCreate = ()=>{  
         setSwitchContent(true)
@@ -50,6 +55,31 @@ const Main = ({isPlaying}) =>{
     }
     const handleUserName = (event) =>{
         setUserName(event.target.value)
+    }
+
+    const handleCreateUser = (e) =>{
+        e.preventDefault()
+        
+        if(userName.length === 0){
+            alert('Поле псевдонима не должно быть пустым')
+        }
+        else if(userName.length > 14){
+            alert('Псевдоним не должен превышать 14 символов')
+        }
+        else{
+            set(ref(fbaseDB, 'users/' + userName), {
+                image: characterList[characterCounter],
+                nickname: userName,
+                isOwner: switchContent
+            }).then(()=>{
+                console.info('data updated')
+            }).catch((error)=>{
+                console.error(error)
+            })
+            navigate('room');
+        }
+       
+
     }
 
     return(
@@ -84,7 +114,7 @@ const Main = ({isPlaying}) =>{
                             placeholder="Введите псевдоним"
                             value={userName}
                             onChange={handleUserName} 
-                            required/>
+                            />
                         <input 
                             type="text" 
                             name="join_code" 
@@ -92,14 +122,14 @@ const Main = ({isPlaying}) =>{
                             className="auth-form__input" 
                             placeholder="Введите код"
                             style={switchContent ? {display: 'none'} : {display: 'inline'}}
-                            required/>
-                        <Link 
-                            type='submit'
-                            to = "room"
-                            className="auth-form__submit" 
+                            />
+                        <button 
+
+                            className="auth-form__submit"
+                            onClick = {handleCreateUser} 
                             >
                             {switchContent ? 'Создать': 'Присоединиться'}
-                        </Link>
+                        </button>
                     </form>
 
                 </div>

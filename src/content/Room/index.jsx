@@ -2,9 +2,12 @@ import {Container, Row, Col} from 'react-bootstrap'
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 
+
+
 import polyglot from "../../static/images/game-icons/game-icon64px/yawning.png"
 import sparklesTongue from "../../static/images/game-icons/game-icon64px/tongue.png"
 import tongueTwister from "../../static/images/game-icons/game-icon64px/tongue-twister.png"
+
 const gameCards = [
     {
         image:  polyglot,
@@ -25,6 +28,7 @@ const gameCards = [
 
 const Room = ({isPlaying}) =>{
     
+   
     return(
         <main className="room">
             <UserBar/>
@@ -36,9 +40,6 @@ const Room = ({isPlaying}) =>{
                         <span className='room__code-wrapper'>
                             <p>AzX89sd5SD</p>
                         </span>
-
-                        
-
                     </div>
                     <div className='room__games'>
                         <button className='room__option-btn general-btn'>Настройки</button>
@@ -56,7 +57,6 @@ const Room = ({isPlaying}) =>{
                                     </div>
                                     <button className='room__game-card-btn'>Подробнее</button>
                                 </Col>
-
                             ))}
 
                         </Row>

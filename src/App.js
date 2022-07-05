@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react';
 import {BackgroundSound} from './Context';
-import { UserData } from './Context';
 
 
 import {BrowserRouter,Routes,Route,} from "react-router-dom";
@@ -9,7 +8,6 @@ import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
 import play from "./static/images/other-icons/play.png";
 import pause from "./static/images/other-icons/pause.png";
 
-import reaper from "./static/images/character-icons/character01.png"
 
 import Main from "./content/Main"
 import Room from "./content/Room"
