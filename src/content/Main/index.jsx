@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import {Container} from 'react-bootstrap'
-
+import { v4 as uuidv4 } from 'uuid';
 import {fbaseDB, fbAuth} from '../../utils/firebase-config'
 import { signInAnonymously } from "firebase/auth";
 import { ref, set } from "firebase/database";
@@ -68,25 +68,18 @@ const Main = ({isPlaying}) =>{
             alert('Псевдоним не должен превышать 14 символов')
         }
         else{
-            
-            signInAnonymously(fbAuth).then(()=>{
-                let user = fbAuth.currentUser
-
-                set(ref(fbaseDB, 'users/' + user.uid), {
-                    image: characterList[characterCounter],
-                    nickname: userName,
-                    isOwner: switchContent
-                }).then(()=>{
-                    console.info('data updated')
-                }).catch((error)=>{
-                    console.error(error)
-                })
-                navigate('room');
-
-
+            let uuid = uuidv4()
+            set(ref(fbaseDB, 'users/' + uuid), {
+                uid: uuid,
+                image: characterList[characterCounter],
+                nickname: userName,
+                isOwner: switchContent
+            }).then(()=>{
+                console.info('data has been created')
             }).catch((error)=>{
                 console.error(error)
             })
+            navigate('room');
         }
        
 
