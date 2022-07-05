@@ -71,6 +71,7 @@ const Main = ({isPlaying}) =>{
             signInAnonymously(fbAuth).then(()=>{
                 let user = fbAuth.currentUser
                 set(ref(fbaseDB, 'users/' + user.uid), {
+                    uuid: user.uid,
                     image: characterList[characterCounter],
                     nickname: userName,
                     isOwner: switchContent

@@ -28,8 +28,8 @@ const UserBar = () =>{
     const handleRemoveUser = () =>{
         let user = fbAuth.currentUser;
         user.delete()
-        remove(ref(fbaseDB, 'users/'))
-        console.log('removed')       
+       
+        remove(ref(fbaseDB, 'users/' + user.uid))  
     }
   
     return(
@@ -41,12 +41,10 @@ const UserBar = () =>{
                         <span key={user.nickname} className="user-bar__new-user">
                             <img src={user.image} className="user-bar__user-image"/>
                             <h4  className="user-bar__user-nickname">{user.nickname}</h4>
-                            <img  src={crown} style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='user-bar__owner-crown' ></img>
+                            <img src={crown} style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='user-bar__owner-crown' ></img>
                         </span>
                     )): ' '}
-                    
-
-
+    
                 </div>
 
             </header>
