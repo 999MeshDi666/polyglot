@@ -68,18 +68,23 @@ const Main = ({isPlaying}) =>{
             alert('Псевдоним не должен превышать 14 символов')
         }
         else{
-            let uuid = uuidv4()
-            set(ref(fbaseDB, 'users/' + uuid), {
-                uid: uuid,
-                image: characterList[characterCounter],
-                nickname: userName,
-                isOwner: switchContent
-            }).then(()=>{
-                console.info('data has been created')
+            signInAnonymously(fbAuth).then(()=>{
+                let user = fbAuth.currentUser
+                set(ref(fbaseDB, 'users/' + user.uid), {
+                    image: characterList[characterCounter],
+                    nickname: userName,
+                    isOwner: switchContent
+                }).then(()=>{
+                    console.info('data updated')
+                }).catch((error)=>{
+                    console.error(error)
+                })
+                navigate('room');
+
+
             }).catch((error)=>{
                 console.error(error)
             })
-            navigate('room');
         }
        
 
