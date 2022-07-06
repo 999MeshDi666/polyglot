@@ -2,23 +2,21 @@ import {Link} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB, fbAuth} from '../../utils/firebase-config'
 import { ref, onValue, remove} from "firebase/database";
-import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from 'react';
 
 import crown from '../../static/images/other-icons/crown2.png'
-let uuid;
-const UserBar = ({roomID, userID}) =>{
+
+const UserBar = () =>{
 
     const [users, setUsers] = useState();
    
     useEffect(()=>{
-        const getUserData = ref(fbaseDB, `polyglot/room${roomID}/users/`);
+        const getUserData = ref(fbaseDB, `/users/`);
         onValue(getUserData, (snapshot) => {
             const user = snapshot.val()
             const userList = []
             for (let key in user){
                 userList.push(user[key])
-                uuid = key;
             }
             console.log(userList)
             setUsers(userList) 
@@ -29,7 +27,7 @@ const UserBar = ({roomID, userID}) =>{
     const handleRemoveUser = () =>{
         let user = fbAuth.currentUser;
         user.delete()  
-        remove(ref(fbaseDB, `polyglot/room${roomID}/users/${uuid}`))  
+        remove(ref(fbaseDB, `/users/` + user.uid))  
     }
     return(
         <Container fluid className='userbar-container'>

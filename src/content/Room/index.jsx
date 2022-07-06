@@ -26,12 +26,12 @@ const gameCards = [
     }
 ]
 
-const Room = ({isPlaying,roomID,userID}) =>{
+const Room = ({isPlaying}) =>{
     
    
     return(
         <main className="room">
-            <UserBar roomID = {roomID} userID = {userID} />
+            <UserBar/>
             <SoundBtn isPlaying = {isPlaying} mod_class = 'sound-btn_room'></SoundBtn>
             <Container>
                 <article>
