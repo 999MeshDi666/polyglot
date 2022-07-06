@@ -6,8 +6,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from 'react';
 
 import crown from '../../static/images/other-icons/crown2.png'
-
-const UserBar = ({roomID}) =>{
+let uuid;
+const UserBar = ({roomID, userID}) =>{
 
     const [users, setUsers] = useState();
    
@@ -18,20 +18,19 @@ const UserBar = ({roomID}) =>{
             const userList = []
             for (let key in user){
                 userList.push(user[key])
+                uuid = key;
             }
             console.log(userList)
             setUsers(userList) 
         });
       
     },[])
-
+    
     const handleRemoveUser = () =>{
         let user = fbAuth.currentUser;
-        user.delete()
-       
-        remove(ref(fbaseDB, `polyglot/room${roomID}/users/` + user.uid))  
+        user.delete()  
+        remove(ref(fbaseDB, `polyglot/room${roomID}/users/${uuid}`))  
     }
-  
     return(
         <Container fluid className='userbar-container'>
             <header className="user-bar__header">

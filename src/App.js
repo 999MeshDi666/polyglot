@@ -14,6 +14,7 @@ import Room from "./content/Room"
 
 const audio = new Audio(funnySound);
 let roomID = uuidv4()
+let userID = uuidv4()
 function App() {
   
   const [isPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || pause);
@@ -48,8 +49,8 @@ function App() {
       <BackgroundSound.Provider value={{handlePlaySound}}>
         <div className="App">
             <Routes>
-              <Route path="/" element={<Main isPlaying={isPlaying} roomID = {roomID}/>}/>
-              <Route path="room" element={<Room isPlaying={isPlaying} roomID = {roomID}/>}/>
+              <Route path="/" element={<Main isPlaying={isPlaying} roomID = {roomID} userID = {userID}/>}/>
+              <Route path="room" element={<Room isPlaying={isPlaying} roomID = {roomID} userID = {userID} />}/>
             </Routes>
         </div>
        

@@ -5,7 +5,7 @@ import {Container} from 'react-bootstrap'
 import {fbaseDB, fbAuth} from '../../utils/firebase-config'
 import { signInAnonymously } from "firebase/auth";
 import { ref, set } from "firebase/database";
-
+import { v4 as uuidv4 } from 'uuid';
 import SoundBtn  from "../SoundController/index"
 
 
@@ -27,7 +27,7 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
 let randNicknameNum = Math.floor(Math.random() * 1000)
-const Main = ({isPlaying, roomID }) =>{
+const Main = ({isPlaying, roomID, userID}) =>{
    
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
@@ -68,26 +68,36 @@ const Main = ({isPlaying, roomID }) =>{
             alert('Псевдоним не должен превышать 14 символов')
         }
         else{
-            signInAnonymously(fbAuth).then(()=>{
-                let user = fbAuth.currentUser
-                
-                set(ref(fbaseDB, `polyglot/room${roomID}/users/` + user.uid), {
-                    uuid: user.uid,
-                    image: characterList[characterCounter],
-                    nickname: userName,
-                    isOwner: switchContent
-                }).then(()=>{
-                    console.info('user has been created')
-                }).catch((error)=>{
-                    console.error(error)
-                })
-                
-                navigate('room');
-
-
+            set(ref(fbaseDB, `polyglot/room${roomID}`), {
+                roomID: roomID,
+            }).then(()=>{
+                console.info('room has been created')
             }).catch((error)=>{
                 console.error(error)
             })
+            let user = fbAuth.currentUser
+            
+            set(ref(fbaseDB, `polyglot/room${roomID}/users/` + userID), {
+                uuid: userID,
+                image: characterList[characterCounter],
+                nickname: userName,
+                isOwner: switchContent
+            }).then(()=>{
+                console.info('user has been created')
+            }).catch((error)=>{
+                console.error(error)
+            })
+            
+            navigate('room');
+            
+            
+            // signInAnonymously(fbAuth).then(()=>{
+               
+
+
+            // }).catch((error)=>{
+            //     console.error(error)
+            // })
         }
        
 
