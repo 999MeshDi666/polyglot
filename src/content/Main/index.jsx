@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import {Container} from 'react-bootstrap'
-import { v4 as uuidv4 } from 'uuid';
+
 import {fbaseDB, fbAuth} from '../../utils/firebase-config'
 import { signInAnonymously } from "firebase/auth";
 import { ref, set } from "firebase/database";
@@ -27,8 +27,8 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
 let randNicknameNum = Math.floor(Math.random() * 1000)
-const Main = ({isPlaying}) =>{
-
+const Main = ({isPlaying, roomID }) =>{
+   
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
     const [switchContent, setSwitchContent] = useState(true);
@@ -60,7 +60,7 @@ const Main = ({isPlaying}) =>{
 
     const handleCreateUser = (e) =>{
         e.preventDefault()
-        
+       
         if(userName.length === 0){
             alert('Поле псевдонима не должно быть пустым')
         }
@@ -70,16 +70,18 @@ const Main = ({isPlaying}) =>{
         else{
             signInAnonymously(fbAuth).then(()=>{
                 let user = fbAuth.currentUser
-                set(ref(fbaseDB, 'users/' + user.uid), {
+                
+                set(ref(fbaseDB, `polyglot/room${roomID}/users/` + user.uid), {
                     uuid: user.uid,
                     image: characterList[characterCounter],
                     nickname: userName,
                     isOwner: switchContent
                 }).then(()=>{
-                    console.info('data updated')
+                    console.info('user has been created')
                 }).catch((error)=>{
                     console.error(error)
                 })
+                
                 navigate('room');
 
 

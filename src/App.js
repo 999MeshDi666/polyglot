@@ -3,7 +3,7 @@ import {BackgroundSound} from './Context';
 
 
 import {BrowserRouter,Routes,Route,} from "react-router-dom";
-
+import { v4 as uuidv4 } from 'uuid';
 import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
 import play from "./static/images/other-icons/play.png";
 import pause from "./static/images/other-icons/pause.png";
@@ -13,6 +13,7 @@ import Main from "./content/Main"
 import Room from "./content/Room"
 
 const audio = new Audio(funnySound);
+let roomID = uuidv4()
 function App() {
   
   const [isPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || pause);
@@ -47,8 +48,8 @@ function App() {
       <BackgroundSound.Provider value={{handlePlaySound}}>
         <div className="App">
             <Routes>
-              <Route path="/" element={<Main isPlaying={isPlaying}/>}/>
-              <Route path="room" element={<Room isPlaying={isPlaying} />}/>
+              <Route path="/" element={<Main isPlaying={isPlaying} roomID = {roomID}/>}/>
+              <Route path="room" element={<Room isPlaying={isPlaying} roomID = {roomID}/>}/>
             </Routes>
         </div>
        

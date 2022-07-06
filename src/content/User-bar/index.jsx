@@ -7,12 +7,12 @@ import { useEffect, useState } from 'react';
 
 import crown from '../../static/images/other-icons/crown2.png'
 
-const UserBar = () =>{
+const UserBar = ({roomID}) =>{
 
     const [users, setUsers] = useState();
    
     useEffect(()=>{
-        const getUserData = ref(fbaseDB, 'users/');
+        const getUserData = ref(fbaseDB, `polyglot/room${roomID}/users/`);
         onValue(getUserData, (snapshot) => {
             const user = snapshot.val()
             const userList = []
@@ -29,7 +29,7 @@ const UserBar = () =>{
         let user = fbAuth.currentUser;
         user.delete()
        
-        remove(ref(fbaseDB, 'users/' + user.uid))  
+        remove(ref(fbaseDB, `polyglot/room${roomID}/users/` + user.uid))  
     }
   
     return(
