@@ -11,7 +11,7 @@ const UserBar = () =>{
     const [users, setUsers] = useState();
    
     useEffect(()=>{
-        const getUserData = ref(fbaseDB, `/users/`);
+        const getUserData = ref(fbaseDB, `room${999666}/users/`);
         onValue(getUserData, (snapshot) => {
             const user = snapshot.val()
             const userList = []
@@ -27,7 +27,7 @@ const UserBar = () =>{
     const handleRemoveUser = () =>{
         let user = fbAuth.currentUser;
         user.delete()  
-        remove(ref(fbaseDB, `/users/` + user.uid))  
+        remove(ref(fbaseDB, `room${999666}/users/` + user.uid))  
     }
     return(
         <Container fluid className='userbar-container'>

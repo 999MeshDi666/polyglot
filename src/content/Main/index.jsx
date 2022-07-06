@@ -31,6 +31,7 @@ const Main = ({isPlaying}) =>{
    
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
+    const [code, setCode] = useState('')
     const [switchContent, setSwitchContent] = useState(true);
     const navigate = useNavigate();
 
@@ -57,7 +58,10 @@ const Main = ({isPlaying}) =>{
     const handleUserName = (event) =>{
         setUserName(event.target.value)
     }
+    const handleGetRoomCode = (event) =>{
+        setCode(event.target.value)
 
+    } 
     const handleCreateUser = (e) =>{
         e.preventDefault()
        
@@ -71,19 +75,37 @@ const Main = ({isPlaying}) =>{
             signInAnonymously(fbAuth).then(()=>{
                 let user = fbAuth.currentUser
 
+                if(switchContent === true){
+                    set(ref(fbaseDB, `room${999666}/users/` + user.uid), {
+                        uuid: user.uid,
+                        image: characterList[characterCounter],
+                        nickname: userName,
+                        isOwner: switchContent
+                    }).then(()=>{
+                        console.info('user has been created')
+                    }).catch((error)=>{
+                        console.error(error)
+                    })
+                    navigate('room');
+                }else{
+                    if(code.length === 0){
+                        alert('Поле кода не должно быть пустым')
+                    }else{
+                        set(ref(fbaseDB, `room${code}/users/` + user.uid), {
+                            uuid: user.uid,
+                            image: characterList[characterCounter],
+                            nickname: userName,
+                            isOwner: switchContent
+                        }).then(()=>{
+                            console.info('user has been created')
+                        }).catch((error)=>{
+                            console.error(error)
+                        })
+                        navigate('room');
+                    }
+                }
                 
-                set(ref(fbaseDB, `/users/` + user.uid), {
-                    uuid: user.uid,
-                    image: characterList[characterCounter],
-                    nickname: userName,
-                    isOwner: switchContent
-                }).then(()=>{
-                    console.info('user has been created')
-                }).catch((error)=>{
-                    console.error(error)
-                })
-                
-                navigate('room');
+             
                
 
 
@@ -134,6 +156,8 @@ const Main = ({isPlaying}) =>{
                             id="join-code" 
                             className="auth-form__input" 
                             placeholder="Введите код"
+                            value = {code}
+                            onChange = {handleGetRoomCode}
                             style={switchContent ? {display: 'none'} : {display: 'inline'}}
                             />
                         <button 
