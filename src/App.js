@@ -2,8 +2,7 @@ import {useState, useEffect} from 'react';
 import {BackgroundSound} from './Context';
 
 
-import {BrowserRouter,Routes,Route,} from "react-router-dom";
-
+import {BrowserRouter,Routes,Route} from "react-router-dom";
 import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
 import play from "./static/images/other-icons/play.png";
 import pause from "./static/images/other-icons/pause.png";
@@ -15,9 +14,12 @@ import Room from "./content/Room"
 const audio = new Audio(funnySound);
 
 
+
 function App() {
   
   const [isPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || pause);
+
+
  
   const handlePlaySound = () =>{
     if(isPlaying === pause){
@@ -50,7 +52,7 @@ function App() {
         <div className="App">
             <Routes>
               <Route path="/" element={<Main isPlaying={isPlaying}/>}/>
-              <Route path="room" element={<Room isPlaying={isPlaying}/>}/>
+              <Route path="/room/:id" element={<Room isPlaying={isPlaying}/>}/>
             </Routes>
         </div>
        

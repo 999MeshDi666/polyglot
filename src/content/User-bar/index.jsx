@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
 
 import crown from '../../static/images/other-icons/crown2.png'
 
-const UserBar = () =>{
+const UserBar = ({roomID}) =>{
 
     const [users, setUsers] = useState();
-   
+    console.log(`room iddd ${roomID}`)
     useEffect(()=>{
-        const getUserData = ref(fbaseDB, `room${999666}/users/`);
+        const getUserData = ref(fbaseDB, `polyglot/rooms${roomID}/users/`);
         onValue(getUserData, (snapshot) => {
             const user = snapshot.val()
             const userList = []
@@ -22,12 +22,12 @@ const UserBar = () =>{
             setUsers(userList) 
         });
       
-    },[])
+    },[roomID])
     
     const handleRemoveUser = () =>{
         let user = fbAuth.currentUser;
         user.delete()  
-        remove(ref(fbaseDB, `room${999666}/users/` + user.uid))  
+        remove(ref(fbaseDB, `polyglot/rooms${roomID}/users/` + user.uid))  
     }
     return(
         <Container fluid className='userbar-container'>

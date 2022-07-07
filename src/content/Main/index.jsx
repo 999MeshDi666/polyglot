@@ -7,7 +7,7 @@ import { signInAnonymously } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
 import SoundBtn  from "../SoundController/index"
-
+import {useParams} from "react-router-dom";
 
 
 
@@ -28,13 +28,13 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
 let randNicknameNum = Math.floor(Math.random() * 1000)
 const Main = ({isPlaying}) =>{
-   
+    let { roomId } = useParams();
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
     const [code, setCode] = useState('')
     const [switchContent, setSwitchContent] = useState(true);
     const navigate = useNavigate();
-
+  
     const handleSwitchToCreate = ()=>{  
         setSwitchContent(true)
     }
@@ -74,9 +74,16 @@ const Main = ({isPlaying}) =>{
         else{
             signInAnonymously(fbAuth).then(()=>{
                 let user = fbAuth.currentUser
-
+                let rid = uuidv4()
                 if(switchContent === true){
-                    set(ref(fbaseDB, `room${999666}/users/` + user.uid), {
+                    set(ref(fbaseDB, `polyglot/rooms${rid}/`), {
+                        rid: rid,  
+                    }).then(()=>{
+                        console.info('user has been created')
+                    }).catch((error)=>{
+                        console.error(error)
+                    })
+                    set(ref(fbaseDB, `polyglot/rooms${rid}/users/${user.uid}`), {
                         uuid: user.uid,
                         image: characterList[characterCounter],
                         nickname: userName,
@@ -86,12 +93,13 @@ const Main = ({isPlaying}) =>{
                     }).catch((error)=>{
                         console.error(error)
                     })
-                    navigate('room');
+                    navigate(`/room/:${rid}`);
+                    console.log(rid)
                 }else{
                     if(code.length === 0){
                         alert('Поле кода не должно быть пустым')
                     }else{
-                        set(ref(fbaseDB, `room${code}/users/` + user.uid), {
+                        set(ref(fbaseDB, `polyglot/rooms${code}/users/` + user.uid), {
                             uuid: user.uid,
                             image: characterList[characterCounter],
                             nickname: userName,
@@ -101,7 +109,7 @@ const Main = ({isPlaying}) =>{
                         }).catch((error)=>{
                             console.error(error)
                         })
-                        navigate('room');
+                        navigate(`/room/:${code}`);
                     }
                 }
                 
