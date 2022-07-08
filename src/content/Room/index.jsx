@@ -1,10 +1,6 @@
 import {Container, Row, Col} from 'react-bootstrap'
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
-import {useEffect, useState} from "react"
-import {fbaseDB, fbAuth} from '../../utils/firebase-config'
-import { ref, onValue} from "firebase/database";
-
 import polyglot from "../../static/images/game-icons/game-icon64px/yawning.png"
 import sparklesTongue from "../../static/images/game-icons/game-icon64px/tongue.png"
 import tongueTwister from "../../static/images/game-icons/game-icon64px/tongue-twister.png"
@@ -29,27 +25,9 @@ const gameCards = [
 
 const Room = ({isPlaying}) =>{
     
-    const [roomID, setRoomID] = useState();
-
-    useEffect(()=>{
-        const getRoomData = ref(fbaseDB, `polyglot/`);
-        onValue(getRoomData, (snapshot) => {
-            let roomData = snapshot.val()
-            console.log(roomData)
-            console.log(Object.values(roomData)[0])
-            console.log(Object.values(roomData)[0]['rid'])
-            
-           
-            
-            setRoomID(Object.values(roomData)[0]['rid'])
-            
-        });
-      
-    },[])
-    console.log(`room id: ${roomID} `)
     return(
         <main className="room">
-            <UserBar roomID = {roomID}/>
+            <UserBar/>
             <SoundBtn isPlaying = {isPlaying} mod_class = 'sound-btn_room'></SoundBtn>
             <Container>
                 <article>
