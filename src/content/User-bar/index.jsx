@@ -1,7 +1,7 @@
-import {Link, useParams} from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB, fbAuth} from '../../utils/firebase-config'
-import { ref, onValue, remove} from "firebase/database";
+import { ref, onValue, remove, onDisconnect} from "firebase/database";
 import { useEffect, useState } from 'react';
 import crown from '../../static/images/other-icons/crown2.png'
 
@@ -9,6 +9,8 @@ const UserBar = () =>{
 
     const [users, setUsers] = useState();
     const {roomIDFromUrl} = useParams();
+    const [userID] = useState(sessionStorage.getItem('current-user-id'))
+    const navigateToMain = useNavigate();
   
     useEffect(()=>{
         const getUserData = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`);
@@ -21,18 +23,24 @@ const UserBar = () =>{
             console.log(userList)
             setUsers(userList) 
         });
+        
       
     },[roomIDFromUrl.substring(1)])
-    
+
+   
+    console.log(`current user id:${userID}`)
     const handleRemoveUser = () =>{
-        let user = fbAuth.currentUser;
-        user.delete()  
-        remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + user.uid))  
+        // let user = fbAuth.currentUser;
+        // user.delete()  
+        
+        onDisconnect(remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)))
+        sessionStorage.removeItem('current-user-id')
+        navigateToMain(`/`);
     }
     return(
         <Container fluid className='userbar-container'>
             <header className="user-bar__header">
-                <Link to='/' className="user-bar__leave-btn general-btn" onClick={handleRemoveUser}>Выйти</Link>
+                <a href='#' className="user-bar__leave-btn general-btn" onClick={handleRemoveUser}>Выйти</a>
                 <div className="user-bar__user-list">
                     {users ? users.map((user)=>(
                         <span key={user.nickname} className="user-bar__new-user">

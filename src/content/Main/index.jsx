@@ -34,7 +34,7 @@ const Main = ({isPlaying}) =>{
     const [code, setCode] = useState('')
     const [roomList, setRoomList] = useState()
     const [switchContent, setSwitchContent] = useState(true);
-    const navigate = useNavigate();
+    const navigateToRoom = useNavigate();
   
     const handleSwitchToCreate = ()=>{  
         setSwitchContent(true)
@@ -85,56 +85,59 @@ const Main = ({isPlaying}) =>{
             alert('Псевдоним не должен превышать 14 символов')
         }
         else{
-            signInAnonymously(fbAuth).then(()=>{
-                let user = fbAuth.currentUser
-                let rid = uuidv4()
-                if(switchContent === true){
-                    // set(ref(fbaseDB, `polyglot/rooms/${rid}/`), {
-                    //     rid: rid,  
-                    // }).then(()=>{
-                    //     console.info('user has been created')
-                    // }).catch((error)=>{
-                    //     console.error(error)
-                    // })
-                    set(ref(fbaseDB, `polyglot/rooms/${rid}/users/${user.uid}`), {
-                        uuid: user.uid,
-                        image: characterList[characterCounter],
-                        nickname: userName,
-                        isOwner: switchContent
-                    }).then(()=>{
-                        console.info('user has been created')
-                    }).catch((error)=>{
-                        console.error(error)
-                    })
-                    navigate(`/room/:${rid}`);
-                    console.log(rid)
+            let uid = uuidv4()
+            let rid = uuidv4()
+            if(switchContent === true){
+                // set(ref(fbaseDB, `polyglot/rooms/${rid}/`), {
+                //     rid: rid,  
+                // }).then(()=>{
+                //     console.info('user has been created')
+                // }).catch((error)=>{
+                //     console.error(error)
+                // })
+                set(ref(fbaseDB, `polyglot/rooms/${rid}/users/${uid}`), {
+                    uuid: uid,
+                    image: characterList[characterCounter],
+                    nickname: userName,
+                    isOwner: switchContent
+                }).then(()=>{
+                    console.info('user has been created')
+                }).catch((error)=>{
+                    console.error(error)
+                })
+                sessionStorage.setItem('current-user-id', uid)
+                navigateToRoom(`/room/:${rid}`);
+                console.log(rid)
+            }else{
+                if(code.length === 0){
+                    alert('Поле кода не должно быть пустым')
                 }else{
-                    if(code.length === 0){
-                        alert('Поле кода не должно быть пустым')
-                    }else{
-                        for(let i = 0; i < roomList.length; i++){
-                            if(code === roomList[i]){
-                                set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + user.uid), {
-                                    uuid: user.uid,
-                                    image: characterList[characterCounter],
-                                    nickname: userName,
-                                    isOwner: switchContent
-                                }).then(()=>{
-                                    console.info('user has been created')
-                                }).catch((error)=>{
-                                    console.error(error)
-                                })
-                                navigate(`/room/:${code}`);
-                            }else{
-                                alert('Введенный код не существует')
-                            }
+                    for(let i = 0; i < roomList.length; i++){
+                        if(code === roomList[i]){
+                            set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + uid), {
+                                uuid: uid,
+                                image: characterList[characterCounter],
+                                nickname: userName,
+                                isOwner: switchContent
+                            }).then(()=>{
+                                console.info('user has been created')
+                            }).catch((error)=>{
+                                console.error(error)
+                            })
+                            sessionStorage.setItem('current-user-id', uid)
+                            navigateToRoom(`/room/:${code}`);
+                        }else{
+                            alert('Введенный код не существует')
                         }
-                        
                     }
+                        
                 }
-            }).catch((error)=>{
-                console.error(error)
-            })
+            }
+            // signInAnonymously(fbAuth).then(()=>{
+                
+            // }).catch((error)=>{
+            //     console.error(error)
+            // })
         }
        
 
