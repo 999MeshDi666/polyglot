@@ -5,9 +5,8 @@ import {fbaseDB, fbAuth} from '../../utils/firebase-config'
 import { signInAnonymously } from "firebase/auth";
 import { ref, set, onValue } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid'
 import SoundBtn  from "../SoundController/index"
-
-
 
 
 import reaper from "../../static/images/character-icons/character01.png"
@@ -71,7 +70,7 @@ const Main = ({isPlaying}) =>{
             for (let key in roomData){
                 roomDataList.push(key)
             }
-            console.log(`roomDataList: ${roomDataList}`)
+            // console.log(`roomDataList: ${roomDataList}`)
             setRoomList(roomDataList) 
         });
     },[])
@@ -85,8 +84,8 @@ const Main = ({isPlaying}) =>{
             alert('Псевдоним не должен превышать 14 символов')
         }
         else{
-            let uid = uuidv4()
-            let rid = uuidv4()
+            let uid = nanoid()
+            let rid = nanoid()
             if(switchContent === true){
                 // set(ref(fbaseDB, `polyglot/rooms/${rid}/`), {
                 //     rid: rid,  
@@ -107,7 +106,7 @@ const Main = ({isPlaying}) =>{
                 })
                 sessionStorage.setItem('current-user-id', uid)
                 navigateToRoom(`/room/:${rid}`);
-                console.log(rid)
+                // console.log(rid)
             }else{
                 if(code.length === 0){
                     alert('Поле кода не должно быть пустым')
@@ -129,8 +128,7 @@ const Main = ({isPlaying}) =>{
                         }else{
                             alert('Введенный код не существует')
                         }
-                    }
-                        
+                    }   
                 }
             }
             // signInAnonymously(fbAuth).then(()=>{

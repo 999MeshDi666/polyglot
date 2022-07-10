@@ -20,15 +20,13 @@ const UserBar = () =>{
             for (let key in user){
                 userList.push(user[key])
             }
-            console.log(userList)
+            // console.log(userList)
             setUsers(userList) 
         });
-        
-      
     },[roomIDFromUrl.substring(1)])
 
    
-    console.log(`current user id:${userID}`)
+    // console.log(`current user id:${userID}`)
     const handleRemoveUser = () =>{
         // let user = fbAuth.currentUser;
         // user.delete()  

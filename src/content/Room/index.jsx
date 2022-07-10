@@ -1,4 +1,5 @@
 import {Container, Row, Col} from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 import polyglot from "../../static/images/game-icons/game-icon64px/yawning.png"
@@ -24,7 +25,7 @@ const gameCards = [
 ]
 
 const Room = ({isPlaying}) =>{
-    
+    const {roomIDFromUrl} = useParams();
     return(
         <main className="room">
             <UserBar/>
@@ -34,7 +35,7 @@ const Room = ({isPlaying}) =>{
                     <div className='room__cur-code-block'>
                         <h2 className='title'>Код игры:</h2>
                         <span className='room__code-wrapper'>
-                            <p>AzX89sd5SD</p>
+                            <p>{roomIDFromUrl.substring(1)}</p>
                         </span>
                     </div>
                     <div className='room__games'>
