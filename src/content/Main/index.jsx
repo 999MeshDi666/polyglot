@@ -1,13 +1,12 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import {Container} from 'react-bootstrap'
-
 import {fbaseDB, fbAuth} from '../../utils/firebase-config'
 import { signInAnonymously } from "firebase/auth";
-import { ref, set } from "firebase/database";
+import { ref, set, onValue } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
 import SoundBtn  from "../SoundController/index"
-import {useParams} from "react-router-dom";
+
 
 
 
@@ -27,11 +26,13 @@ import next_arrow from "../../static/images/other-icons/arrow-next.png"
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
 let randNicknameNum = Math.floor(Math.random() * 1000)
+
 const Main = ({isPlaying}) =>{
-    let { roomId } = useParams();
+   
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
     const [code, setCode] = useState('')
+    const [roomList, setRoomList] = useState()
     const [switchContent, setSwitchContent] = useState(true);
     const navigate = useNavigate();
   
@@ -62,6 +63,18 @@ const Main = ({isPlaying}) =>{
         setCode(event.target.value)
 
     } 
+    useEffect(()=>{
+        const getRoomData = ref(fbaseDB, `polyglot/rooms/`);
+        onValue(getRoomData, (snapshot) => {
+            const roomData = snapshot.val()
+            let roomDataList = []
+            for (let key in roomData){
+                roomDataList.push(key)
+            }
+            console.log(`roomDataList: ${roomDataList}`)
+            setRoomList(roomDataList) 
+        });
+    },[])
     const handleCreateUser = (e) =>{
         e.preventDefault()
        
@@ -76,14 +89,14 @@ const Main = ({isPlaying}) =>{
                 let user = fbAuth.currentUser
                 let rid = uuidv4()
                 if(switchContent === true){
-                    set(ref(fbaseDB, `polyglot/rooms${rid}/`), {
-                        rid: rid,  
-                    }).then(()=>{
-                        console.info('user has been created')
-                    }).catch((error)=>{
-                        console.error(error)
-                    })
-                    set(ref(fbaseDB, `polyglot/rooms${rid}/users/${user.uid}`), {
+                    // set(ref(fbaseDB, `polyglot/rooms/${rid}/`), {
+                    //     rid: rid,  
+                    // }).then(()=>{
+                    //     console.info('user has been created')
+                    // }).catch((error)=>{
+                    //     console.error(error)
+                    // })
+                    set(ref(fbaseDB, `polyglot/rooms/${rid}/users/${user.uid}`), {
                         uuid: user.uid,
                         image: characterList[characterCounter],
                         nickname: userName,
@@ -99,24 +112,26 @@ const Main = ({isPlaying}) =>{
                     if(code.length === 0){
                         alert('Поле кода не должно быть пустым')
                     }else{
-                        set(ref(fbaseDB, `polyglot/rooms${code}/users/` + user.uid), {
-                            uuid: user.uid,
-                            image: characterList[characterCounter],
-                            nickname: userName,
-                            isOwner: switchContent
-                        }).then(()=>{
-                            console.info('user has been created')
-                        }).catch((error)=>{
-                            console.error(error)
-                        })
-                        navigate(`/room/:${code}`);
+                        for(let i = 0; i < roomList.length; i++){
+                            if(code === roomList[i]){
+                                set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + user.uid), {
+                                    uuid: user.uid,
+                                    image: characterList[characterCounter],
+                                    nickname: userName,
+                                    isOwner: switchContent
+                                }).then(()=>{
+                                    console.info('user has been created')
+                                }).catch((error)=>{
+                                    console.error(error)
+                                })
+                                navigate(`/room/:${code}`);
+                            }else{
+                                alert('Введенный код не существует')
+                            }
+                        }
+                        
                     }
                 }
-                
-             
-               
-
-
             }).catch((error)=>{
                 console.error(error)
             })

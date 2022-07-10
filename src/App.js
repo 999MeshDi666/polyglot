@@ -36,7 +36,7 @@ function App() {
       window.addEventListener('load', ()=>{
         audio.play()
         audio.loop = true;
-        audio.volume = 0.5;
+        audio.volume = 0.2;
       })
     }
    

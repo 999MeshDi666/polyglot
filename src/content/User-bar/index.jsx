@@ -11,7 +11,7 @@ const UserBar = () =>{
     const {roomIDFromUrl} = useParams();
   
     useEffect(()=>{
-        const getUserData = ref(fbaseDB, `polyglot/rooms${roomIDFromUrl.substring(1)}/users/`);
+        const getUserData = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`);
         onValue(getUserData, (snapshot) => {
             const user = snapshot.val()
             const userList = []
@@ -27,7 +27,7 @@ const UserBar = () =>{
     const handleRemoveUser = () =>{
         let user = fbAuth.currentUser;
         user.delete()  
-        remove(ref(fbaseDB, `polyglot/rooms${roomIDFromUrl.substring(1)}/users/` + user.uid))  
+        remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + user.uid))  
     }
     return(
         <Container fluid className='userbar-container'>
