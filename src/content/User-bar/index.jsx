@@ -20,16 +20,12 @@ const UserBar = () =>{
             for (let key in user){
                 userList.push(user[key])
             }
-          
             setUsers(userList) 
         });
     },[roomIDFromUrl.substring(1)])
 
-   
-  
     const handleRemoveUser = () =>{
      
-        
         onDisconnect(remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)))
         sessionStorage.removeItem('current-user-id')
         navigateToMain(`/`);

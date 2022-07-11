@@ -66,12 +66,15 @@ const Main = ({isPlaying}) =>{
         const getRoomData = ref(fbaseDB, `polyglot/rooms/`);
         onValue(getRoomData, (snapshot) => {
             const roomData = snapshot.val()
+            // const roomDataSize = snapshot.size
             let roomDataList = []
             for (let key in roomData){
                 roomDataList.push(key)
             }
-            setUserSize(Object.values(Object.values(roomData)[0]['users']).length )
-            console.log(Object.values(Object.values(roomData)[0]['users']).length )
+            console.log(roomDataList)
+            // console.log(roomDataSize)
+            // setUserSize(Object.values(Object.values(roomData)[0]['users']).length )
+            // console.log(Object.values(Object.values(roomData)[0]['users']).length )
             setRoomList(roomDataList) 
         });
     },[])
@@ -107,7 +110,14 @@ const Main = ({isPlaying}) =>{
                 }else{
                     for(let i = 0; i < roomList.length; i++){
                         if(code === roomList[i]){
-                            if(userSize === 5){
+                            const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/users/`);
+                            let userSizeData; 
+                            onValue(getUserSize, (snapshot) => {
+                                userSizeData = snapshot.size
+                                console.log('userSizeData:',userSizeData)
+                                setUserSize(userSizeData)
+                            });
+                            if(userSizeData === 5){
                                 alert('Комната имеет достаточное количество игроков')
                             }else{
                                 set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + uid), {
