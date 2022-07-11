@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import {Container} from 'react-bootstrap'
-import {fbaseDB, fbAuth} from '../../utils/firebase-config'
-import { signInAnonymously } from "firebase/auth";
+import {fbaseDB} from '../../utils/firebase-config'
 import { ref, set, onValue } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
 import { nanoid } from 'nanoid'
@@ -32,6 +31,7 @@ const Main = ({isPlaying}) =>{
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
     const [code, setCode] = useState('')
     const [roomList, setRoomList] = useState()
+    const [userSize, setUserSize] = useState()
     const [switchContent, setSwitchContent] = useState(true);
     const navigateToRoom = useNavigate();
   
@@ -70,7 +70,8 @@ const Main = ({isPlaying}) =>{
             for (let key in roomData){
                 roomDataList.push(key)
             }
-            // console.log(`roomDataList: ${roomDataList}`)
+            setUserSize(Object.values(Object.values(roomData)[0]['users']).length )
+            console.log(Object.values(Object.values(roomData)[0]['users']).length )
             setRoomList(roomDataList) 
         });
     },[])
@@ -87,13 +88,6 @@ const Main = ({isPlaying}) =>{
             let uid = nanoid()
             let rid = nanoid()
             if(switchContent === true){
-                // set(ref(fbaseDB, `polyglot/rooms/${rid}/`), {
-                //     rid: rid,  
-                // }).then(()=>{
-                //     console.info('user has been created')
-                // }).catch((error)=>{
-                //     console.error(error)
-                // })
                 set(ref(fbaseDB, `polyglot/rooms/${rid}/users/${uid}`), {
                     uuid: uid,
                     image: characterList[characterCounter],
@@ -106,36 +100,36 @@ const Main = ({isPlaying}) =>{
                 })
                 sessionStorage.setItem('current-user-id', uid)
                 navigateToRoom(`/room/:${rid}`);
-                // console.log(rid)
+    
             }else{
                 if(code.length === 0){
                     alert('Поле кода не должно быть пустым')
                 }else{
                     for(let i = 0; i < roomList.length; i++){
                         if(code === roomList[i]){
-                            set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + uid), {
-                                uuid: uid,
-                                image: characterList[characterCounter],
-                                nickname: userName,
-                                isOwner: switchContent
-                            }).then(()=>{
-                                console.info('user has been created')
-                            }).catch((error)=>{
-                                console.error(error)
-                            })
-                            sessionStorage.setItem('current-user-id', uid)
-                            navigateToRoom(`/room/:${code}`);
+                            if(userSize === 5){
+                                alert('Комната имеет достаточное количество игроков')
+                            }else{
+                                set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + uid), {
+                                    uuid: uid,
+                                    image: characterList[characterCounter],
+                                    nickname: userName,
+                                    isOwner: switchContent
+                                }).then(()=>{
+                                    console.info('user has been created')
+                                }).catch((error)=>{
+                                    console.error(error)
+                                })
+                                sessionStorage.setItem('current-user-id', uid)
+                                navigateToRoom(`/room/:${code}`);
+                            }
                         }else{
                             alert('Введенный код не существует')
                         }
                     }   
                 }
             }
-            // signInAnonymously(fbAuth).then(()=>{
-                
-            // }).catch((error)=>{
-            //     console.error(error)
-            // })
+        
         }
        
 

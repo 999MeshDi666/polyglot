@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
-import {fbaseDB, fbAuth} from '../../utils/firebase-config'
+import {fbaseDB} from '../../utils/firebase-config'
 import { ref, onValue, remove, onDisconnect} from "firebase/database";
 import { useEffect, useState } from 'react';
 import crown from '../../static/images/other-icons/crown2.png'
@@ -20,16 +20,15 @@ const UserBar = () =>{
             for (let key in user){
                 userList.push(user[key])
             }
-            // console.log(userList)
+          
             setUsers(userList) 
         });
     },[roomIDFromUrl.substring(1)])
 
    
-    // console.log(`current user id:${userID}`)
+  
     const handleRemoveUser = () =>{
-        // let user = fbAuth.currentUser;
-        // user.delete()  
+     
         
         onDisconnect(remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)))
         sessionStorage.removeItem('current-user-id')
