@@ -108,35 +108,32 @@ const Main = ({isPlaying}) =>{
                 if(code.length === 0){
                     alert('Поле кода не должно быть пустым')
                 }else{
-                    for(let i = 0; i < roomList.length; i++){
-                        if(code === roomList[i]){
-                            const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/users/`);
-                            let userSizeData; 
-                            onValue(getUserSize, (snapshot) => {
-                                userSizeData = snapshot.size
-                                console.log('userSizeData:',userSizeData)
-                                setUserSize(userSizeData)
-                            });
-                            if(userSizeData === 5){
-                                alert('Комната имеет достаточное количество игроков')
-                            }else{
-                                set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + uid), {
-                                    uuid: uid,
-                                    image: characterList[characterCounter],
-                                    nickname: userName,
-                                    isOwner: switchContent
-                                }).then(()=>{
-                                    console.info('user has been created')
-                                }).catch((error)=>{
-                                    console.error(error)
-                                })
-                                sessionStorage.setItem('current-user-id', uid)
-                                navigateToRoom(`/room/:${code}`);
-                            }
+                    if(roomList.includes(code)){
+                        const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/users/`);
+                        let userSizeData; 
+                        onValue(getUserSize, (snapshot) => {
+                            userSizeData = snapshot.size
+                            console.log('userSizeData:',userSizeData)
+                        });
+                        if(userSizeData === 5){
+                            alert('Комната имеет достаточное количество игроков')
                         }else{
-                            alert('Введенный код не существует')
+                            set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + uid), {
+                                uuid: uid,
+                                image: characterList[characterCounter],
+                                nickname: userName,
+                                isOwner: switchContent
+                            }).then(()=>{
+                                console.info('user has been created')
+                            }).catch((error)=>{
+                                console.error(error)
+                            })
+                            sessionStorage.setItem('current-user-id', uid)
+                            navigateToRoom(`/room/:${code}`);
                         }
-                    }   
+                    }else{
+                        alert('Введенный код не существует')
+                    }
                 }
             }
         
