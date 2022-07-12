@@ -95,7 +95,8 @@ const Main = ({isPlaying}) =>{
                     uuid: uid,
                     image: characterList[characterCounter],
                     nickname: userName,
-                    isOwner: switchContent
+                    isOwner: switchContent,
+                    createdAt: Date.now(),
                 }).then(()=>{
                     console.info('user has been created')
                 }).catch((error)=>{
@@ -122,7 +123,8 @@ const Main = ({isPlaying}) =>{
                                 uuid: uid,
                                 image: characterList[characterCounter],
                                 nickname: userName,
-                                isOwner: switchContent
+                                isOwner: switchContent,
+                                createdAt: Date.now(),
                             }).then(()=>{
                                 console.info('user has been created')
                             }).catch((error)=>{

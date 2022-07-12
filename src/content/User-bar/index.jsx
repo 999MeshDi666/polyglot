@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, remove, onDisconnect} from "firebase/database";
+import { ref, onValue, remove, onDisconnect, orderByChild, query} from "firebase/database";
 import { useEffect, useState } from 'react';
 import crown from '../../static/images/other-icons/crown2.png'
 
@@ -13,20 +13,26 @@ const UserBar = () =>{
     const navigateToMain = useNavigate();
   
     useEffect(()=>{
-        const getUserData = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`);
+        const getUserData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'));
         onValue(getUserData, (snapshot) => {
-            const user = snapshot.val()
+            // const user = snapshot.val()
             const userList = []
-            for (let key in user){
-                userList.push(user[key])
-            }
+            snapshot.forEach((child) =>{
+                userList.push(child.val())
+            })
+            
+            // for (let key in user){
+            //     userList.push(user[key])
+            // }
             setUsers(userList) 
         });
+        
+      
     },[roomIDFromUrl.substring(1)])
+  
 
     const handleRemoveUser = () =>{
-     
-        onDisconnect(remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)))
+        remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)) 
         sessionStorage.removeItem('current-user-id')
         navigateToMain(`/`);
     }
