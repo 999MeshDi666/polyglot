@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Container, Row, Col, Modal, Button} from 'react-bootstrap'
+import {Container, Row, Col, Modal} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
@@ -27,20 +27,55 @@ const gameCards = [
         desc: 'Сможешь ли ты перескороговорить и перевыскороговорить все наши скороговорки?  Если не слобо, то давай сыграем в игру и посмотрим насколько твой бедный язык сотрется и  изподвыподвернется.'
     }
 ]
+const langID = ['all','eng','rus','fra','jpn','kaz','esp','ita','chn','pol','kor']
 
-const ModalWindow = ({handleShowDesc, show, descData}) =>{
+
+const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
+    return(
+        <>
+            <Modal show={showOptions} onHide={handleShowOptions}>
+                <Modal.Header  className='modal-window__header' closeButton>
+                    <Modal.Title className='additional-window__title'>Настройки</Modal.Title> 
+                </Modal.Header>
+                <form className='options-form'>
+                    <p className="modal-window__subtitle">Выбор языков</p>
+                    <Modal.Body className='modal-window__body modal-window__body-opt additional-window__body'>
+                        <Row>
+                            {langID.map((langs)=>(
+                                <Col  key={langs}  xs={4} className="mb-3 options-form__langs">
+                                    <input type='checkbox' id={langs} name = {langs} className="options-form__checkbox"/>
+                                    <label htmlFor={langs} className="options-form__label">{langs}</label>
+                                </Col>
+                            ))}
+
+                        </Row>
+                       
+                            
+                      
+                       
+                    </Modal.Body>
+                    <Modal.Footer className='modal-window__footer'>
+                        <button type="submit" className='modal-window__btn'>Выбрать</button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+        </>
+    )
+}
+
+const DescModalWindow = ({handleShowDesc, showDesc, descData}) =>{
    
     return (
         <>
-            <Modal show={show} onHide={handleShowDesc}>
+            <Modal show={showDesc} onHide={handleShowDesc}>
                 <Modal.Header  className='modal-window__header' closeButton>
                     <span>
                         <img src={descData.image} className='modal-window__img'/>
                     </span>
                 </Modal.Header>
-                <Modal.Body className='modal-window__body additional-window__body'>
-                    <Modal.Title className='modal-window__header-title additional-window__title'>{descData.title}</Modal.Title>
-                    <p className='additional-window__subtitle'>{descData.desc}</p>
+                <Modal.Body className='modal-window__body modal-window__body-desc additional-window__body'>
+                    <Modal.Title className='additional-window__title modal-window__title'>{descData.title}</Modal.Title>
+                    <p className='additional-window__desc'>{descData.desc}</p>
                 </Modal.Body>
                 <Modal.Footer className='modal-window__footer'>
                     <button className='modal-window__btn'>Играть</button>
@@ -50,13 +85,15 @@ const ModalWindow = ({handleShowDesc, show, descData}) =>{
     );
 }
 
+
 const Room = ({isPlaying}) =>{
     const {roomIDFromUrl} = useParams();
-    const [show, setShow] = useState(false);
+    const [showDesc, setShowDesc] = useState(false);
     const [descData, setDescData] = useState({});
+    const [showOptions, setShowOptions] = useState(false);
 
     const handleShowDesc = (game) =>{
-        setShow(!show)
+        setShowDesc(!showDesc)
         const curDescData = {
             image: game.image,
             title: game.title,
@@ -66,6 +103,11 @@ const Room = ({isPlaying}) =>{
         setDescData(curDescData)
         
     }
+    const handleShowOptions = () =>{
+        setShowOptions(!showOptions)
+       
+    }
+      
     
     return(
         <main className="room">
@@ -80,7 +122,7 @@ const Room = ({isPlaying}) =>{
                         </span>
                     </div>
                     <div className='room__games'>
-                        <button className='room__option-btn general-btn'>Настройки</button>
+                        <button className='room__option-btn general-btn' onClick = {handleShowOptions}>Настройки</button>
                         <Row className="room__game-card-block">
                             {gameCards.map((game)=>(
                                 <Col xs={12}  className='room__game-card' key={game.title}>
@@ -103,7 +145,15 @@ const Room = ({isPlaying}) =>{
 
                 </article>
             </Container>
-            <ModalWindow handleShowDesc = {handleShowDesc} show = {show} descData = {descData}/>
+            <DescModalWindow 
+                handleShowDesc = {handleShowDesc} 
+                showDesc = {showDesc} 
+                descData = {descData}
+            />
+            <OptionModalWindow  
+                handleShowOptions = {handleShowOptions}  
+                showOptions = {showOptions}
+            />
         </main>
     )
 }

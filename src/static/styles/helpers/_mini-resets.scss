@@ -94,6 +94,35 @@ a,button{
   -moz-box-shadow: 4px 4px 15px -5px rgba(0, 0, 0, 0.4) inset;
   box-shadow: 4px 4px 15px -5px rgba(0, 0, 0, 0.4) inset;
 }
+
+.additional-window{
+  &__body{
+    background-color: $prpl5;
+    border: $border_blc;
+    border-radius: 5px;
+  }
+  &__title{
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 16px;
+    font-weight: 800;
+    font-size: 18px;
+    margin-top: 32px;
+    letter-spacing: 1.2px;
+
+  }
+  &__desc{
+    line-height: 22px;
+    font-size: 13.5px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: justify;
+    word-wrap: break-word;
+
+  }
+ 
+ 
+}
 .modal-window{
   &__header{
     
@@ -105,9 +134,26 @@ a,button{
     border: 0;
     padding: 0;
   }
+  &__title{
+    margin-top: 0;
+  }
+  &__subtitle{
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
   &__body{
-    height: 306px;
+    
     padding: 10px 14px;
+  }
+  &__body-desc{
+    height: 306px;
+  }
+  &__body-opt{
+    width: 92%;
+    height: 168px;
+    text-align: center;
+    margin: 0 auto;
   }
   &__img{
     filter: drop-shadow(-5px 7px 4px rgba(0, 0, 0, 0.3));
@@ -134,39 +180,13 @@ a,button{
     border-radius: 5px;
     transition: 0.2s;
     margin-top: 34px;
+    margin-bottom: 18px;
 
     &:active{
       background-color: $prpl9;
     }
   }
 }
-.additional-window{
-  &__body{
-    background-color: $prpl5;
-    border: $border_blc;
-    border-radius: 5px;
-  }
-  &__title{
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 16px;
-    font-weight: 800;
-    font-size: 18px;
-
-  }
-  &__subtitle{
-    line-height: 22px;
-    font-size: 13.5px;
-    font-style: normal;
-    font-weight: 400;
-    text-align: justify;
-    word-wrap: break-word;
-
-  }
- 
- 
-}
-
 
 
 @media (min-width: 576px) {
