@@ -16,23 +16,26 @@ const UserBar = () =>{
         const getUserData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'));
         onValue(getUserData, (snapshot) => {
             // const user = snapshot.val()
+             // for (let key in user){
+            //     userList.push(user[key])
+            // }
             const userList = []
             snapshot.forEach((child) =>{
                 userList.push(child.val())
             })
-            
-            // for (let key in user){
-            //     userList.push(user[key])
-            // }
             setUsers(userList) 
         });
+
+       
         
       
     },[roomIDFromUrl.substring(1)])
+    
   
 
     const handleRemoveUser = () =>{
-        remove(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)) 
+        let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
+        remove(removableUser) 
         sessionStorage.removeItem('current-user-id')
         navigateToMain(`/`);
     }

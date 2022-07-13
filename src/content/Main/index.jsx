@@ -31,7 +31,6 @@ const Main = ({isPlaying}) =>{
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
     const [code, setCode] = useState('')
     const [roomList, setRoomList] = useState()
-    const [userSize, setUserSize] = useState()
     const [switchContent, setSwitchContent] = useState(true);
     const navigateToRoom = useNavigate();
   

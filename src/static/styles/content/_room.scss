@@ -71,6 +71,11 @@
         padding: 13px 10px 8px 10px;
         border-radius: 50px;
         border: $border_blc;
+
+        img{
+            width: 64px;
+            height: 64px;
+        }
        
 
        img{
@@ -104,6 +109,8 @@
     }
   
 }
+
+
 
 @media (max-width: 320px) {
     .room{
