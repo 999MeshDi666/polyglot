@@ -154,6 +154,7 @@ a,button{
     height: 168px;
     text-align: center;
     margin: 0 auto;
+    // overflow-y: scroll;
   }
   &__img{
     filter: drop-shadow(-5px 7px 4px rgba(0, 0, 0, 0.3));

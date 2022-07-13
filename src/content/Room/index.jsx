@@ -27,10 +27,148 @@ const gameCards = [
         desc: 'Сможешь ли ты перескороговорить и перевыскороговорить все наши скороговорки?  Если не слобо, то давай сыграем в игру и посмотрим насколько твой бедный язык сотрется и  изподвыподвернется.'
     }
 ]
-const langID = ['all','eng','rus','fra','jpn','kaz','esp','ita','chn','pol','kor']
+const langID = [
+    {
+        lang:'all',
+        name:'All',
+        isChecked:false
+    },
+    {
+        lang:'eng',
+        name:'Eng',
+        isChecked:false
+    },
+    {   
+        lang:'rus',
+        name:'Rus',
+        isChecked:false
+    },
+    {
+        lang:'fra',
+        name:'Fra',
+        isChecked:false
+    },
+    {
+        lang:'jpn',
+        name:'Jpn',
+        isChecked:false
+    },
+    {
+        lang:'kaz',
+        name:'Kaz',
+        isChecked:false
+    },
+    {
+        lang:'esp',
+        name:'Esp',
+        isChecked:false
+    },
+    {
+        lang:'ita',
+        name:'Ita',
+        isChecked:false
+    },
+    {
+        lang:'chn',
+        name:'Chn',
+        isChecked:false
+    },
+    {
+        lang:'pol',
+        name:'Pol',
+        isChecked:false
+    },
+    {
+        lang:'kor',
+        name:'Kor',
+        isChecked:false
+    }
+]
 
 
 const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
+    const [currentLang, setCurrentLang] = useState({lang: "all",
+        name: "All",
+        isChecked: false,
+    });
+    const [checkBox, setCheckBox] = useState([
+        {
+            lang:'all',
+            name:'All',
+            isChecked:false
+        },
+        {
+            lang:'eng',
+            name:'Eng',
+            isChecked:false
+        },
+        {   
+            lang:'rus',
+            name:'Rus',
+            isChecked:false
+        },
+        {
+            lang:'fra',
+            name:'Fra',
+            isChecked:false
+        },
+        {
+            lang:'jpn',
+            name:'Jpn',
+            isChecked:false
+        },
+        {
+            lang:'kaz',
+            name:'Kaz',
+            isChecked:false
+        },
+        {
+            lang:'esp',
+            name:'Esp',
+            isChecked:false
+        },
+        {
+            lang:'ita',
+            name:'Ita',
+            isChecked:false
+        },
+        {
+            lang:'chn',
+            name:'Chn',
+            isChecked:false
+        },
+        {
+            lang:'pol',
+            name:'Pol',
+            isChecked:false
+        },
+        {
+            lang:'kor',
+            name:'Kor',
+            isChecked:false
+        }
+
+    ])
+
+    const handleChooseLang = ({ lang, name, isChecked }) => {
+        setCheckBox((prevCheckBox) =>
+          prevCheckBox.map((box) => {
+            if (box.lang === lang) {
+              return { ...box, isChecked: !box.isChecked };
+            } else return box;
+          })
+         
+        );
+        
+        setCurrentLang({
+          lang,
+          name,
+          isChecked: !isChecked,
+        });
+        
+        
+      };
+     
     return(
         <>
             <Modal show={showOptions} onHide={handleShowOptions}>
@@ -41,18 +179,28 @@ const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
                     <p className="modal-window__subtitle">Выбор языков</p>
                     <Modal.Body className='modal-window__body modal-window__body-opt additional-window__body'>
                         <Row>
-                            {langID.map((langs)=>(
-                                <Col  key={langs}  xs={4} className="mb-3 options-form__langs">
-                                    <input type='checkbox' id={langs} name = {langs} className="options-form__checkbox"/>
-                                    <label htmlFor={langs} className="options-form__label">{langs}</label>
+                            {checkBox.map((langs)=>(
+                                <Col  key={langs.lang} xs={4}  className="mb-3 options-form__langs">
+                                    <input 
+                                        type='checkbox' 
+                                        id = {langs.lang} 
+                                        name = {langs.name} 
+                                        className="options-form__checkbox"
+                                        disabled={
+                                            currentLang.lang === "all" &&
+                                            currentLang.isChecked &&
+                                            langs.lang !== "all"
+                                                ? true
+                                                : false
+                                        }
+                                        checked={langs.isChecked}
+                                        onChange={() => handleChooseLang(langs)}
+
+                                    />
+                                    <label htmlFor={langs.lang} className="options-form__label">{langs.name}</label>
                                 </Col>
                             ))}
-
                         </Row>
-                       
-                            
-                      
-                       
                     </Modal.Body>
                     <Modal.Footer className='modal-window__footer'>
                         <button type="submit" className='modal-window__btn'>Выбрать</button>
