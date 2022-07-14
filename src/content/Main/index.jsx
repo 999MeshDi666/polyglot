@@ -116,8 +116,8 @@ const Main = ({isPlaying}) =>{
         if(userName.length === 0){
             alert('Поле псевдонима не должно быть пустым')
         }
-        else if(userName.length > 14){
-            alert('Псевдоним не должен превышать 14 символов')
+        else if(userName.length > 12){
+            alert('Псевдоним не должен превышать 12 символов')
         }
         else{
             let uid = nanoid()

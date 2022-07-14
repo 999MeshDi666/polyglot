@@ -27,64 +27,6 @@ const gameCards = [
         desc: 'Сможешь ли ты перескороговорить и перевыскороговорить все наши скороговорки?  Если не слобо, то давай сыграем в игру и посмотрим насколько твой бедный язык сотрется и  изподвыподвернется.'
     }
 ]
-const langID = [
-    {
-        lang:'all',
-        name:'All',
-        isChecked:false
-    },
-    {
-        lang:'eng',
-        name:'Eng',
-        isChecked:false
-    },
-    {   
-        lang:'rus',
-        name:'Rus',
-        isChecked:false
-    },
-    {
-        lang:'fra',
-        name:'Fra',
-        isChecked:false
-    },
-    {
-        lang:'jpn',
-        name:'Jpn',
-        isChecked:false
-    },
-    {
-        lang:'kaz',
-        name:'Kaz',
-        isChecked:false
-    },
-    {
-        lang:'esp',
-        name:'Esp',
-        isChecked:false
-    },
-    {
-        lang:'ita',
-        name:'Ita',
-        isChecked:false
-    },
-    {
-        lang:'chn',
-        name:'Chn',
-        isChecked:false
-    },
-    {
-        lang:'pol',
-        name:'Pol',
-        isChecked:false
-    },
-    {
-        lang:'kor',
-        name:'Kor',
-        isChecked:false
-    }
-]
-
 
 const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
     const [currentLang, setCurrentLang] = useState({lang: "all",
