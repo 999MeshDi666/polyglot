@@ -59,27 +59,60 @@ const Main = ({isPlaying}) =>{
     }
     const handleGetRoomCode = (event) =>{
         setCode(event.target.value)
-
     } 
     useEffect(()=>{
         const getRoomData = ref(fbaseDB, `polyglot/rooms/`);
         onValue(getRoomData, (snapshot) => {
             const roomData = snapshot.val()
-            // const roomDataSize = snapshot.size
+        
             let roomDataList = []
             for (let key in roomData){
                 roomDataList.push(key)
             }
             console.log(roomDataList)
-            // console.log(roomDataSize)
-            // setUserSize(Object.values(Object.values(roomData)[0]['users']).length )
-            // console.log(Object.values(Object.values(roomData)[0]['users']).length )
             setRoomList(roomDataList) 
         });
     },[])
-    const handleCreateUser = (e) =>{
-        e.preventDefault()
-       
+
+    const createUser = (rid, uid) =>{
+        set(ref(fbaseDB, `polyglot/rooms/${rid}/users/${uid}`), {
+            uuid: uid,
+            image: characterList[characterCounter],
+            nickname: userName,
+            isOwner: switchContent,
+            createdAt: Date.now(),
+        }).then(()=>{
+            console.info('user has been created')
+        }).catch((error)=>{
+            console.error(error)
+        })
+        sessionStorage.setItem('current-user-id', uid)
+        navigateToRoom(`/room/:${rid}`);
+
+    }
+    const codeValidation = (code, uid) =>{
+        if(code.length === 0){
+            alert('Поле кода не должно быть пустым')
+        }else{
+            if(roomList.includes(code)){
+                const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/users/`);
+                let userSizeData; 
+                onValue(getUserSize, (snapshot) => {
+                    userSizeData = snapshot.size
+                    console.log('userSizeData:',userSizeData)
+                });
+                if(userSizeData === 5){
+                    alert('Комната имеет достаточное количество игроков')
+                }else{
+                    createUser(code, uid)
+                }
+            }else{
+                alert('Введенный код не существует')
+            }
+        }
+        
+    }
+    const userValidation = () =>{
         if(userName.length === 0){
             alert('Поле псевдонима не должно быть пустым')
         }
@@ -90,57 +123,21 @@ const Main = ({isPlaying}) =>{
             let uid = nanoid()
             let rid = nanoid()
             if(switchContent === true){
-                set(ref(fbaseDB, `polyglot/rooms/${rid}/users/${uid}`), {
-                    uuid: uid,
-                    image: characterList[characterCounter],
-                    nickname: userName,
-                    isOwner: switchContent,
-                    createdAt: Date.now(),
-                }).then(()=>{
-                    console.info('user has been created')
-                }).catch((error)=>{
-                    console.error(error)
-                })
-                sessionStorage.setItem('current-user-id', uid)
-                navigateToRoom(`/room/:${rid}`);
-    
+                createUser(rid, uid)
             }else{
                 if(code.length === 0){
                     alert('Поле кода не должно быть пустым')
                 }else{
-                    if(roomList.includes(code)){
-                        const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/users/`);
-                        let userSizeData; 
-                        onValue(getUserSize, (snapshot) => {
-                            userSizeData = snapshot.size
-                            console.log('userSizeData:',userSizeData)
-                        });
-                        if(userSizeData === 5){
-                            alert('Комната имеет достаточное количество игроков')
-                        }else{
-                            set(ref(fbaseDB, `polyglot/rooms/${code}/users/` + uid), {
-                                uuid: uid,
-                                image: characterList[characterCounter],
-                                nickname: userName,
-                                isOwner: switchContent,
-                                createdAt: Date.now(),
-                            }).then(()=>{
-                                console.info('user has been created')
-                            }).catch((error)=>{
-                                console.error(error)
-                            })
-                            sessionStorage.setItem('current-user-id', uid)
-                            navigateToRoom(`/room/:${code}`);
-                        }
-                    }else{
-                        alert('Введенный код не существует')
-                    }
+                    codeValidation(code, uid)
                 }
             }
-        
         }
-       
 
+    }
+
+    const handleCreateUser = (e) =>{
+        e.preventDefault()
+        userValidation()
     }
 
     return(
