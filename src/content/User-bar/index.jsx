@@ -24,10 +24,10 @@ const UserBar = () =>{
                 userList.push(child.val())
             })
             
-          
             if(userList[0]['isOwner'] === true){
                 setUsers(userList)
             }
+            
             const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
             update(newOwnerData,{isOwner: true}) 
             console.log('currentOwner:', userList[0]['uuid']) 

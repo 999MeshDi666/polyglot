@@ -76,7 +76,6 @@
             width: 64px;
             height: 64px;
         }
-       
 
        img{
             transform: rotate(-5.93deg);
@@ -147,8 +146,8 @@
 
 
 @media (min-width: 576px) {
+
    .room{
-       
         &__game-card-desc {
             font-size: 14px;
             line-height: 22px;
@@ -156,10 +155,21 @@
         &__game-card-btn {
             font-size: 12px;
         }
-   }
+    }
+
+    .options-form{
+      
+        &__label{
+            font-size: 14px;
+        }
+       
+    }
+
+}
+
    
     
-}
+
 
 @media (min-width: 768px) {
     .room{
@@ -168,13 +178,6 @@
             margin: 0 auto;
             margin-top: 44px;
         }
-        // &__game-card{
-        //     width: 360px;
-        //     &:nth-child(2){
-        //         margin-left: 10px;
-        //         margin-right: 10px;
-        //     }
-        // }
     }
     
      

@@ -150,7 +150,7 @@ const Main = ({isPlaying}) =>{
                     </button>
                     <button 
                         className={`main__switch-btns  main__switch-btns_border-right ${switchContent && 'switch-btn_checked'} }`} 
-                        onClick={ handleSwitchToJoin}>Присоединиться
+                        onClick={handleSwitchToJoin}>Присоединиться
                     </button>
                 </div>
                 <div className='main__contents'>

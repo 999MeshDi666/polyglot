@@ -13,20 +13,20 @@ fieldset{
 }
 
 body {
-    font-family: 'Open Sans',Arial, Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
    
-    -webkit-user-select: none;
-    user-select: none;
-    background-color: $prpl5;
-    color: $wht1;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: $prpl5;
+  color: $wht1;
 }
   
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
 }
 ul, ol, dd { 
   list-style:none; 
@@ -60,7 +60,7 @@ a,button{
   font-weight: bold;
 
   &:active{
-      color: $gry1;
+    color: $gry1;
   }
 }
 
@@ -109,7 +109,6 @@ a,button{
     font-size: 18px;
     margin-top: 32px;
     letter-spacing: 1.2px;
-
   }
   &__desc{
     line-height: 22px;
@@ -118,14 +117,12 @@ a,button{
     font-weight: 400;
     text-align: justify;
     word-wrap: break-word;
-
   }
  
  
 }
 .modal-window{
   &__header{
-    
     display: flex;
     flex-direction: column-reverse;
   }
@@ -196,4 +193,17 @@ a,button{
   }
   
    
+}
+
+@media (min-width: 576px){
+  
+  .additional-window{
+
+    &__desc{
+      line-height: 24px;
+      font-size: 16px;
+    }
+  
+  
+  }
 }
