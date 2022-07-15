@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, remove, onDisconnect, orderByChild, query} from "firebase/database";
+import { ref, onValue, remove, update, onDisconnect, orderByChild, query} from "firebase/database";
 import { useEffect, useState } from 'react';
 import crown from '../../static/images/other-icons/crown2.png'
 
@@ -23,15 +23,18 @@ const UserBar = () =>{
             snapshot.forEach((child) =>{
                 userList.push(child.val())
             })
-            setUsers(userList) 
+            
+          
+            if(userList[0]['isOwner'] === true){
+                setUsers(userList)
+            }
+            const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
+            update(newOwnerData,{isOwner: true}) 
+            console.log('currentOwner:', userList[0]['uuid']) 
+           
         });
-
-       
-        
-      
     },[roomIDFromUrl.substring(1)])
     
-  
 
     const handleRemoveUser = () =>{
         let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
