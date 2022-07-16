@@ -114,11 +114,11 @@ const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
         <>
             <Modal show={showOptions} onHide={handleShowOptions}>
                 <Modal.Header  className='modal-window__header' closeButton>
-                    <Modal.Title className='additional-window__title'>Настройки</Modal.Title> 
+                    <Modal.Title className='content-block__title'>Настройки</Modal.Title> 
                 </Modal.Header>
                 <form className='options-form'>
                     <p className="modal-window__subtitle">Выбор языков</p>
-                    <Modal.Body className='modal-window__body modal-window__body-opt additional-window__body'>
+                    <Modal.Body className='modal-window__body modal-window__body-opt content-block__body'>
                         <Row>
                             {checkBox.map((langs)=>(
                                 <Col  key={langs.lang} xs={4}  className="mb-3 options-form__langs">

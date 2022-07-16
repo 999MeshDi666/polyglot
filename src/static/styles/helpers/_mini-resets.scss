@@ -23,7 +23,7 @@ body {
   background-color: $prpl5;
   color: $wht1;
 }
-  
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
@@ -103,6 +103,7 @@ a,button{
     background-color: $prpl5;
     border: $border_blc;
     border-radius: 5px;
+    padding: 10px 14px;
   }
   &__title{
     text-transform: uppercase;
@@ -143,7 +144,6 @@ a,button{
     margin-bottom: 16px;
   }
   &__body{
-    padding: 10px 14px;
     margin-bottom: 34px !important; 
   }
   &__body-desc{

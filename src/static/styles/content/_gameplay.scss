@@ -31,5 +31,40 @@
         text-transform: uppercase;
     }
 
+    &__cur-word-block{
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    &__repeat-btn{
+        width: 22px;
+        height: 16px;
+        border: 0;
+        background-color: transparent;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('../../images/other-icons/repeat-btn.png');
+        cursor: pointer;
+        margin-right: 8px;
+    }
+   
+    &__cur-word-title{
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+    &__word-container{
+        height: 140px;
+    }
+    &__cur-word{
+        word-wrap: break-word;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
 
 }

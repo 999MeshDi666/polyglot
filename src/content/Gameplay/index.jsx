@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import UserBar from "../User-bar"
 import { Container } from "react-bootstrap"
 
+import repearBtn from "../../static/images/other-icons/repeat-btn.png"
+
 
 
 const Gameplay = () =>{
@@ -18,13 +20,13 @@ const Gameplay = () =>{
                     </div>
                     <div className="">
                         <div>
-                            <div>
-                                <button><img/></button>
-                                <p>Произнеси:</p>
+                            <div className="gameplay__cur-word-block">
+                                <button className="gameplay__repeat-btn" title="repeat"></button>
+                                <p className="gameplay__cur-word-title">Произнеси:</p>
                             </div>
-                            <span>
-                                <p></p>
-                            </span>
+                            <div className="content-block__body gameplay__word-container">
+                                <p className="gameplay__cur-word">Никотинамидадениндинуклеотидфосфатгидрин</p>
+                            </div>
                         </div>
                         <button><img/></button>
                         <div>
