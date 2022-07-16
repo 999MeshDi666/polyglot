@@ -54,6 +54,9 @@ a,button{
 .container{
   padding: 0 20px;
 }
+:is(.room, .gameplay){
+  padding: 26px 0 80px 0;
+}
 .general-btn {
   font-size: 12px;
   text-transform: uppercase;
@@ -79,7 +82,7 @@ a,button{
 
 
 .modal-content,
-.additional-window{
+.content-block{
   background-color: $prpl4;
   border: $border_blc;
   border-radius: 10px;
@@ -95,7 +98,7 @@ a,button{
   box-shadow: 4px 4px 15px -5px rgba(0, 0, 0, 0.4) inset;
 }
 
-.additional-window{
+.content-block{
   &__body{
     background-color: $prpl5;
     border: $border_blc;

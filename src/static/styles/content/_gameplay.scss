@@ -1,0 +1,35 @@
+.gameplay{
+    &__block{
+        margin-top: 40px;
+        padding: 20px 16px;
+    }
+    &__userName-timer{
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__user-name{
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        font-weight: 800;
+        text-transform: uppercase;
+    
+    }
+    &__timer{
+        background-color: $prpl6;
+        width: 46px;
+        height: 46px;
+        padding: 7px 9px;
+        border: $border_blc;
+        border-radius: 50%;
+    }
+    &__timer-nums{
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+
+
+}

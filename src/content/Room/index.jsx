@@ -164,9 +164,9 @@ const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions})
                         <img src={descData.image} className='modal-window__img'/>
                     </span>
                 </Modal.Header>
-                <Modal.Body className='modal-window__body modal-window__body-desc additional-window__body'>
-                    <Modal.Title className='additional-window__title modal-window__title'>{descData.title}</Modal.Title>
-                    <p className='additional-window__desc'>{descData.desc}</p>
+                <Modal.Body className='modal-window__body modal-window__body-desc content-block__body'>
+                    <Modal.Title className='content-block__title modal-window__title'>{descData.title}</Modal.Title>
+                    <p className='content-block__desc'>{descData.desc}</p>
                 </Modal.Body>
                 <Modal.Footer className='modal-window__footer'>
                     {ownerPermissions ? <Link to ='gameplay' className='modal-window__btn'>Играть</Link> : null}
