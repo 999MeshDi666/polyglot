@@ -108,8 +108,7 @@ const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
           isChecked: !isChecked,
         });
         
-        
-      };
+    };
      
     return(
         <>
@@ -195,7 +194,6 @@ const Room = ({isPlaying}) =>{
     }
     const handleShowOptions = () =>{
         setShowOptions(!showOptions)
-       
     }
       
     

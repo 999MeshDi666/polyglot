@@ -140,7 +140,6 @@ a,button{
     margin-bottom: 16px;
   }
   &__body{
-    
     padding: 10px 14px;
   }
   &__body-desc{
@@ -186,7 +185,19 @@ a,button{
   }
 }
 
+@media (max-width: 320px) {
 
+  .modal-window{
+   
+    &__body-desc{
+      overflow-x: scroll;
+    }
+   
+  }
+  
+  
+   
+}
 @media (min-width: 576px) {
   .container{
     padding: 0;

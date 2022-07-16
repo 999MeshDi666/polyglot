@@ -184,7 +184,6 @@ const Main = ({isPlaying}) =>{
                             style={switchContent ? {display: 'none'} : {display: 'inline'}}
                             />
                         <button 
-
                             className="auth-form__submit"
                             onClick = {handleCreateUser} 
                             >
