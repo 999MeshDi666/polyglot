@@ -86,7 +86,11 @@ const Main = ({isPlaying}) =>{
         }).catch((error)=>{
             console.error(error)
         })
-        sessionStorage.setItem('current-user-id', uid)
+        const user = {
+            uid: uid,
+            isOwner: switchContent,
+        }
+        sessionStorage.setItem('current-user', JSON.stringify(user))
         navigateToRoom(`/room/:${rid}`);
 
     }
@@ -190,17 +194,10 @@ const Main = ({isPlaying}) =>{
                             {switchContent ? 'Создать': 'Присоединиться'}
                         </button>
                     </form>
-
                 </div>
-                <SoundBtn isPlaying = {isPlaying}></SoundBtn>
-                    
+                <SoundBtn isPlaying = {isPlaying}></SoundBtn> 
             </main>
-          
         </Container>
-        
-      
-        
-
     )
 }
 export default Main

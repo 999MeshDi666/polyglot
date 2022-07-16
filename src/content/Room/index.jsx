@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {Container, Row, Col, Modal} from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 import polyglot from "../../static/images/game-icons/game-icon128px/yawning.png"
@@ -152,7 +152,9 @@ const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
     )
 }
 
-const DescModalWindow = ({handleShowDesc, showDesc, descData}) =>{
+const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions}) =>{
+
+
    
     return (
         <>
@@ -167,7 +169,7 @@ const DescModalWindow = ({handleShowDesc, showDesc, descData}) =>{
                     <p className='additional-window__desc'>{descData.desc}</p>
                 </Modal.Body>
                 <Modal.Footer className='modal-window__footer'>
-                    <button className='modal-window__btn'>Играть</button>
+                    {ownerPermissions ? <Link to ='gameplay' className='modal-window__btn'>Играть</Link> : null}
                 </Modal.Footer>
             </Modal>
         </>
@@ -176,6 +178,7 @@ const DescModalWindow = ({handleShowDesc, showDesc, descData}) =>{
 
 
 const Room = ({isPlaying}) =>{
+    const [ownerPermissions] = useState(JSON.parse(sessionStorage.getItem('current-user'))['isOwner'])
     const {roomIDFromUrl} = useParams();
     const [showDesc, setShowDesc] = useState(false);
     const [descData, setDescData] = useState({});
@@ -210,7 +213,7 @@ const Room = ({isPlaying}) =>{
                         </span>
                     </div>
                     <div className='room__games'>
-                        <button className='room__option-btn general-btn' onClick = {handleShowOptions}>Настройки</button>
+                        {ownerPermissions ? <button className='room__option-btn general-btn' onClick = {handleShowOptions}>Настройки</button> : null}
                         <Row className="room__game-card-block">
                             {gameCards.map((game)=>(
                                 <Col xs={12}  className='room__game-card' key={game.title}>
@@ -226,17 +229,15 @@ const Room = ({isPlaying}) =>{
                                     <button className='room__game-card-btn' onClick={ ()=> handleShowDesc(game)}>Подробнее</button>
                                 </Col>
                             ))}
-
-                        </Row>
-                        
+                        </Row>                        
                     </div>
-
                 </article>
             </Container>
             <DescModalWindow 
                 handleShowDesc = {handleShowDesc} 
                 showDesc = {showDesc} 
                 descData = {descData}
+                ownerPermissions = {ownerPermissions}
             />
             <OptionModalWindow  
                 handleShowOptions = {handleShowOptions}  

@@ -9,9 +9,9 @@ const UserBar = () =>{
 
     const [users, setUsers] = useState();
     const {roomIDFromUrl} = useParams();
-    const [userID] = useState(sessionStorage.getItem('current-user-id'))
+    const [userID] = useState(JSON.parse(sessionStorage.getItem('current-user'))['uid'])
     const navigateToMain = useNavigate();
-  
+    
     useEffect(()=>{
         const getUserData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'));
         onValue(getUserData, (snapshot) => {
@@ -28,8 +28,17 @@ const UserBar = () =>{
                 setUsers(userList)
             }
             
+            if(userList[0]['uuid'] === userID){
+                const user = {
+                    uid: userList[0]['uuid'],
+                    isOwner: userList[0]['isOwner'],
+                }
+                sessionStorage.setItem('current-user', JSON.stringify(user))
+            }
+
             const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
             update(newOwnerData,{isOwner: true}) 
+            
             console.log('currentOwner:', userList[0]['uuid']) 
            
         });
@@ -39,7 +48,7 @@ const UserBar = () =>{
     const handleRemoveUser = () =>{
         let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
         remove(removableUser) 
-        sessionStorage.removeItem('current-user-id')
+        sessionStorage.removeItem('current-user')
         navigateToMain(`/`);
     }
     return(

@@ -10,6 +10,7 @@ import pause from "./static/images/other-icons/pause.png";
 
 import Main from "./content/Main"
 import Room from "./content/Room"
+import Gameplay from "./content/Gameplay"
 
 const audio = new Audio(funnySound);
 
@@ -51,6 +52,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Main isPlaying={isPlaying}/>}/>
               <Route path="/room/:roomIDFromUrl" element={<Room isPlaying={isPlaying}/>}/>
+              <Route path="/gameplay" element={<Gameplay/>}/>
             </Routes>
         </div>
        

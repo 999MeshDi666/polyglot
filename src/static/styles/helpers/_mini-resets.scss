@@ -141,6 +141,7 @@ a,button{
   }
   &__body{
     padding: 10px 14px;
+    margin-bottom: 34px !important; 
   }
   &__body-desc{
     height: 306px;
@@ -176,7 +177,6 @@ a,button{
     padding: 6px 16px;
     border-radius: 5px;
     transition: 0.2s;
-    margin-top: 34px;
     margin-bottom: 18px;
 
     &:active{
