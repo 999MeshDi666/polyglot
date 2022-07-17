@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import UserBar from "../User-bar"
 import { Container } from "react-bootstrap"
 
-import repearBtn from "../../static/images/other-icons/repeat-btn.png"
+import mic from "../../static/images/other-icons/mic.png"
 
 
 
@@ -28,12 +28,14 @@ const Gameplay = () =>{
                                 <p className="gameplay__cur-word">Никотинамидадениндинуклеотидфосфатгидрин</p>
                             </div>
                         </div>
-                        <button><img/></button>
+                        <button className="gameplay__mic-btn">
+                            <img src={mic} alt="microphone"/>
+                        </button>
                         <div>
-                            <p>Произнес:</p>
-                            <span>
-                                <p></p>
-                            </span>
+                            <p  className="gameplay__cur-word-title">Произнес:</p>
+                            <div className="content-block__body gameplay__word-container">
+                                <p className="gameplay__cur-word"></p>
+                            </div>
                         </div>
                     </div>
                     
