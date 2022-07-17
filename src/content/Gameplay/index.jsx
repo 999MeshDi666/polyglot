@@ -29,7 +29,7 @@ const Gameplay = () =>{
                             </div>
                         </div>
                         <button className="gameplay__mic-btn">
-                            <img src={mic} alt="microphone"/>
+                            <span class="icon-mic"></span>
                         </button>
                         <div>
                             <p  className="gameplay__cur-word-title">Произнес:</p>
