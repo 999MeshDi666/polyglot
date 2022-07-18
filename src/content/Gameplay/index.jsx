@@ -21,7 +21,9 @@ const Gameplay = () =>{
                     <div className="">
                         <div>
                             <div className="gameplay__cur-word-block">
-                                <button className="gameplay__repeat-btn" title="repeat"></button>
+                                <button className="gameplay__repeat-btn" title="repeat">
+                                    <span class="icon-repeat-btn"></span>
+                                </button>
                                 <p className="gameplay__cur-word-title">Произнеси:</p>
                             </div>
                             <div className="content-block__body gameplay__word-container">

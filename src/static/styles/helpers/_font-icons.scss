@@ -36,9 +36,16 @@
     content: "\e902";
     color: #fff;
   }
-  .icon-mic:before {
-    content: "\e903";
-    color: #e8e8e8;
+
+  .icon-mic{
+    font-size: 50px;
+    -webkit-text-stroke: 1.2px $blc;
+    &:before {
+      content: "\e903";
+      color: #e8e8e8;
+      transition: .4s ease-in;
+    }
+   
   }
   .icon-pause:before {
     content: "\e904";
@@ -48,8 +55,19 @@
     content: "\e905";
     color: #fff;
   }
-  .icon-repeat-btn:before {
-    content: "\e906";
-    color: #fff;
+
+  .icon-repeat-btn{
+    font-size: 16px;
+
+    &:before {
+      content: "\e906";
+      color: $wht1;
+      transition: .2s;
+    }
+    &:active:before{
+      color: rgba(255, 255, 255, 0.952);
+      background-color: #383838;
+      
+    }
+
   }
-  
