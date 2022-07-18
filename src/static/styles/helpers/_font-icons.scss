@@ -24,10 +24,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
-  .icon-arrow-next:before {
-    content: "\e900";
+  .icon-arrow-next{
+    font-size: 21px;
+    &:before {
+      content: "\e900";
+      color: #3D3D3D;
+    }
+
   }
+  
   .icon-crown:before {
     content: "\e901";
     color: #f5f952;

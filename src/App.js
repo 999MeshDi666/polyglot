@@ -4,8 +4,8 @@ import {BackgroundSound} from './Context';
 
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
-import play from "./static/images/other-icons/play.png";
-import pause from "./static/images/other-icons/pause.png";
+// import play from "./static/images/other-icons/play.png";
+// import pause from "./static/images/other-icons/pause.png";
 
 
 import Main from "./content/Main"
@@ -14,7 +14,8 @@ import Gameplay from "./content/Gameplay"
 
 const audio = new Audio(funnySound);
 
-
+const play =  "icon-play"
+const pause = "icon-pause"
 
 function App() {
   

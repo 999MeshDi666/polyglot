@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {Container, Row, Col, Modal} from 'react-bootstrap'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, remove, update, onDisconnect, orderByChild, query} from "firebase/database";
+import { ref, onValue, orderByChild, query} from "firebase/database";
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 import polyglot from "../../static/images/game-icons/game-icon128px/yawning.png"
@@ -210,7 +210,6 @@ const Room = ({isPlaying}) =>{
             snapshot.forEach((child) =>{
                 userList.push(child.val())
             })
-            
             if(userList[0]['uuid'] === userID){
                 const user = {
                     uid: userList[0]['uuid'],

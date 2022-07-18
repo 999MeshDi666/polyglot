@@ -8,7 +8,7 @@ const SoundBtn = ({isPlaying, mod_class})=>{
    
     return(
         <button className={`sound-btn ${mod_class}`} onClick = {handlePlaySound}>
-           <img src={isPlaying}/>
+          <span className={isPlaying}></span>
         </button>
     )
 }

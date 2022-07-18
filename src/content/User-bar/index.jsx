@@ -50,7 +50,7 @@ const UserBar = () =>{
                         <span key={user.nickname} className="user-bar__new-user">
                             <img src={user.image} className="user-bar__user-image"/>
                             <h4  className="user-bar__user-nickname">{user.nickname}</h4>
-                            <img src={crown} style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='user-bar__owner-crown' ></img>
+                            <span style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='user-bar__owner-crown icon-crown'/>
                         </span>
                     )): ' '}
     

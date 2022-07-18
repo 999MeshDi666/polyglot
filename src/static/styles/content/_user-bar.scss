@@ -40,8 +40,8 @@
         font-weight: bold;
     }
     &__owner-crown{
-        width: 17px;
-        height: 13px;
+        font-size: 13px;
+        -webkit-text-stroke: 1.2px #000;
         position: absolute;
         bottom: 12px;
         right: 2px;
@@ -55,7 +55,7 @@
        
         &__owner-crown {
             bottom: 14px;
-            right: 4px;
+            right: 6px;
         }
         &__user-nickname{
             font-size: 8px;

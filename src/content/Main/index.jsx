@@ -165,7 +165,7 @@ const Main = ({isPlaying}) =>{
                         <fieldset className="main__chg-img-block">
                             <img src={characterList[characterCounter]} name="characters" id="characters"/>
                             <button className="main__chg-img-btn" onClick={handleChangeCharacter}>
-                                <img src={next_arrow}/>
+                                <span className="icon-arrow-next"></span>
                             </button>
                         </fieldset>
                         <input 
