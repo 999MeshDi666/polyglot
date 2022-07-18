@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {Container, Row, Col, Modal} from 'react-bootstrap'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import {fbaseDB} from '../../utils/firebase-config'
+import { ref, onValue, remove, update, onDisconnect, orderByChild, query} from "firebase/database";
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 import polyglot from "../../static/images/game-icons/game-icon128px/yawning.png"
@@ -178,7 +180,8 @@ const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions})
 
 
 const Room = ({isPlaying}) =>{
-    const [ownerPermissions] = useState(JSON.parse(sessionStorage.getItem('current-user'))['isOwner'])
+    const [ownerPermissions, setOwnerPermissions] = useState(JSON.parse(sessionStorage.getItem('current-user'))['isOwner'])
+    const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const {roomIDFromUrl} = useParams();
     const [showDesc, setShowDesc] = useState(false);
     const [descData, setDescData] = useState({});
@@ -199,7 +202,26 @@ const Room = ({isPlaying}) =>{
         setShowOptions(!showOptions)
     }
       
-    
+    useEffect(()=>{
+        const getUserData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'));
+        onValue(getUserData, (snapshot) => {
+            
+            const userList = []
+            snapshot.forEach((child) =>{
+                userList.push(child.val())
+            })
+            
+            if(userList[0]['uuid'] === userID){
+                const user = {
+                    uid: userList[0]['uuid'],
+                    isOwner: userList[0]['isOwner'],
+                }
+                sessionStorage.setItem('current-user', JSON.stringify(user))
+                setOwnerPermissions(JSON.parse(sessionStorage.getItem('current-user'))['isOwner'])
+            }
+           
+        });
+    },[roomIDFromUrl.substring(1)])
     return(
         <main className="room">
             <UserBar/>
