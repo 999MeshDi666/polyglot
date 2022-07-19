@@ -7,9 +7,25 @@ import release from "../../static/audio/release.mp3"
 
 const voicePress = new Audio(press);
 const voiceRelease = new Audio(release);
+
+const synth = window.speechSynthesis;
+let voices = [];
+let currentWord;
+let speakerName;
+let myWord;
+
+
+const getVoices = () => {
+    voices = synth.getVoices();
+    console.log(voices);
+};
+if(synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = getVoices;
+}
 const Gameplay = () =>{
 
     const [speechWord, setSpeechWord] = useState();
+    const [synthWord, setSynthWord] = useState();
     const { speak } = useSpeechSynthesis();
     const {listen, stop } = useSpeechRecognition({
         onResult: (result) => {
@@ -17,10 +33,6 @@ const Gameplay = () =>{
             console.log(result);
         
         },
-        onEnd: ()=>{
-            voiceRelease.play()
-            window.navigator.vibrate(200)
-        }
         
     });
     return(

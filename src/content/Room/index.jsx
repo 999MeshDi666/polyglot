@@ -62,8 +62,8 @@ const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
             isChecked:false
         },
         {
-            lang:'kaz',
-            name:'Kaz',
+            lang:'deu',
+            name:'Deu',
             isChecked:false
         },
         {
@@ -155,9 +155,6 @@ const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
 }
 
 const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions}) =>{
-
-
-   
     return (
         <>
             <Modal show={showDesc} onHide={handleShowDesc}>
