@@ -30,7 +30,6 @@
         font-size: 20px;
         text-transform: uppercase;
     }
-
     &__cur-word-block{
         display: flex;
         align-items: center;
@@ -58,10 +57,12 @@
 
     &__mic-btn{
         display: block;
+        width: 82px;
+        height: 82px;
         margin: 20px auto;
         background-color: $prpl5;
         border: $border_blc;
-        padding: 16px 24px;
+        // padding: 16px 24px;
         border-radius: 50%;
         transition: .5s ease-in;
         &:active{
@@ -75,4 +76,25 @@
     
 
 
+}
+
+
+@media (min-width: 992px) {
+    .gameplay{
+        &__block{
+            height: 420px;
+        }
+        &__main-content{
+            display: flex;
+            align-items: center;
+
+            
+        }
+        &__word-container {
+            height: 140px;
+            margin-top: 8px;
+            width: 35vw;
+        }
+    }
+    
 }

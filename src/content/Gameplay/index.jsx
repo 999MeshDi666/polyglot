@@ -18,7 +18,7 @@ const Gameplay = () =>{
                             <p className="gameplay__timer-nums">10</p>
                         </span>
                     </div>
-                    <div className="">
+                    <div className="gameplay__main-content">
                         <div>
                             <div className="gameplay__cur-word-block">
                                 <button className="repeat-btn gameplay__repeat-btn" title="repeat">
