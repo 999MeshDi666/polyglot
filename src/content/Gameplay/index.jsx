@@ -1,12 +1,28 @@
+import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import { useState, useEffect } from "react"
 import UserBar from "../User-bar"
 import { Container } from "react-bootstrap"
+import press from "../../static/audio/press.mp3"
+import release from "../../static/audio/release.mp3"
 
-import mic from "../../static/images/other-icons/mic.png"
-
-
-
+const voicePress = new Audio(press);
+const voiceRelease = new Audio(release);
 const Gameplay = () =>{
+
+    const [speechWord, setSpeechWord] = useState();
+    const { speak } = useSpeechSynthesis();
+    const {listen, stop } = useSpeechRecognition({
+        onResult: (result) => {
+            setSpeechWord(result);
+            console.log(result);
+        
+        },
+        onEnd: ()=>{
+            voiceRelease.play()
+            window.navigator.vibrate(200)
+        }
+        
+    });
     return(
         <main className="gameplay">
              <UserBar/>
@@ -21,7 +37,7 @@ const Gameplay = () =>{
                     <div className="gameplay__main-content">
                         <div>
                             <div className="gameplay__cur-word-block">
-                                <button className="repeat-btn gameplay__repeat-btn" title="repeat">
+                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить">
                                     <span className="icon-repeat-btn"></span>
                                 </button>
                                 <p className="gameplay__cur-word-title">Произнеси:</p>
@@ -30,13 +46,13 @@ const Gameplay = () =>{
                                 <p className="gameplay__cur-word">Никотинамидадениндинуклеотидфосфатгидрин</p>
                             </div>
                         </div>
-                        <button className="gameplay__mic-btn">
-                            <span class="icon-mic"></span>
+                        <button className="gameplay__mic-btn" onMouseDown={listen} onMouseUp={stop} >
+                            <span className="icon-mic"></span>
                         </button>
                         <div>
                             <p  className="gameplay__cur-word-title">Произнес:</p>
                             <div className="content-block__body gameplay__word-container">
-                                <p className="gameplay__cur-word"></p>
+                                <p className="gameplay__cur-word">{speechWord}</p>
                             </div>
                         </div>
                     </div>
