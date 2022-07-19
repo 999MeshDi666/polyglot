@@ -46,7 +46,7 @@ const Gameplay = () =>{
                                 <p className="gameplay__cur-word">Никотинамидадениндинуклеотидфосфатгидрин</p>
                             </div>
                         </div>
-                        <button className="gameplay__mic-btn" onMouseDown={listen} onMouseUp={stop} >
+                        <button className="gameplay__mic-btn" onMouseDown={listen} onMouseUp={stop} onTouchStart={listen} onTouchEnd={stop}>
                             <span className="icon-mic"></span>
                         </button>
                         <div>
