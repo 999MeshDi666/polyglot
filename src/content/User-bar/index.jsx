@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, remove, update, onDisconnect, orderByChild, query} from "firebase/database";
+import { ref, onValue, remove, update, orderByChild, query} from "firebase/database";
 import { useEffect, useState } from 'react';
 import crown from '../../static/images/other-icons/crown2.png'
 
@@ -29,10 +29,35 @@ const UserBar = () =>{
             update(newOwnerData,{isOwner: true}) 
         
             console.log('currentOwner:', userList[0]['uuid']) 
+
+            window.addEventListener('beforeunload', alertUser)
+            window.addEventListener('unload', handleTabClosing)
+            return () => {
+                window.removeEventListener('beforeunload', alertUser)
+                window.removeEventListener('unload', handleTabClosing)
+            }
            
            
         });
     },[roomIDFromUrl.substring(1)])
+
+    const handleTabClosing = () => {
+        let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
+        remove(removableUser) 
+        sessionStorage.removeItem('current-user')
+      
+        
+        // removePlayerFromGame()
+    }
+    
+    const alertUser = (event:any) => {
+        event.preventDefault()
+        console.log('event',event)
+        console.log('reload page')
+
+
+        event.returnValue = ''
+    }
     
 
     const handleRemoveUser = () =>{
