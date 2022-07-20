@@ -46,7 +46,7 @@ const Gameplay = () =>{
         currentWord =  sparklesTongue['deu'][randWordIndex];
         voices.forEach((voice) => {
             if (speakerName === voice.name) {
-                speak({ text: currentWord, voice: voice });
+                speak({ text: currentWord });
             }
         }); 
         setSynthWord(currentWord);
