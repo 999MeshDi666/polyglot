@@ -30,34 +30,34 @@ const UserBar = () =>{
         
             console.log('currentOwner:', userList[0]['uuid']) 
 
-            window.addEventListener('beforeunload', alertUser)
-            window.addEventListener('unload', handleTabClosing)
-            return () => {
-                window.removeEventListener('beforeunload', alertUser)
-                window.removeEventListener('unload', handleTabClosing)
-            }
+            // window.addEventListener('beforeunload', alertUser)
+            // window.addEventListener('unload', handleTabClosing)
+            // return () => {
+            //     window.removeEventListener('beforeunload', alertUser)
+            //     window.removeEventListener('unload', handleTabClosing)
+            // }
            
            
         });
     },[roomIDFromUrl.substring(1)])
 
-    const handleTabClosing = () => {
-        let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
-        remove(removableUser) 
-        sessionStorage.removeItem('current-user')
+    // const handleTabClosing = () => {
+    //     let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
+    //     remove(removableUser) 
+    //     sessionStorage.removeItem('current-user')
       
         
-        // removePlayerFromGame()
-    }
+    //     // removePlayerFromGame()
+    // }
     
-    const alertUser = (event:any) => {
-        event.preventDefault()
-        console.log('event',event)
-        console.log('reload page')
+    // const alertUser = (event:any) => {
+    //     event.preventDefault()
+    //     console.log('event',event)
+    //     console.log('reload page')
 
 
-        event.returnValue = ''
-    }
+    //     event.returnValue = ''
+    // }
     
 
     const handleRemoveUser = () =>{
