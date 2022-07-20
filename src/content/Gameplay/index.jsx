@@ -46,7 +46,7 @@ const Gameplay = () =>{
         currentWord =  sparklesTongue['deu'][randWordIndex];
         voices.forEach((voice) => {
             if (speakerName === voice.name) {
-            speak({ text: currentWord, voice: voice });
+                speak({ text: currentWord, voice: voice });
             }
         }); 
         setSynthWord(currentWord);
@@ -84,7 +84,7 @@ const Gameplay = () =>{
                             </div>
                         </div>
                         <button 
-                         disabled={counter === 0 ? false : true}
+                            disabled={counter === 0 ? false : true}
                             className="gameplay__mic-btn" 
                             onMouseDown={listen} 
                             onMouseUp={stop} 

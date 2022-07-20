@@ -185,7 +185,9 @@ const Room = ({isPlaying}) =>{
     const [showOptions, setShowOptions] = useState(false);
 
     const handleShowDesc = (game) =>{
-        setShowDesc(!showDesc)
+        setShowDesc((prevDesc)=>!prevDesc)
+
+        if(showDesc) return;
         const curDescData = {
             image: game.image,
             title: game.title,
