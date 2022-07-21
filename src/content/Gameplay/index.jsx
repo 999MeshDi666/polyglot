@@ -41,12 +41,13 @@ const Gameplay = () =>{
     });
 
     const handleSynthWord = () => {
-        let randWordIndex = Math.floor(Math.random() * sparklesTongue['deu'].length);
-        speakerName = "Google Deutsch";
-        currentWord =  sparklesTongue['deu'][randWordIndex];
+        let randWordIndex = Math.floor(Math.random() * sparklesTongue['rus'].length);
+     
+        speakerName = "Google русский";
+        currentWord =  sparklesTongue['rus'][randWordIndex];
         voices.forEach((voice) => {
             if (speakerName === voice.name) {
-                speak({ text: currentWord });
+                speak({ text: currentWord, voice: voice });
             }
         }); 
         setSynthWord(currentWord);

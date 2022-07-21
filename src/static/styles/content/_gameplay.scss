@@ -47,7 +47,7 @@
     &__word-container{
         height: 140px;
         margin-top: 8px;
-        // overflow-y: scroll;
+        overflow-y: auto;
     }
     &__cur-word{
         word-wrap: break-word;
