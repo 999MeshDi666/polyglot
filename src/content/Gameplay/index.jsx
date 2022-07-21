@@ -1,13 +1,12 @@
-import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import { useState, useEffect } from "react"
-import UserBar from "../User-bar"
+import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import { Container } from "react-bootstrap"
+
+import UserBar from "../User-bar"
 import press from "../../static/audio/press.mp3"
 import release from "../../static/audio/release.mp3"
 import sparklesTongue from "../../static/dictionaries/sparkles-tongue.json"
 
-const voicePress = new Audio(press);
-const voiceRelease = new Audio(release);
 
 const synth = window.speechSynthesis;
 let voices = [];

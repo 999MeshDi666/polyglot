@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
 import { ref, onValue, remove, update, orderByChild, query} from "firebase/database";
-import { useEffect, useState } from 'react';
-import crown from '../../static/images/other-icons/crown2.png'
+
 
 const UserBar = () =>{
 
