@@ -9,7 +9,7 @@ import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
 
 
 import Main from "./content/Main"
-import Room from "./content/Room"
+import RoomConnect from "./content/RoomConnect"
 import Gameplay from "./content/Gameplay"
 
 const audio = new Audio(funnySound);
@@ -19,10 +19,10 @@ const pause = "icon-pause"
 
 function App() {
   
-  const [isPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || pause);
+  const [soundPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || pause);
    
   const handlePlaySound = () =>{
-    if(isPlaying === pause){
+    if(soundPlaying === pause){
       setPlaySound(play) 
       audio.pause()
     }else{
@@ -32,7 +32,7 @@ function App() {
   } 
   
   useEffect(()=>{
-    if(isPlaying === pause){
+    if(soundPlaying === pause){
       window.addEventListener('load', ()=>{
         audio.play()
         audio.loop = true;
@@ -40,9 +40,9 @@ function App() {
       })
     }
    
-    localStorage.setItem('audioPlaying', JSON.stringify(isPlaying))
+    localStorage.setItem('audioPlaying', JSON.stringify(soundPlaying))
     
-  },[isPlaying])
+  },[soundPlaying])
  
   
 
@@ -51,9 +51,9 @@ function App() {
       <BackgroundSound.Provider value={{handlePlaySound}}>
         <div className="App">
             <Routes>
-              <Route path="/" element={<Main isPlaying={isPlaying}/>}/>
-              <Route path="/room/:roomIDFromUrl" element={<Room isPlaying={isPlaying}/>}/>
-              <Route path="/room/:roomIDFromUrl/gameplay" element={<Gameplay/>}/>
+              <Route path="/" element={<Main soundPlaying={soundPlaying}/>}/>
+              <Route path="/room/:roomIDFromUrl" element={<RoomConnect soundPlaying={soundPlaying}/>}/>
+              {/* <Route path="/room/:roomIDFromUrl/gameplay" element={<Gameplay/>}/> */}
             </Routes>
         </div>
        

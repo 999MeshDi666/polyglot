@@ -17,14 +17,14 @@ import pinocchio from "../../static/images/character-icons/character07.png"
 import knight from "../../static/images/character-icons/character08.png"
 import ghost from "../../static/images/character-icons/character09.png"
 import frogy from "../../static/images/character-icons/character10.png"
-import next_arrow from "../../static/images/other-icons/arrow-next.png"
+
 
 
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
 let randNicknameNum = Math.floor(Math.random() * 1000)
 
-const Main = ({isPlaying}) =>{
+const Main = ({soundPlaying}) =>{
    
     const [characterCounter, setCharacterCounter] = useState(0)
     const [userName, setUserName] = useState(`Roly-Poly${randNicknameNum}`);
@@ -79,6 +79,7 @@ const Main = ({isPlaying}) =>{
             image: characterList[characterCounter],
             nickname: userName,
             isOwner: switchContent,
+            isPlaying: false,
             createdAt: Date.now(),
         }).then(()=>{
             console.info('user has been created')
@@ -88,6 +89,7 @@ const Main = ({isPlaying}) =>{
         const user = {
             uid: uid,
             isOwner: switchContent,
+            isPlaying: false,
         }
         sessionStorage.setItem('current-user', JSON.stringify(user))
         navigateToRoom(`/room/:${rid}`);
@@ -194,7 +196,7 @@ const Main = ({isPlaying}) =>{
                         </button>
                     </form>
                 </div>
-                <SoundBtn isPlaying = {isPlaying}></SoundBtn> 
+                <SoundBtn soundPlaying = {soundPlaying}></SoundBtn> 
             </main>
         </Container>
     )

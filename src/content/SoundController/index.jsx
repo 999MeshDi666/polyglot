@@ -3,12 +3,12 @@ import { BackgroundSound } from "../../Context";
 
 
 
-const SoundBtn = ({isPlaying, mod_class})=>{
+const SoundBtn = ({soundPlaying, mod_class})=>{
     const {handlePlaySound} = useContext(BackgroundSound)
    
     return(
         <button className={`sound-btn ${mod_class}`} onClick = {handlePlaySound}>
-          <span className={isPlaying}></span>
+          <span className={soundPlaying}></span>
         </button>
     )
 }

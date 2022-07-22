@@ -2,64 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, remove, update, orderByChild, query} from "firebase/database";
+import { ref, remove,} from "firebase/database";
 
 
-const UserBar = () =>{
+const UserBar = ({users, userID}) =>{
 
-    const [users, setUsers] = useState();
-    const {roomIDFromUrl} = useParams();
-    const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const navigateToMain = useNavigate();
+    const {roomIDFromUrl} = useParams();
     
-    useEffect(()=>{
-        const getUserData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'));
-        onValue(getUserData, (snapshot) => {
-            // const user = snapshot.val()
-             // for (let key in user){
-            //     userList.push(user[key])
-            // }
-            const userList = []
-            snapshot.forEach((child) =>{
-                userList.push(child.val())
-            })
-            
-           setUsers(userList)
-            const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
-            update(newOwnerData,{isOwner: true}) 
-        
-            console.log('currentOwner:', userList[0]['uuid']) 
-
-            // window.addEventListener('beforeunload', alertUser)
-            // window.addEventListener('unload', handleTabClosing)
-            // return () => {
-            //     window.removeEventListener('beforeunload', alertUser)
-            //     window.removeEventListener('unload', handleTabClosing)
-            // }
-           
-           
-        });
-    },[roomIDFromUrl.substring(1)])
-
-    // const handleTabClosing = () => {
-    //     let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
-    //     remove(removableUser) 
-    //     sessionStorage.removeItem('current-user')
-      
-        
-    //     // removePlayerFromGame()
-    // }
-    
-    // const alertUser = (event:any) => {
-    //     event.preventDefault()
-    //     console.log('event',event)
-    //     console.log('reload page')
-
-
-    //     event.returnValue = ''
-    // }
-    
-
     const handleRemoveUser = () =>{
         let removableUser = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/` + userID)
         remove(removableUser) 

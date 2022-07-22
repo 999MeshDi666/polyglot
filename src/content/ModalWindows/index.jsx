@@ -127,7 +127,7 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
     )
 }
 
-export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions}) =>{
+export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions, handleStartGame}) =>{
     return (
         <>
             <Modal show={showDesc} onHide={handleShowDesc}>
@@ -141,7 +141,7 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
                     <p className='content-block__desc'>{descData.desc}</p>
                 </Modal.Body>
                 <Modal.Footer className='modal-window__footer'>
-                    {ownerPermissions ? <Link to ='gameplay' className='modal-window__btn'>Играть</Link> : null}
+                    {ownerPermissions ? <a className='modal-window__btn' onClick = {handleStartGame}>Играть</a> : null}
                 </Modal.Footer>
             </Modal>
         </>
