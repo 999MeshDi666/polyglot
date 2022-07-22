@@ -16,7 +16,7 @@ const RoomConnect = ({soundPlaying}) =>{
     const [users, setUsers] = useState();
     const {roomIDFromUrl} = useParams();
     const [startGame, setStartGame]= useState()
-    const [ownerPermissions, setOwnerPermissions] = useState(JSON.parse(sessionStorage.getItem('current-user'))['isOwner'])
+    const [ownerPermissions, setOwnerPermissions] = useState()
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
@@ -42,24 +42,32 @@ const RoomConnect = ({soundPlaying}) =>{
                 userList.push(child.val())
             })
 
-            if(userList[0]['uuid'] === userID){
-                const user = {
-                    uid: userList[0]['uuid'],
-                    isOwner: userList[0]['isOwner'],
-                    isPlaying: userList[0]['isPlaying'],
-                }
-                sessionStorage.setItem('current-user', JSON.stringify(user))
-                setOwnerPermissions(JSON.parse(sessionStorage.getItem('current-user'))['isOwner'])
-            } 
-           
+            // if(userList[0]['uuid'] === userID){
+            //     const user = {
+            //         uid: userList[0]['uuid'],
+            //         isOwner: userList[0]['isOwner'],
+            //         isPlaying: userList[0]['isPlaying'],
+            //     }
+            //     sessionStorage.setItem('current-user', JSON.stringify(user))
+            //     setOwnerPermissions(JSON.parse(sessionStorage.getItem('current-user'))['isOwner'])
+            // } 
             setUsers(userList)
             const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
             update(newOwnerData,{isOwner: true}) 
             console.log('currentOwner:', userList[0]['uuid']) 
+           
 
            
         });
     },[roomIDFromUrl.substring(1)])
+
+    useEffect(()=>{
+        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isOwner/`), orderByChild('createdAt'));
+        onValue(startGameData, (snapshot)=>{
+            setOwnerPermissions(snapshot.val())
+        })
+
+    },[])
 
     useEffect(()=>{
         const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isPlaying/`), orderByChild('createdAt'));

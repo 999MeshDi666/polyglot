@@ -88,8 +88,6 @@ const Main = ({soundPlaying}) =>{
         })
         const user = {
             uid: uid,
-            isOwner: switchContent,
-            isPlaying: false,
         }
         sessionStorage.setItem('current-user', JSON.stringify(user))
         navigateToRoom(`/room/:${rid}`);
