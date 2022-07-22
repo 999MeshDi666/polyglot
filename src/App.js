@@ -4,13 +4,12 @@ import {BackgroundSound} from './Context';
 
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
-// import play from "./static/images/other-icons/play.png";
-// import pause from "./static/images/other-icons/pause.png";
 
 
 import Main from "./content/Main"
-import RoomConnect from "./content/RoomConnect"
-import Gameplay from "./content/Gameplay"
+import Room from "./content/Room"
+import Gameplay from './content/Gameplay';
+
 
 const audio = new Audio(funnySound);
 
@@ -52,8 +51,8 @@ function App() {
         <div className="App">
             <Routes>
               <Route path="/" element={<Main soundPlaying={soundPlaying}/>}/>
-              <Route path="/room/:roomIDFromUrl" element={<RoomConnect soundPlaying={soundPlaying}/>}/>
-              {/* <Route path="/room/:roomIDFromUrl/gameplay" element={<Gameplay/>}/> */}
+              <Route path="/room/:roomIDFromUrl" element={<Room soundPlaying={soundPlaying}/>}/>
+              <Route path="/room/:roomIDFromUrl/gameplay/" element={<Gameplay soundPlaying={soundPlaying}/>}/>
             </Routes>
         </div>
        

@@ -79,6 +79,7 @@ const Main = ({soundPlaying}) =>{
             image: characterList[characterCounter],
             nickname: userName,
             isOwner: switchContent,
+            userPath: '',
             isPlaying: false,
             createdAt: Date.now(),
         }).then(()=>{
