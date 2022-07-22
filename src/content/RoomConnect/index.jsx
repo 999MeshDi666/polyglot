@@ -33,6 +33,7 @@ const RoomConnect = ({soundPlaying}) =>{
         });
         
     }
+    //get users data
     useEffect(()=>{
        
         onValue(usersDataRef, (snapshot) => {
@@ -54,13 +55,12 @@ const RoomConnect = ({soundPlaying}) =>{
             setUsers(userList)
             const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
             update(newOwnerData,{isOwner: true}) 
-            console.log('currentOwner:', userList[0]['uuid']) 
-           
-
-           
+            console.log('currentOwner:', userList[0]['uuid'])   
         });
     },[roomIDFromUrl.substring(1)])
 
+
+    //set new owner
     useEffect(()=>{
         const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isOwner/`), orderByChild('createdAt'));
         onValue(startGameData, (snapshot)=>{
@@ -69,6 +69,7 @@ const RoomConnect = ({soundPlaying}) =>{
 
     },[])
 
+    //set start game
     useEffect(()=>{
         const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isPlaying/`), orderByChild('createdAt'));
         onValue(startGameData, (snapshot)=>{
