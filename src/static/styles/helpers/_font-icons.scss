@@ -25,7 +25,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   .icon-arrow-next{
-    font-size: 21px;
+    font-size: 20px;
     &:before {
       content: "\e900";
       color: #3D3D3D;
@@ -56,10 +56,14 @@
     content: "\e904";
     color: #fff;
   }
-  .icon-play:before {
-    content: "\e905";
-    color: #fff;
+  .icon-play{
+    margin-left: 2px;
+    &:before {
+      content: "\e905";
+      color: #fff;
+    }
   }
+
 
   .icon-repeat-btn{
     font-size: 16px;
