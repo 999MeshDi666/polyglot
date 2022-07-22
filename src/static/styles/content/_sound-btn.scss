@@ -1,38 +1,28 @@
 .sound-btn{
-    width: 46px;
-    height: 46px;
-    padding-top: 4px;
-    padding-left: 7px;
-    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  border: $border_blc;
+  border-radius: 50%;
+  font-size: 24px;
+  -webkit-text-stroke: 1px $blc;
+  background-color: $prpl2;
+  position: fixed;
+  top: 20px;
+  right: 6px;
   
-    border: $border_blc;
-    border-radius: 50%;
-    
-    font-size: 24px;
-    -webkit-text-stroke: 1px $blc;
-    background-color: $prpl2;
-    // -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-    // -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-    // box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
-  
-    position: fixed;
-    top: 20px;
-    right: 6px;
-  
-    transition: .2s;
-
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    &:active{
-      -webkit-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
-      -moz-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
-      box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
-    }
-    
-    
+  transition: .2s;
+  &:active{
+    -webkit-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
+    -moz-box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
+    box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.52) inset;
   }
-  .sound-btn_room{
-    top: 142px;
-  }
+    
+    
+}
+.sound-btn_room{
+  top: 142px;
+}
   

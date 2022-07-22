@@ -53,10 +53,14 @@
         position: relative;
     }
     &__chg-img-btn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 30px;
         height: 30px;
-        padding: 5px 0 0 0px;
-        box-sizing: border-box;
+        padding-top: 3px;
+       
+     
 
         border-radius: 50%;
         border: $border_blc;
