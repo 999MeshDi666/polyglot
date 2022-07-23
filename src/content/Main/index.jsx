@@ -81,6 +81,7 @@ const Main = ({soundPlaying}) =>{
             isOwner: switchContent,
             userPath: '',
             isPlaying: false,
+            score: 0,
             createdAt: Date.now(),
         }).then(()=>{
             console.info('user has been created')

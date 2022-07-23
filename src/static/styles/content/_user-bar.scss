@@ -29,24 +29,14 @@
             margin: 0 14px;
         }
     }
-    &__user-image{
-        width: 46px;
-        height: 46px;
-    }
+   
     &__user-nickname{
         margin-top: 5px;
         font-size: 6px;
         text-transform: uppercase;
         font-weight: bold;
     }
-    &__owner-crown{
-        font-size: 13px;
-        -webkit-text-stroke: 1.2px #000;
-        position: absolute;
-        bottom: 12px;
-        right: 2px;
-    }
-
+    
 }
 
 

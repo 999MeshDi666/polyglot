@@ -69,7 +69,7 @@ const Gameplay = ({soundPlaying}) =>{
       }, [counter]);
 
     return(
-        <main className="room-gameplay gameplay"> 
+        <main className="gameplay"> 
             <UserBar/>
             <SoundBtn soundPlaying = {soundPlaying} mod_class = 'sound-btn_room'/>
             <Container>

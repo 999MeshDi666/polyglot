@@ -44,9 +44,12 @@ const UserBar = () =>{
                 <div className="user-bar__user-list">
                     {users ? users.map((user)=>(
                         <span key={user.nickname} className="user-bar__new-user">
-                            <img src={user.image} className="user-bar__user-image"/>
+                            <span>
+                                <img src={user.image} className="user-image"/>
+                                <span style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='owner-crown icon-crown'/>
+                            </span>
+                            
                             <h4  className="user-bar__user-nickname">{user.nickname}</h4>
-                            <span style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='user-bar__owner-crown icon-crown'/>
                         </span>
                     )): ' '}
     

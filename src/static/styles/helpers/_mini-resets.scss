@@ -55,7 +55,7 @@ a,button{
 .container{
   padding: 0 20px;
 }
-.room-gameplay{
+:is(.room,.gameplay,.score-table){
   padding: 26px 0 80px 0;
 }
 .general-btn {
@@ -67,6 +67,19 @@ a,button{
     color: $gry1;
   }
 }
+
+.user-image{
+  width: 46px;
+  height: 46px;
+}
+.owner-crown{
+  font-size: 13px;
+  -webkit-text-stroke: 1.2px #000;
+  position: absolute;
+  bottom: 12px;
+  right: 2px;
+}
+
 
 .title{
   font-size: 18px;
@@ -88,6 +101,9 @@ a,button{
   border: $border_blc;
   border-radius: 10px;
 
+}
+.content-block{
+  margin-top: 40px;
 }
 
 .modal-content{
