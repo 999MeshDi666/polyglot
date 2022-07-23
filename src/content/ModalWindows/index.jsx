@@ -4,15 +4,18 @@ import {Row, Col, Modal} from 'react-bootstrap'
 
 
 export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
-    const [currentLang, setCurrentLang] = useState({lang: "all",
+
+    const [langList, setLangList] = useState([])
+    const [currentLang, setCurrentLang] = useState({
+        lang: "all",
         name: "All",
-        isChecked: false,
+        isChecked: true,
     });
     const [checkBox, setCheckBox] = useState([
         {
             lang:'all',
             name:'All',
-            isChecked:false
+            isChecked:true
         },
         {
             lang:'eng',
@@ -66,8 +69,9 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
         }
 
     ])
-
+    
     const handleChooseLang = ({ lang, name, isChecked }) => {
+        
         setCheckBox((prevCheckBox) =>
           prevCheckBox.map((box) => {
             if (box.lang === lang) {
@@ -76,15 +80,32 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
           })
          
         );
-        
         setCurrentLang({
           lang,
           name,
           isChecked: !isChecked,
-        });
-        
+        });  
     };
-     
+
+
+    useEffect(()=>{
+
+        if(currentLang.isChecked){
+            if(currentLang.lang === 'all'){
+                while(langList.length){
+                    langList.pop()
+                }
+            }
+            setLangList([...langList, currentLang.lang])
+            
+        }else{
+            setLangList(langList.slice(0, -1))
+        }
+        
+    },[currentLang])
+   
+    console.log('currentLang', currentLang)
+    console.log('langList', langList)
     return(
         <>
             <Modal show={showOptions} onHide={handleShowOptions}>

@@ -120,15 +120,21 @@
         text-transform: uppercase;
         font-weight: bold;
     }
+   
     &__checkbox{
         display: none;
+        
     }
-    &__checkbox:checked+&__label{
+    &__checkbox:checked + &__label{
         background-color: $prpl5;
         border: 0.5px solid $blc;
         padding: 1px 10px;
         border-radius: 2px;
     }
+    &__checkbox:disabled + &__label{
+        color: rgb(199, 199, 199);
+    }
+    
 }
 
 @media (max-width: 320px) {
