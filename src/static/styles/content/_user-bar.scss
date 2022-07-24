@@ -22,7 +22,7 @@
 
     }
     &__user{
-    
+        text-align: center;
         &:nth-child(even){
             margin: 0 14px;
         }
@@ -45,7 +45,7 @@
             font-size: 8px;
         }
         &__owner-crown{
-            right: 9px;
+            right: 6px;
         }
         &__new-user{
           
