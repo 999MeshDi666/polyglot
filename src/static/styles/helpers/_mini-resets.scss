@@ -1,4 +1,4 @@
-
+$border_blc: 1px solid $blc;
 *,
 *::before,
 *::after { box-sizing:border-box; }
@@ -72,14 +72,18 @@ a,button{
   width: 46px;
   height: 46px;
 }
+
+.user-crown-pos{
+  position: relative;
+}
+
 .owner-crown{
   font-size: 13px;
   -webkit-text-stroke: 1.2px #000;
   position: absolute;
-  bottom: 12px;
-  right: 2px;
+  bottom: 1px;
+  right: 1px;
 }
-
 
 .title{
   font-size: 18px;
@@ -89,11 +93,9 @@ a,button{
   margin-bottom: 16px;
 }
 
-
 .modal-backdrop{
   background-color: #272727d4;
 }
-
 
 .modal-content,
 .content-block{
@@ -214,33 +216,25 @@ a,button{
 @media (max-width: 320px) {
 
   .modal-window{
-   
     &__body-desc{
       overflow-x: scroll;
-    }
-   
+    }   
   }
-  
-  
-   
-}
-@media (min-width: 576px) {
-  .container{
-    padding: 0;
-  }
-  
-   
+ 
 }
 
 @media (min-width: 576px){
-  
+  .container{
+    padding: 0;
+  }
+  // .owner-crown {
+  //   bottom: 14px;
+  //   right: 6px;
+  // }
   .additional-window{
-
     &__desc{
       line-height: 24px;
       font-size: 16px;
     }
-  
-  
   }
 }

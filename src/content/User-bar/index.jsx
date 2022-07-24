@@ -43,14 +43,14 @@ const UserBar = () =>{
                 <a className="user-bar__leave-btn general-btn" onClick={handleRemoveUser}>Выйти</a>
                 <div className="user-bar__user-list">
                     {users ? users.map((user)=>(
-                        <span key={user.nickname} className="user-bar__new-user">
-                            <span>
+                        <div key={user.nickname} className="user-bar__user">
+                            <div className='user-crown-pos'>
                                 <img src={user.image} className="user-image"/>
-                                <span style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='owner-crown icon-crown'/>
-                            </span>
+                                <span style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='owner-crown user-bar__owner-crown icon-crown'/>
+                            </div>
                             
                             <h4  className="user-bar__user-nickname">{user.nickname}</h4>
-                        </span>
+                        </div>
                     )): ' '}
     
                 </div>

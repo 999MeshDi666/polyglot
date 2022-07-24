@@ -41,15 +41,18 @@ const ScoreTable = ({soundPlaying}) =>{
                         </span>
                         <div>
                             {users ? users.map((user)=>(
-                                <span className = "score-table__user-score">
-                                    <span>
-                                        <img src={user.image} className="user-image"/>
-                                        <span style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='owner-crown icon-crown'/>
-                                    </span>
-                                    <h4 className="score-table__user-nickname">{user.nickname}</h4>
-                                    <p>{user.score}</p>
+                                <div className = "score-table__user-score" key={user.nickname}>
+                                    <div className = "score-table__user">
+                                        <div className='user-crown-pos'>
+                                            <img src={user.image} className="user-image"/>
+                                            <span style={user.isOwner ? {display: 'inline'} : {display: 'none'}} className='owner-crown icon-crown'/>
+                                        </div>
+                                        <h4 className="score-table__user-nickname">{user.nickname}</h4>
+                                    </div>
+                                    
+                                    <p className="score-table__score">{user.score}</p>
                                    
-                                </span>
+                                </div>
 
                             )): ' '}
                             

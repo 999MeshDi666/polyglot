@@ -12,21 +12,28 @@
         margin-bottom: 10px;
     }
     &__user-score{
-        // text-align: center;
-        position: relative;
-        margin-bottom: 5px;
-    }
-    &__user-score{
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
         padding: 9px 14px;
         border-radius: 5px;
         background-color: $prpl6;
         border: $border_blc;
     }
+    &__user{
+        display: flex;
+        align-items: center;
+    }
     &__user-nickname{
+        margin-left: 10px;
         font-size: 14px;
         font-weight: bold;
+    }
+    &__score{
+        font-weight: bold;
+        font-size: 20px;
+
     }
     
 }
