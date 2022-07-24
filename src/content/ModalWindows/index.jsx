@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import {Row, Col, Modal} from 'react-bootstrap'
-
+import {fbaseDB} from '../../utils/firebase-config'
+import { ref, set, onValue } from "firebase/database";
+import { nanoid } from 'nanoid'
 
 export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
 
@@ -87,9 +89,20 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
         });  
     };
 
+    const handleSubmitLangs = (e) =>{
+        e.preventDefault()
+        set(ref(fbaseDB, `polyglot/langs/`), {
+            chosenLangs: langList,
+           
+        }).then(()=>{
+            console.info('list has been sended')
+        }).catch((error)=>{
+            console.error(error)
+        })
+
+    }
 
     useEffect(()=>{
-
         if(currentLang.isChecked){
             if(currentLang.lang === 'all'){
                 while(langList.length){
@@ -140,7 +153,7 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
                         </Row>
                     </Modal.Body>
                     <Modal.Footer className='modal-window__footer'>
-                        <button type="submit" className='modal-window__btn'>Выбрать</button>
+                        <button type="submit" className='modal-window__btn' onClick={handleSubmitLangs}>Выбрать</button>
                     </Modal.Footer>
                 </form>
             </Modal>
