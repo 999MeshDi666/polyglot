@@ -165,7 +165,6 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
 
 export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions}) =>{
     const {roomIDFromUrl} = useParams();
-    const {gameIDFromUrl} = useParams();
     const navigateToGame = useNavigate();
     
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']

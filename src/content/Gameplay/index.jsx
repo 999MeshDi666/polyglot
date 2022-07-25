@@ -15,7 +15,7 @@ import sparklesTongue from "../../static/dictionaries/sparkles-tongue.json"
 
 const synth = window.speechSynthesis;
 let voices = [];
-let currentWord;
+
 let speakerName;
 let myWord;
 
@@ -33,39 +33,31 @@ const Gameplay = ({soundPlaying}) =>{
 
   
     const {roomIDFromUrl} = useParams();
+    const {gameIDFromUrl} = useParams();
     const [counter, setCounter] = useState(10);
-    const [langList, setLangList] = useState();
-    const [speechWord, setSpeechWord] = useState();
     const [synthWord, setSynthWord] = useState();
+    const [speaker, setSpeaker] = useState();
+    const [speechWord, setSpeechWord] = useState();
+ 
     const { speak } = useSpeechSynthesis();
+
     const {listen, stop } = useSpeechRecognition({
         onResult: (result) => {
             setSpeechWord(result);
-            console.log(result);
-        
+            console.log(result); 
         },
-        
     });
-    console.log()
+
     const handleSynthWord = () => {
-        let randLangIndex = Math.floor(Math.random() * langList.length);
-        let chosenRandLang = langList[randLangIndex]
-        let randWordIndex = Math.floor(Math.random() * sparklesTongue[chosenRandLang].length);
-        console.log(chosenRandLang)
-     
-        speakerName = "Google русский";
-        currentWord =  sparklesTongue[chosenRandLang][randWordIndex];
+        
         voices.forEach((voice) => {
-            if (speakerName === voice.name) {
-                speak({ text: currentWord, voice: voice });
+            if (speaker === voice.name) {
+                speak({ text: synthWord, voice: voice });
             }
         }); 
-        setSynthWord(currentWord);
-
     }
-    
- 
 
+ 
     //downcount timer
     useEffect(() => {
         const timer =
@@ -73,19 +65,32 @@ const Gameplay = ({soundPlaying}) =>{
         return () => clearInterval(timer);
     }, [counter]);
 
+    //get game data
     useEffect(()=>{
+
         const getLangList = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/chosenLangs`)
         onValue(getLangList, (snapshot) => {
             const langListData = []
             snapshot.forEach((child) =>{
                 langListData.push(child.val())
             })
+            
+            let randLangIndex = Math.floor(Math.random() * langListData.length);
+            let chosenRandLang = langListData[randLangIndex]
+            console.log('chosenRandLang',chosenRandLang)
 
-            setLangList(langListData)
+          
+            const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
+            onValue(getGameplayData, (snapshot) => {
+                const gameData = snapshot.val()
+                let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
+                setSpeaker(gameData['speaker'])
+                setSynthWord(gameData['words'][randWordIndex]);
+            })
         });
-    },[roomIDFromUrl.substring(1)])
+      
 
-    console.log('chosenLangList in gameplay',langList)
+    },[])
 
     
 
