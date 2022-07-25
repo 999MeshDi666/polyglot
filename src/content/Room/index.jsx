@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {Container, Row, Col} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, orderByChild, query, update } from "firebase/database";
+import { ref, onValue, orderByChild, query } from "firebase/database";
 import {OptionModalWindow, DescModalWindow} from "../ModalWindows/";
 
 
@@ -16,18 +16,21 @@ import tongueTwister from "../../static/images/game-icons/game-icon128px/tongue-
 
 const gameCards = [
     {
+        index: 'polyglot',
         image:  polyglot,
         title: 'Полиглот',
         mini_desc: 'Докажи своим друзьям, что являещься настоящим полиглотом и любой язык тебе не страшен.',
         desc: 'Полиглот — человек, владеющий несколькими языками, способный говорить (читать, писать) на нескольких языках. Выбери язык или языки, послушай и попробуй произнести попавшееся тебе слово.'
     },
     {
+        index: 'sparkles-tongue',
         image:  sparklesTongue,
         title: 'Блестящий язык',
         mini_desc: 'Только человек с блестящим языком способен произнести очень длинные слова.',
         desc: '"Частнопредпринимательский", "электроэнцефалографист", "субстанционализироваться". Насколько хорошо ты произнес эти слова? А слобо произнести слово "Rindfleischetikettierungsуberwachungsaufgabenуbertragungsgesetz"?! Если не слобо, то попробуй сыграть в блестящий язык. '
     },
     {
+        index: 'tongue-twister',
         image:  tongueTwister,
         title: 'Скороговорки',
         mini_desc: `Произноси скороговорки пока не сотрешь себе язык. Последствия после игры: стертый язык, дурень!`,
@@ -40,12 +43,12 @@ const gameCards = [
 const Room = ({soundPlaying}) =>{
     
     const {roomIDFromUrl} = useParams();
-    const navigateToGame = useNavigate();
+
     const [showDesc, setShowDesc] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [descData, setDescData] = useState({});
     const [ownerPermissions, setOwnerPermissions] = useState()
-    const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
+   
     
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
 
@@ -53,6 +56,7 @@ const Room = ({soundPlaying}) =>{
         setShowDesc((prevDesc)=>!prevDesc)
         if(showDesc) return;
         const curDescData = {
+            index: game.index,
             image: game.image,
             title: game.title,
             desc: game.desc
@@ -61,38 +65,16 @@ const Room = ({soundPlaying}) =>{
     }
 
     const handleShowOptions = () =>{
-        setShowOptions(!showOptions)
+        setShowOptions((prevOpt)=>!prevOpt)
     }
 
-    const handleStartGame = () =>{
-       
-        onValue(usersDataRef, (snapshot) => {
-            snapshot.forEach((child) =>{
-                const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${child.key}/`), orderByChild('createdAt'))
-                update(newOwnerData,{userPath: 'gameplay/'})                 
-            })
-        });
-       
-        
-    }
     //set new owner
     useEffect(()=>{
         const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isOwner/`), orderByChild('createdAt'));
         onValue(startGameData, (snapshot)=>{
             setOwnerPermissions(snapshot.val())
         })
-        
-
     },[])
-
-     //set start game
-    useEffect(()=>{
-        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/userPath/`), orderByChild('createdAt'));
-        onValue(startGameData, (snapshot)=>{
-            navigateToGame(snapshot.val())
-        })
-    },[])
-
 
     return(
         <main className="room">
@@ -131,7 +113,6 @@ const Room = ({soundPlaying}) =>{
                     showDesc = {showDesc} 
                     descData = {descData}
                     ownerPermissions = {ownerPermissions}
-                    handleStartGame = {handleStartGame}
                 />
                 <OptionModalWindow  
                     handleShowOptions = {handleShowOptions}  

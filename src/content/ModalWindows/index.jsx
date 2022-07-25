@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import {Row, Col, Modal} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, set, onValue } from "firebase/database";
+import { ref,  set, onValue, orderByChild, query, update } from "firebase/database";
 import { nanoid } from 'nanoid'
 
 export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
-
+    const {roomIDFromUrl} = useParams();
+  
     const [langList, setLangList] = useState([])
     const [currentLang, setCurrentLang] = useState({
         lang: "all",
@@ -91,7 +92,7 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
 
     const handleSubmitLangs = (e) =>{
         e.preventDefault()
-        set(ref(fbaseDB, `polyglot/langs/`), {
+        set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/`), {
             chosenLangs: langList,
            
         }).then(()=>{
@@ -99,6 +100,7 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
         }).catch((error)=>{
             console.error(error)
         })
+        handleShowOptions()
 
     }
 
@@ -161,7 +163,32 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
     )
 }
 
-export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions, handleStartGame}) =>{
+export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermissions}) =>{
+    const {roomIDFromUrl} = useParams();
+    const {gameIDFromUrl} = useParams();
+    const navigateToGame = useNavigate();
+    
+    const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
+    const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
+    
+    const handleStartGame = ({index}) =>{
+       const gamePath = `gameplay/${index}/`
+        onValue(usersDataRef, (snapshot) => {
+            snapshot.forEach((child) =>{
+                const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${child.key}/`), orderByChild('createdAt'))
+                update(newOwnerData,{userPath: gamePath})                 
+            })
+        });
+       
+    }
+
+      //set start game
+      useEffect(()=>{
+        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/userPath/`), orderByChild('createdAt'));
+        onValue(startGameData, (snapshot)=>{
+            navigateToGame(snapshot.val())
+        })
+    },[])
     return (
         <>
             <Modal show={showDesc} onHide={handleShowDesc}>
@@ -175,7 +202,7 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
                     <p className='content-block__desc'>{descData.desc}</p>
                 </Modal.Body>
                 <Modal.Footer className='modal-window__footer'>
-                    {ownerPermissions ? <a className='modal-window__btn' onClick = {handleStartGame}>Играть</a> : null}
+                    {ownerPermissions ? <a className='modal-window__btn' onClick = { ()=> handleStartGame(descData)}>Играть</a> : null}
                 </Modal.Footer>
             </Modal>
         </>
