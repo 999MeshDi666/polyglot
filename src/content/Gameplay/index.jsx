@@ -16,9 +16,7 @@ import sparklesTongue from "../../static/dictionaries/sparkles-tongue.json"
 const synth = window.speechSynthesis;
 let voices = [];
 
-let speakerName;
 let myWord;
-
 
 const getVoices = () => {
     voices = synth.getVoices();

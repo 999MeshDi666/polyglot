@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import {Row, Col, Modal} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
 import { ref,  set, onValue, orderByChild, query, update } from "firebase/database";
-import { nanoid } from 'nanoid'
 
 export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
     const {roomIDFromUrl} = useParams();
