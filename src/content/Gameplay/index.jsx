@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, orderByChild, query } from "firebase/database";
+import { ref, onValue, set, orderByChild, query } from "firebase/database";
 
 import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import SoundBtn  from "../SoundController/index";
@@ -55,13 +55,6 @@ const Gameplay = ({soundPlaying}) =>{
         }); 
     }
 
- 
-    //downcount timer
-    useEffect(() => {
-        const timer =
-          counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-        return () => clearInterval(timer);
-    }, [counter]);
 
     //get game data
     useEffect(()=>{
@@ -80,15 +73,45 @@ const Gameplay = ({soundPlaying}) =>{
           
             const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
             onValue(getGameplayData, (snapshot) => {
+
                 const gameData = snapshot.val()
                 let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
-                setSpeaker(gameData['speaker'])
-                setSynthWord(gameData['words'][randWordIndex]);
+
+                set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
+                    word: gameData['words'][randWordIndex],
+                    speaker: gameData['speaker']
+                }).then(()=>{
+                    console.info('current word has been sended')
+                }).catch((error)=>{
+                    console.error(error)
+                })
+                
             })
+            
         });
       
 
-    },[])
+    },[roomIDFromUrl, gameIDFromUrl])
+
+    useEffect(()=>{
+       const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
+       onValue(getCurrentWord, (snapshot) => { 
+            const currentWordData = snapshot.val();
+            setSpeaker(currentWordData['speaker'])
+            setSynthWord(currentWordData['word']);
+            handleSynthWord()
+          
+       })
+    
+    },[roomIDFromUrl.substring(1), speak])
+
+
+    //downcount timer
+    useEffect(() => {
+        const timer =
+          counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }, [counter]);
 
     
 
