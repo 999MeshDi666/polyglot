@@ -20,7 +20,8 @@ const GameContent = ({soundPlaying}) =>{
     const {gameIDFromUrl} = useParams();
 
     const [isPlaying, setIsPlaying] = useState()
-    const [siwtchContent, setSwitchContent] = useState(false)
+    const [showScoreTable, setShowScoreTable] = useState(false)
+
 
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
@@ -69,17 +70,17 @@ const GameContent = ({soundPlaying}) =>{
        onValue(getCurrentWord, (snapshot) => { 
             const currentWordData = snapshot.val();
             setSpeaker(currentWordData['speaker'])
-            setSynthWord(currentWordData['word']);
-          
+            setSynthWord(currentWordData['word']); 
        })
     
     },[roomIDFromUrl])
     
 
-   
-    const handleSwitchContent = () =>{
-        setSwitchContent((prevState) => !prevState)
+    const handleShowScoreTable = () =>{
+        setShowScoreTable((prevState)=>!prevState)
+    
     }
+   
   
     //get users playing state
     useEffect(()=>{
@@ -95,12 +96,11 @@ const GameContent = ({soundPlaying}) =>{
             <SoundBtn soundPlaying = {soundPlaying} mod_class = 'sound-btn_room'/>
             <Container>
                 <article className="gameplay__block content-block" >
-                    {siwtchContent  ?  
-
+                    {showScoreTable ?  
                         <ScoreTable/> : 
                         <Gameplay synthWord = {synthWord} speaker = {speaker} isPlaying = {isPlaying}/>}
                     {isPlaying ? 
-                        <a className="gameplay__nextPage" onClick={handleSwitchContent}>Дальше</a> : 
+                        <a className="gameplay__nextPage" onClick={handleShowScoreTable}>Дальше</a> : 
                         null
                     }           
                 </article>
