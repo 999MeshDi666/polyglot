@@ -53,7 +53,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Main soundPlaying={soundPlaying}/>}/>
               <Route path="/room/:roomIDFromUrl" element={<Room soundPlaying={soundPlaying}/>}/>
-              <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl/" element={<GameContent soundPlaying={soundPlaying}/>}/>
+              <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl" element={<GameContent soundPlaying={soundPlaying}/>}/>
             </Routes>
         </div>
        

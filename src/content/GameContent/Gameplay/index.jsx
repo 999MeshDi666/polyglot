@@ -20,17 +20,12 @@ if(synth.onvoiceschanged !== undefined) {
 }
 
 
-const Gameplay = () =>{
+const Gameplay = ({ synthWord, speaker}) =>{
 
-    
+   
     const {roomIDFromUrl} = useParams();
-    const {gameIDFromUrl} = useParams();
     const [counter, setCounter] = useState(10);
-
-    const [synthWord, setSynthWord] = useState();
-    const [speaker, setSpeaker] = useState();
     const [speechWord, setSpeechWord] = useState();
- 
     const { speak } = useSpeechSynthesis();
 
     const {listen, stop } = useSpeechRecognition({
@@ -47,53 +42,8 @@ const Gameplay = () =>{
             }
         }); 
     }
-
-    //  get game data
-    useEffect(()=>{
-
-        const getLangList = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/chosenLangs`)
-        onValue(getLangList, (snapshot) => {
-            const langListData = []
-            snapshot.forEach((child) =>{
-                langListData.push(child.val())
-            })
-            
-            let randLangIndex = Math.floor(Math.random() * langListData.length);
-            let chosenRandLang = langListData[randLangIndex]
-            console.log('chosenRandLang',chosenRandLang)
-
-          
-            const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
-            onValue(getGameplayData, (snapshot) => {
-
-                const gameData = snapshot.val()
-                let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
-
-                set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
-                    word: gameData['words'][randWordIndex],
-                    speaker: gameData['speaker']
-                }).then(()=>{
-                    console.info('current word has been sended')
-                }).catch((error)=>{
-                    console.error(error)
-                })
-                
-            })
-            
-        });
-      
-
-    },[roomIDFromUrl.substring(1), gameIDFromUrl])
-
-    useEffect(()=>{
-       const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
-       onValue(getCurrentWord, (snapshot) => { 
-            const currentWordData = snapshot.val();
-            setSpeaker(currentWordData['speaker'])
-            setSynthWord(currentWordData['word']);
-       })
-    
-    },[roomIDFromUrl.substring(1)])
+   
+  
 
 
     //downcount timer
