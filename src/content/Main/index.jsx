@@ -115,16 +115,16 @@ const Main = ({soundPlaying}) =>{
         }
         
     }
-    const checkStartGame = (code, uid) =>{
-        const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/start-game/hasStarted/`);
-        onValue(getUserSize, (snapshot) => {
-            if(snapshot.val() === true){
-                alert('Вы не можете присоедениться к данной комнате так, как игра уже началась')
-            }else{
-                codeValidation(code, uid)
-            }
-        });
-    }
+    // const checkStartGame = (code, uid) =>{
+    //     const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/start-game/hasStarted/`);
+    //     onValue(getUserSize, (snapshot) => {
+    //         if(snapshot.val() === true){
+    //             alert('Вы не можете присоедениться к данной комнате так, как игра уже началась')
+    //         }else{
+    //             codeValidation(code, uid)
+    //         }
+    //     });
+    // }
     const userValidation = () =>{
         if(userName.length === 0){
             alert('Поле псевдонима не должно быть пустым')
@@ -144,7 +144,7 @@ const Main = ({soundPlaying}) =>{
                 if(code.length === 0){
                     alert('Поле кода не должно быть пустым')
                 }else{
-                    checkStartGame(code, uid)
+                    codeValidation(code, uid)
                 }
             }
         }

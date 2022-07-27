@@ -213,11 +213,12 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
 
     //redirect to minigame page
     useEffect(()=>{
-        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path//userPath/`), orderByChild('createdAt'));
+        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`), orderByChild('createdAt'));
         onValue(startGameData, (snapshot)=>{
             navigateToGame(snapshot.val())
         })
     },[roomIDFromUrl, userID])
+
     return (
         <>
             <Modal show={showDesc} onHide={handleShowDesc}>

@@ -8,7 +8,8 @@ import funnySound from "./static/audio/Piggie-Dilly-Circus.mp3"
 
 import Main from "./content/Main"
 import Room from "./content/Room"
-import GameContent from './content/GameContent';
+import Gameplay from './content/Gameplay';
+import ScoreTable from './content/ScoreTable';
 
 
 
@@ -53,7 +54,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Main soundPlaying={soundPlaying}/>}/>
               <Route path="/room/:roomIDFromUrl" element={<Room soundPlaying={soundPlaying}/>}/>
-              <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl" element={<GameContent soundPlaying={soundPlaying}/>}/>
+              <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl/" element={<Gameplay soundPlaying={soundPlaying}/>}/>
+              <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl/scores/" element={<ScoreTable soundPlaying={soundPlaying}/>}/>
             </Routes>
         </div>
        
