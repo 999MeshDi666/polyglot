@@ -18,7 +18,7 @@ import knight from "../../static/images/character-icons/character08.png"
 import ghost from "../../static/images/character-icons/character09.png"
 import frogy from "../../static/images/character-icons/character10.png"
 
-
+import Gameplay from "../../content/GameContent/Gameplay/index"
 
 
 let characterList = [ reaper, dogy, wizard, witch, tin_man, super_girl, pinocchio, knight, ghost, frogy ];
