@@ -20,16 +20,15 @@ const GameContent = ({soundPlaying}) =>{
     const {gameIDFromUrl} = useParams();
 
     const [isPlaying, setIsPlaying] = useState()
-    const [showScoreTable, setShowScoreTable] = useState(false)
-
+    const [switchTable, setSwitchTable] = useState()
+    const [switchScoreTable, setSwitchScoreTable] = useState(false)
 
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
-
+    
     const [speaker, setSpeaker] = useState();
     const [synthWord, setSynthWord] = useState();
 
-    console.log()
     useEffect(()=>{
 
         const getLangList = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/chosenLangs`)
@@ -77,11 +76,19 @@ const GameContent = ({soundPlaying}) =>{
     
 
     const handleShowScoreTable = () =>{
-        setShowScoreTable((prevState)=>!prevState)
-    
+        setSwitchScoreTable((prevState)=> !prevState)
+        set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/switch-table/`), {
+            hasSwitched: switchScoreTable,
+        })
     }
    
-  
+    
+    useEffect(()=>{
+        const getSwitchTable = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/switch-table/hasSwitched`))
+        onValue(getSwitchTable, (snapshot) => {
+            setSwitchTable(snapshot.val())
+        })
+    })
     //get users playing state
     useEffect(()=>{
         const getPlayingData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isPlaying/`), orderByChild('createdAt'))
@@ -96,7 +103,7 @@ const GameContent = ({soundPlaying}) =>{
             <SoundBtn soundPlaying = {soundPlaying} mod_class = 'sound-btn_room'/>
             <Container>
                 <article className="gameplay__block content-block" >
-                    {showScoreTable ?  
+                    {switchTable ?  
                         <ScoreTable/> : 
                         <Gameplay synthWord = {synthWord} speaker = {speaker} isPlaying = {isPlaying}/>}
                     {isPlaying ? 

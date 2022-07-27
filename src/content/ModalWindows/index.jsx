@@ -182,12 +182,13 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
             //update isPlaying on true 
             const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
             update(updateUserPlaying ,{isPlaying: true}) 
-            
+
             //update queueCounter
             const userSize = snapshot.size
-            const updateQCounter = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`);
-            update(updateQCounter,{queueCounter: userSize})
-
+            set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
+                queueCounter: userSize
+            })
+            
         });
 
         //set queue of users
@@ -200,23 +201,19 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
     const handleStartGame = ({index}) =>{
 
         //update hasStarted on true 
-        const startGame = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/start-game/`)
-        update(startGame,{hasStarted: true})  
-
+        set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/start-game/`), {
+            hasStarted: true,
+        })
         //update current users path 
         const gamePath = `gameplay/${index}/`;
-        onValue(usersDataRef, (snapshot) => {
-            snapshot.forEach((child) =>{
-                const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${child.key}/`), orderByChild('createdAt'))
-                update(updateUsersPath,{userPath: gamePath})                 
-            })
-        });
+        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
+        set(updateUsersPath,{userPath: gamePath})    
         createQueue()
     }
 
     //redirect to minigame page
     useEffect(()=>{
-        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/userPath/`), orderByChild('createdAt'));
+        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path//userPath/`), orderByChild('createdAt'));
         onValue(startGameData, (snapshot)=>{
             navigateToGame(snapshot.val())
         })

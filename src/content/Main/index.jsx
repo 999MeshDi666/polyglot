@@ -78,7 +78,6 @@ const Main = ({soundPlaying}) =>{
             image: characterList[characterCounter],
             nickname: userName,
             isOwner: switchContent,
-            userPath: '',
             isPlaying: false,
             score: 0,
             createdAt: Date.now(),
@@ -94,17 +93,7 @@ const Main = ({soundPlaying}) =>{
         navigateToRoom(`/room/:${rid}`);
 
     }
-    const setRoomParams = (rid) =>{
-        set(ref(fbaseDB, `polyglot/rooms/${rid}/start-game/`), {
-            hasStarted: false,
-        })
-        set(ref(fbaseDB, `polyglot/rooms/${rid}/queue-counter/`), {
-            queueCounter: 0,
-        })
-        set(ref(fbaseDB, `polyglot/rooms/${rid}/langs/`), {
-            chosenLangs: 'all',
-        })
-    }
+
     const codeValidation = (code, uid) =>{
         if(code.length === 0){
             alert('Поле кода не должно быть пустым')
@@ -126,16 +115,16 @@ const Main = ({soundPlaying}) =>{
         }
         
     }
-    // const checkStartGame = (code, uid) =>{
-    //     const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/start-game/hasStarted/`);
-    //     onValue(getUserSize, (snapshot) => {
-    //         if(snapshot.val()){
-    //             alert('Вы не можете присоедениться к данной комнате так, как игра уже началась')
-    //         }else{
-    //             codeValidation(code, uid)
-    //         }
-    //     });
-    // }
+    const checkStartGame = (code, uid) =>{
+        const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/start-game/hasStarted/`);
+        onValue(getUserSize, (snapshot) => {
+            if(snapshot.val() === true){
+                alert('Вы не можете присоедениться к данной комнате так, как игра уже началась')
+            }else{
+                codeValidation(code, uid)
+            }
+        });
+    }
     const userValidation = () =>{
         if(userName.length === 0){
             alert('Поле псевдонима не должно быть пустым')
@@ -148,13 +137,14 @@ const Main = ({soundPlaying}) =>{
             let rid = nanoid()
             if(switchContent === true){
                 createUser(rid, uid)
-                setRoomParams(rid)
-               
+                set(ref(fbaseDB, `polyglot/rooms/${rid}/langs/`), {
+                    chosenLangs: 'all',
+                })
             }else{
                 if(code.length === 0){
                     alert('Поле кода не должно быть пустым')
                 }else{
-                    codeValidation(code, uid)
+                    checkStartGame(code, uid)
                 }
             }
         }
