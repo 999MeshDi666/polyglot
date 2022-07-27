@@ -2,13 +2,12 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, set, orderByChild, query } from "firebase/database";
+import { ref, onValue, set, orderByChild, query, update } from "firebase/database";
 
 import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 
-import sparklesTongue from "../../static/dictionaries/sparkles-tongue.json"
 
 
 
@@ -32,6 +31,11 @@ const Gameplay = ({soundPlaying}) =>{
   
     const {roomIDFromUrl} = useParams();
     const {gameIDFromUrl} = useParams();
+    const navigateToScoreTable = useNavigate();
+
+    const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
+    const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
+
     const [counter, setCounter] = useState(10);
     const [synthWord, setSynthWord] = useState();
     const [speaker, setSpeaker] = useState();
@@ -47,7 +51,6 @@ const Gameplay = ({soundPlaying}) =>{
     });
 
     const handleSynthWord = () => {
-        
         voices.forEach((voice) => {
             if (speaker === voice.name) {
                 speak({ text: synthWord, voice: voice });
@@ -55,55 +58,61 @@ const Gameplay = ({soundPlaying}) =>{
         }); 
     }
 
+    const handleRedirectScorePage = () =>{
+       
+       
+    }
+  
+
 
     //get game data
-    useEffect(()=>{
+    // useEffect(()=>{
 
-        const getLangList = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/chosenLangs`)
-        onValue(getLangList, (snapshot) => {
-            const langListData = []
-            snapshot.forEach((child) =>{
-                langListData.push(child.val())
-            })
+    //     const getLangList = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/chosenLangs`)
+    //     onValue(getLangList, (snapshot) => {
+    //         const langListData = []
+    //         snapshot.forEach((child) =>{
+    //             langListData.push(child.val())
+    //         })
             
-            let randLangIndex = Math.floor(Math.random() * langListData.length);
-            let chosenRandLang = langListData[randLangIndex]
-            console.log('chosenRandLang',chosenRandLang)
+    //         let randLangIndex = Math.floor(Math.random() * langListData.length);
+    //         let chosenRandLang = langListData[randLangIndex]
+    //         console.log('chosenRandLang',chosenRandLang)
 
           
-            const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
-            onValue(getGameplayData, (snapshot) => {
+    //         const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
+    //         onValue(getGameplayData, (snapshot) => {
 
-                const gameData = snapshot.val()
-                let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
+    //             const gameData = snapshot.val()
+    //             let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
 
-                set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
-                    word: gameData['words'][randWordIndex],
-                    speaker: gameData['speaker']
-                }).then(()=>{
-                    console.info('current word has been sended')
-                }).catch((error)=>{
-                    console.error(error)
-                })
+    //             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
+    //                 word: gameData['words'][randWordIndex],
+    //                 speaker: gameData['speaker']
+    //             }).then(()=>{
+    //                 console.info('current word has been sended')
+    //             }).catch((error)=>{
+    //                 console.error(error)
+    //             })
                 
-            })
+    //         })
             
-        });
+    //     });
       
 
-    },[roomIDFromUrl, gameIDFromUrl])
+    // },[roomIDFromUrl.substring(1), gameIDFromUrl])
 
-    useEffect(()=>{
-       const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
-       onValue(getCurrentWord, (snapshot) => { 
-            const currentWordData = snapshot.val();
-            setSpeaker(currentWordData['speaker'])
-            setSynthWord(currentWordData['word']);
-            handleSynthWord()
+    // useEffect(()=>{
+    //    const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
+    //    onValue(getCurrentWord, (snapshot) => { 
+    //         const currentWordData = snapshot.val();
+    //         setSpeaker(currentWordData['speaker'])
+    //         setSynthWord(currentWordData['word']);
+    //         handleSynthWord()
           
-       })
+    //    })
     
-    },[roomIDFromUrl.substring(1), speak])
+    // },[roomIDFromUrl.substring(1), speak])
 
 
     //downcount timer
@@ -112,8 +121,6 @@ const Gameplay = ({soundPlaying}) =>{
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
     }, [counter]);
-
-    
 
     return(
         <main className="gameplay"> 
@@ -155,7 +162,8 @@ const Gameplay = ({soundPlaying}) =>{
                                 <p className="gameplay__cur-word">{speechWord}</p>
                             </div>
                         </div>
-                    </div>                
+                    </div>     
+                    <a className="gameplay__nextPage" onClick={handleRedirectScorePage}>Дальше</a>           
                 </article>
             </Container>
            

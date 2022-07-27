@@ -89,8 +89,10 @@ export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
         });  
     };
 
+
     const handleSubmitLangs = (e) =>{
         e.preventDefault()
+
         set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/`), {
             chosenLangs: langList,
            
@@ -169,19 +171,51 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
     
-    const handleStartGame = ({index}) =>{
-       const gamePath = `gameplay/${index}/`
-        onValue(usersDataRef, (snapshot) => {
-            snapshot.forEach((child) =>{
-                const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${child.key}/`), orderByChild('createdAt'))
-                update(newOwnerData,{userPath: gamePath})                 
-            })
-        });
+    const createQueue = () =>{
        
+        onValue(usersDataRef, (snapshot) => {
+            const userList = []
+            snapshot.forEach((child) =>{
+                userList.push(child.val())
+            })
+
+            //update isPlaying on true 
+            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
+            update(updateUserPlaying ,{isPlaying: true}) 
+            
+            //update queueCounter
+            const userSize = snapshot.size
+            const updateQCounter = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`);
+            update(updateQCounter,{queueCounter: userSize})
+
+        });
+
+        //set queue of users
+        onValue(usersDataRef, (snapshot) => {
+            const userCopy = snapshot.val()
+            set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), {...userCopy})
+        })
     }
 
-      //set start game
-      useEffect(()=>{
+    const handleStartGame = ({index}) =>{
+
+        //update hasStarted on true 
+        const startGame = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/start-game/`)
+        update(startGame,{hasStarted: true})  
+
+        //update current users path 
+        const gamePath = `gameplay/${index}/`;
+        onValue(usersDataRef, (snapshot) => {
+            snapshot.forEach((child) =>{
+                const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${child.key}/`), orderByChild('createdAt'))
+                update(updateUsersPath,{userPath: gamePath})                 
+            })
+        });
+        createQueue()
+    }
+
+    //redirect to minigame page
+    useEffect(()=>{
         const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/userPath/`), orderByChild('createdAt'));
         onValue(startGameData, (snapshot)=>{
             navigateToGame(snapshot.val())

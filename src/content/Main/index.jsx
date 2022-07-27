@@ -95,6 +95,17 @@ const Main = ({soundPlaying}) =>{
         navigateToRoom(`/room/:${rid}`);
 
     }
+    const setRoomParams = (rid) =>{
+        set(ref(fbaseDB, `polyglot/rooms/${rid}/start-game/`), {
+            hasStarted: false,
+        })
+        set(ref(fbaseDB, `polyglot/rooms/${rid}/queue-counter/`), {
+            queueCounter: 0,
+        })
+        set(ref(fbaseDB, `polyglot/rooms/${rid}/langs/`), {
+            chosenLangs: 'all',
+        })
+    }
     const codeValidation = (code, uid) =>{
         if(code.length === 0){
             alert('Поле кода не должно быть пустым')
@@ -104,7 +115,6 @@ const Main = ({soundPlaying}) =>{
                 let userSizeData; 
                 onValue(getUserSize, (snapshot) => {
                     userSizeData = snapshot.size
-                    console.log('userSizeData:',userSizeData)
                 });
                 if(userSizeData === 5){
                     alert('Комната имеет достаточное количество игроков')
@@ -117,6 +127,16 @@ const Main = ({soundPlaying}) =>{
         }
         
     }
+    // const checkStartGame = (code, uid) =>{
+    //     const getUserSize = ref(fbaseDB, `polyglot/rooms/${code}/start-game/hasStarted/`);
+    //     onValue(getUserSize, (snapshot) => {
+    //         if(snapshot.val()){
+    //             alert('Вы не можете присоедениться к данной комнате так, как игра уже началась')
+    //         }else{
+    //             codeValidation(code, uid)
+    //         }
+    //     });
+    // }
     const userValidation = () =>{
         if(userName.length === 0){
             alert('Поле псевдонима не должно быть пустым')
@@ -129,6 +149,8 @@ const Main = ({soundPlaying}) =>{
             let rid = nanoid()
             if(switchContent === true){
                 createUser(rid, uid)
+                setRoomParams(rid)
+               
             }else{
                 if(code.length === 0){
                     alert('Поле кода не должно быть пустым')
