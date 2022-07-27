@@ -20,7 +20,7 @@ if(synth.onvoiceschanged !== undefined) {
 }
 
 
-const Gameplay = ({ synthWord, speaker}) =>{
+const Gameplay = ({ synthWord, speaker, isPlaying}) =>{
 
    
     const {roomIDFromUrl} = useParams();
@@ -62,7 +62,7 @@ const Gameplay = ({ synthWord, speaker}) =>{
                 </span>
             </div>
             <div className="gameplay__main-content">
-                <div>
+                <div className="mb-4">
                     <div className="gameplay__cur-word-block">
                         <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={handleSynthWord}>
                             <span className="icon-repeat-btn"></span>
@@ -73,17 +73,19 @@ const Gameplay = ({ synthWord, speaker}) =>{
                         <p className="gameplay__cur-word">{synthWord}</p>
                     </div>
                 </div>
-                <button 
-                    disabled={counter === 0 ? false : true}
-                    className="gameplay__mic-btn" 
-                    onMouseDown={listen} 
-                    onMouseUp={stop} 
-                    onTouchStart={listen} 
-                    onTouchEnd={stop}
-                >
-                    <span className="icon-mic"></span>
-                </button>
-                <div>
+                {isPlaying ? 
+                    <button 
+                        disabled={counter === 0 ? false : true}
+                        className="gameplay__mic-btn" 
+                        onMouseDown={listen} 
+                        onMouseUp={stop} 
+                        onTouchStart={listen} 
+                        onTouchEnd={stop}
+                    >
+                        <span className="icon-mic"></span>
+                    </button> : null}
+                
+                <div className="mt-4">
                     <p  className="gameplay__cur-word-title">Произнес:</p>
                     <div className="content-block__body gameplay__word-container">
                         <p className="gameplay__cur-word">{speechWord}</p>

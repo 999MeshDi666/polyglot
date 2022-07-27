@@ -81,7 +81,6 @@ const GameContent = ({soundPlaying}) =>{
         setSwitchContent((prevState) => !prevState)
     }
   
-
     //get users playing state
     useEffect(()=>{
         const getPlayingData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isPlaying/`), orderByChild('createdAt'))
@@ -99,7 +98,7 @@ const GameContent = ({soundPlaying}) =>{
                     {siwtchContent  ?  
 
                         <ScoreTable/> : 
-                        <Gameplay synthWord = {synthWord} speaker = {speaker}/>}
+                        <Gameplay synthWord = {synthWord} speaker = {speaker} isPlaying = {isPlaying}/>}
                     {isPlaying ? 
                         <a className="gameplay__nextPage" onClick={handleSwitchContent}>Дальше</a> : 
                         null

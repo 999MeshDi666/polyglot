@@ -220,7 +220,7 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
         onValue(startGameData, (snapshot)=>{
             navigateToGame(snapshot.val())
         })
-    },[])
+    },[roomIDFromUrl, userID])
     return (
         <>
             <Modal show={showDesc} onHide={handleShowDesc}>
