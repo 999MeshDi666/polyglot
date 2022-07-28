@@ -18,6 +18,13 @@ const UserBar = () =>{
         remove(removableUser) 
         sessionStorage.removeItem('current-user')
         navigateToMain(`/`);
+
+        onValue(usersDataRef, (snapshot) => {
+            if(snapshot.size === 0){
+                let removeRoom = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/`)
+                remove(removeRoom) 
+            }
+        })
     }
 
     //get users data
