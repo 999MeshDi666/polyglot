@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, set, orderByChild, query, update } from "firebase/database";
+import { ref, onValue, set, orderByChild, query, update, child} from "firebase/database";
+import axios from "axios";
 
 import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import SoundBtn  from "../SoundController/index";
@@ -10,7 +11,7 @@ import UserBar from "../User-bar";
 
 
 
-
+const BACKEND_URL = "http://localhost:8000/";
 
 const synth = window.speechSynthesis;
 let voices = [];
@@ -36,6 +37,7 @@ const Gameplay = ({soundPlaying}) =>{
     const [counter, setCounter] = useState(10);
 
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
+    const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
     const [synthWord, setSynthWord] = useState();
     const [speaker, setSpeaker] = useState();
@@ -65,7 +67,6 @@ const Gameplay = ({soundPlaying}) =>{
         }); 
     }
 
-  
     //redirect to scores table
     useEffect(()=>{
         const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
@@ -83,6 +84,46 @@ const Gameplay = ({soundPlaying}) =>{
             setIsPlaying(snapshot.val())
         })
     },[roomIDFromUrl, userID])
+
+    useEffect(()=>{
+
+        onValue(usersDataRef, (snapshot) => {
+            const userList = []
+            const userCopy = snapshot.val()
+            const userSize = snapshot.size
+            snapshot.forEach((child) =>{
+                userList.push(child.val())
+            })
+
+            //update isPlaying on true 
+            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/${userList[1]['uuid']}/`), orderByChild('createdAt'))
+            update(updateUserPlaying ,{isPlaying: true})
+
+
+            onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
+                if(snapshot.val() === 0){
+
+                    //update queueCounter
+                    
+                    set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
+                        queueCounter: userSize
+                    })
+                    
+                    set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), {...userCopy})
+
+                }
+
+            })
+                
+
+            
+            
+        });
+        
+
+    },[])
+
+    
 
 
     //get game data

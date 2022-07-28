@@ -68,10 +68,10 @@ const Room = ({soundPlaying}) =>{
         setShowOptions((prevOpt)=>!prevOpt)
     }
 
-    //set new owner
+   
     useEffect(()=>{
-        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isOwner/`), orderByChild('createdAt'));
-        onValue(startGameData, (snapshot)=>{
+        const getOwner = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isOwner/`), orderByChild('createdAt'));
+        onValue(getOwner, (snapshot)=>{
             setOwnerPermissions(snapshot.val())
         })
     },[])
