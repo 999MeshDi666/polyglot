@@ -6,7 +6,7 @@ import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref,set, onValue, orderByChild, query, limitToFirst, remove  } from "firebase/database";
+import { ref,set, onValue, orderByChild, query, remove  } from "firebase/database";
 
 
 const ScoreTable = ({soundPlaying}) =>{
@@ -26,15 +26,17 @@ const ScoreTable = ({soundPlaying}) =>{
 
     const handleRedirectToGameplay = () =>{
 
-         //update queueCounter
+       
+       
+        //update queueCounter
         const userSize = qcounter - 1
         set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
             queueCounter: userSize
         })
 
-        const removeFromQ = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/${quser}/`), orderByChild('createdAt'))
+        const removeFromQ = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/${quser}/`)
         remove(removeFromQ )
-       
+        
         //update current users path 
         navigateToGameplay('gameplay/${gameIDFromUrl}/')
 
@@ -51,13 +53,13 @@ const ScoreTable = ({soundPlaying}) =>{
             })
             setQUser(userList[0]['uuid'])
         })
-        const getQCounter = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`)
-        onValue(getQCounter, (snapshot) => {
+
+        onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
             setQCounter(snapshot.val())
             
         })
 
-    },[qcounter, quser])
+    },[roomIDFromUrl, qcounter, quser])
     console.log(qcounter)
     //get users data
     useEffect(()=>{
@@ -69,7 +71,7 @@ const ScoreTable = ({soundPlaying}) =>{
             })
             setUsers(userList)
         });
-    },[roomIDFromUrl.substring(1)])
+    },[roomIDFromUrl, usersDataRef])
 
     //get users playing state
     useEffect(()=>{
@@ -112,7 +114,7 @@ const ScoreTable = ({soundPlaying}) =>{
                     </div>
                 </article>
                 {isPlaying ? 
-                    <a className="gameplay__nextPage" onClick={handleRedirectToGameplay}>Дальше</a> : 
+                    <button className="gameplay__nextPage" onClick={handleRedirectToGameplay}>Дальше</button> : 
                     null
                 }        
             </Container>

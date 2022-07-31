@@ -235,7 +235,7 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
                     <p className='content-block__desc'>{descData.desc}</p>
                 </Modal.Body>
                 <Modal.Footer className='modal-window__footer'>
-                    {ownerPermissions ? <a className='modal-window__btn' onClick = { ()=> handleStartGame(descData)}>Играть</a> : null}
+                    {ownerPermissions ? <button className='modal-window__btn' onClick = { ()=> handleStartGame(descData)}>Играть</button> : null}
                 </Modal.Footer>
             </Modal>
         </>

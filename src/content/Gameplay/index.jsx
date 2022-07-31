@@ -36,8 +36,8 @@ const Gameplay = ({soundPlaying}) =>{
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
-    const [synthWord, setSynthWord] = useState();
-    const [speaker, setSpeaker] = useState();
+    const [synthWord, setSynthWord] = useState('');
+    const [speaker, setSpeaker] = useState('');
     const [speechWord, setSpeechWord] = useState();
     const { speak } = useSpeechSynthesis();
 
@@ -85,35 +85,32 @@ const Gameplay = ({soundPlaying}) =>{
 
     //set queue again
     useEffect(()=>{
-
-        onValue(usersDataRef, (snapshot) => {
-            const userList = []
-            const userCopy = snapshot.val()
-            const userSize = snapshot.size
-            snapshot.forEach((child) =>{
-                userList.push(child.val())
-            })
-
-            //update isPlaying on true 
-            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/${userList[1]['uuid']}/`), orderByChild('createdAt'))
-            update(updateUserPlaying ,{isPlaying: true})
-
-
-            onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
-                if(snapshot.val() === 0){
-                    //update queueCounter
-                    
+        onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
+            if(snapshot.val() === 0){
+                //update queueCounter
+                onValue(usersDataRef, (snapshot) => {
+                    const userCopy = snapshot.val()
+                    const userSize = snapshot.size
                     set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
                         queueCounter: userSize
                     })
                     set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), {...userCopy})
-
-                }
-
-            })
+                });
                
-        });
-        
+            }
+        })
+       
+        onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), orderByChild('createdAt')), (snapshot) => {
+            let usersQList = []
+            snapshot.forEach((child) =>{
+                usersQList.push(child.val())
+            })
+            const updateQUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/${usersQList[0]['uuid']}/isPlaying/`), orderByChild('createdAt'))
+            set(updateQUserPlaying, true)
+            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${usersQList[0]['uuid']}/isPlaying/`), orderByChild('createdAt'))
+            set(updateUserPlaying, true)
+           
+        })
 
     },[])
 
