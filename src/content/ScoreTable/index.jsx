@@ -42,9 +42,6 @@ const ScoreTable = ({soundPlaying}) =>{
         set(updateUsersPath,{userPath: ' '})  
     }
 
- 
-
-
     useEffect(()=>{
 
         onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), orderByChild('createdAt')), (snapshot) => {

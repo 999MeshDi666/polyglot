@@ -3,15 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
 import { ref, onValue, set, orderByChild, query, update, child} from "firebase/database";
-import axios from "axios";
 
 import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 
 
-
-const BACKEND_URL = "http://localhost:8000/";
 
 const synth = window.speechSynthesis;
 let voices = [];
@@ -77,6 +74,7 @@ const Gameplay = ({soundPlaying}) =>{
         })
     },[roomIDFromUrl, userID])
 
+
    //get users playing state
    useEffect(()=>{
         const getPlayingData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isPlaying/`), orderByChild('createdAt'))
@@ -85,6 +83,7 @@ const Gameplay = ({soundPlaying}) =>{
         })
     },[roomIDFromUrl, userID])
 
+    //set queue again
     useEffect(()=>{
 
         onValue(usersDataRef, (snapshot) => {
@@ -102,62 +101,66 @@ const Gameplay = ({soundPlaying}) =>{
 
             onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
                 if(snapshot.val() === 0){
-
                     //update queueCounter
                     
                     set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
                         queueCounter: userSize
                     })
-                    
                     set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), {...userCopy})
 
                 }
 
             })
-                
-
-            
-            
+               
         });
         
 
     },[])
 
     
+    const setRandomWord = (langList) =>{
+        let randLangIndex = Math.floor(Math.random() * langList.length);
+        let chosenRandLang = langList[randLangIndex]
+                
+        const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
+        onValue(getGameplayData, (snapshot) => {
 
+            const gameData = snapshot.val()
+            let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
 
+            set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
+                word: gameData['words'][randWordIndex],
+                speaker: gameData['speaker']
+            }).then(()=>{
+                console.info('current word has been sended')
+            }).catch((error)=>{
+                console.error(error)
+            })
+                    
+        })
+
+    }
     //get game data
     useEffect(()=>{
-
         const getLangList = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/langs/chosenLangs`)
         onValue(getLangList, (snapshot) => {
-            const langListData = []
-            snapshot.forEach((child) =>{
-                langListData.push(child.val())
-            })
+            const langListData = snapshot.val()
+    
+            console.log('langListData', langListData)
             
-            let randLangIndex = Math.floor(Math.random() * langListData.length);
-            let chosenRandLang = langListData[randLangIndex]
-            console.log('chosenRandLang',chosenRandLang)
-
-          
-            const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
-            onValue(getGameplayData, (snapshot) => {
-
-                const gameData = snapshot.val()
-                let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
-
-                set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
-                    word: gameData['words'][randWordIndex],
-                    speaker: gameData['speaker']
-                }).then(()=>{
-                    console.info('current word has been sended')
-                }).catch((error)=>{
-                    console.error(error)
+            if(langListData[0] === 'all'){
+                const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/`)
+                let langKeys = []
+                onValue(getGameplayData, (snapshot)=>{
+                    snapshot.forEach((child)=>{
+                        langKeys.push(child.key)
+                    })
+                    console.log('langKeys', langKeys)
                 })
-                
-            })
-            
+                setRandomWord(langKeys)
+            }else{
+                setRandomWord(langListData)
+            }
         });
     
     },[roomIDFromUrl, gameIDFromUrl])

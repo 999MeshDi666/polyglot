@@ -135,10 +135,11 @@ const Main = ({soundPlaying}) =>{
         else{
             let uid = nanoid()
             let rid = nanoid()
+
             if(switchContent === true){
                 createUser(rid, uid)
                 set(ref(fbaseDB, `polyglot/rooms/${rid}/langs/`), {
-                    chosenLangs: 'all',
+                    chosenLangs: ['all'],
                 })
             }else{
                 if(code.length === 0){

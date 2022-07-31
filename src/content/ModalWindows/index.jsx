@@ -3,10 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {Row, Col, Modal} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
 import { ref,  set, onValue, orderByChild, query, update} from "firebase/database";
-import axios from "axios";
 
-
-const BACKEND_URL = "http://localhost:8000/";
 
 
 export const OptionModalWindow = ({handleShowOptions, showOptions}) =>{
