@@ -6,7 +6,7 @@ import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref,set, onValue, orderByChild, query, remove  } from "firebase/database";
+import { ref,set, onValue, orderByChild, query, update  } from "firebase/database";
 
 
 const ScoreTable = ({soundPlaying}) =>{
@@ -19,23 +19,20 @@ const ScoreTable = ({soundPlaying}) =>{
     const [isPlaying, setIsPlaying] = useState()
     const [users, setUsers] = useState();
     const [qcounter, setQCounter] = useState()
-    const [quser, setQUser] = useState()
 
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
     const handleRedirectToGameplay = () =>{
-
-       
-       
+        
+        
         //update queueCounter
-        const userSize = qcounter - 1
+        const userSize = qcounter + 1
         set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
             queueCounter: userSize
         })
 
-        const removeFromQ = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/${quser}/`)
-        remove(removeFromQ )
+        update(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}`), orderByChild('createdAt')),{isPlaying: false})
         
         //update current users path 
         navigateToGameplay('gameplay/${gameIDFromUrl}/')
@@ -45,22 +42,13 @@ const ScoreTable = ({soundPlaying}) =>{
     }
 
     useEffect(()=>{
-
-        onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), orderByChild('createdAt')), (snapshot) => {
-            const userList = []
-            snapshot.forEach((child) =>{
-                userList.push(child.val())
-            })
-            setQUser(userList[0]['uuid'])
-        })
-
+      
         onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
             setQCounter(snapshot.val())
             
         })
 
-    },[roomIDFromUrl, qcounter, quser])
-    console.log(qcounter)
+    },[roomIDFromUrl, qcounter])
     //get users data
     useEffect(()=>{
         onValue(usersDataRef, (snapshot) => {

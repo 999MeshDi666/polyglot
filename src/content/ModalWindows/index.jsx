@@ -174,44 +174,15 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
     
-    const createQueue = () =>{
-       
-        onValue(usersDataRef, (snapshot) => {
-            const userList = []
-            snapshot.forEach((child) =>{
-                userList.push(child.val())
-            })
-
-            //update isPlaying on true 
-            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
-            update(updateUserPlaying ,{isPlaying: true}) 
-
-            //update queueCounter
-            const userSize = snapshot.size
-            set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
-                queueCounter: userSize
-            })
-            
-        });
-
-        //set queue of users
-        onValue(usersDataRef, (snapshot) => {
-            const userCopy = snapshot.val()
-            set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), {...userCopy})
-        })
-    }
+   
 
     const handleStartGame = ({index}) =>{
-
-        //update hasStarted on true 
-        set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/start-game/`), {
-            hasStarted: true,
-        })
+       
         //update current users path 
         const gamePath = `gameplay/${index}/`;
         const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-        set(updateUsersPath,{userPath: gamePath})    
-        createQueue()
+        set(updateUsersPath,{userPath: gamePath})   
+        
     }
 
     //redirect to minigame page
@@ -220,7 +191,11 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
         onValue(startGameData, (snapshot)=>{
             navigateToGame(snapshot.val())
         })
-    },[roomIDFromUrl, userID])
+        //update queueCounter
+        set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
+            queueCounter: 0
+        })
+    },[roomIDFromUrl])
 
     return (
         <>
