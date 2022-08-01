@@ -208,14 +208,20 @@ const Gameplay = ({soundPlaying}) =>{
     },[roomIDFromUrl, gameIDFromUrl])
 
     useEffect(()=>{
-       const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
-       onValue(getCurrentWord, (snapshot) => { 
-            const currentWordData = snapshot.val();
-            setSpeaker(currentWordData['speaker'])
+        let currentWordData;
+        const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
+        onValue(getCurrentWord, (snapshot) => { 
+            currentWordData = snapshot.val();
+            voices.forEach((voice) => {
+                if (currentWordData['speaker'] === voice.name) {
+                    setSpeaker(voice)
+                   
+                }
+            });
             setSynthWord(currentWordData['word']); 
-            setLang(currentWordData['lang'])
-       })
-    
+            setLang(currentWordData['lang']) 
+        })
+        
     },[roomIDFromUrl])
 
     //downcount timer
@@ -240,7 +246,7 @@ const Gameplay = ({soundPlaying}) =>{
                     <div className="gameplay__main-content">
                         <div className="mb-4">
                             <div className="gameplay__cur-word-block">
-                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord })}>
+                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord, voice: speaker })}>
                                     <span className="icon-repeat-btn"></span>
                                 </button>
                                 <p className="gameplay__cur-word-title">Произнеси:</p>
