@@ -10,17 +10,17 @@ import UserBar from "../User-bar";
 
 
 
-// const synth = window.speechSynthesis;
-// let voices = [];
+const synth = window.speechSynthesis;
+let voices = [];
 
 
 
-// const getVoices = () => {
-//     voices = synth.getVoices();
-// };
-// if(synth.onvoiceschanged !== undefined) {
-//     synth.onvoiceschanged = getVoices;
-// }
+const getVoices = () => {
+    voices = synth.getVoices();
+};
+if(synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = getVoices;
+}
 
 
 const Gameplay = ({soundPlaying}) =>{
@@ -43,7 +43,7 @@ const Gameplay = ({soundPlaying}) =>{
     const [lang, setLang] = useState('')
     // const [score, setScore] = useState(0)
     const [speechWord, setSpeechWord] = useState();
-    const { speak, voices } = useSpeechSynthesis();
+    const { speak } = useSpeechSynthesis();
 
 
     const handleRedirectToScoreTable = () =>{
@@ -214,9 +214,12 @@ const Gameplay = ({soundPlaying}) =>{
         onValue(getCurrentWord, (snapshot) => { 
             currentWordData = snapshot.val();
         
+            console.log({voices});
             voices.forEach((voice) => {
                 if (currentWordData['speaker'] === voice.name) {
                     setSpeaker(voice)
+    
+                    
                 }
             });
             setSynthWord(currentWordData['word']); 
@@ -231,7 +234,7 @@ const Gameplay = ({soundPlaying}) =>{
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
     }, [counter]);
-
+console.log(speaker);
     return(
         <main className="gameplay"> 
             <UserBar/>
