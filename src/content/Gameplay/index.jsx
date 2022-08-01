@@ -64,19 +64,20 @@ const Gameplay = ({soundPlaying}) =>{
         
     }
     
-   
+  
+
     const {listen, listening, stop } = useSpeechRecognition({
         onResult,
         onEnd
     });
 
-    const handleSynthWord = () => {
-        voices.forEach((voice) => {
-            if (speaker === voice.name) {
-                speak({ text: synthWord, voice: voice });
-            }
-        }); 
-    }
+    // const handleSynthWord = () => {
+    //     voices.forEach((voice) => {
+    //         if (speaker === voice.name) {
+    //             speak({ text: synthWord, voice: voice });
+    //         }
+    //     }); 
+    // }
 
 
     //redirect to scores table
@@ -113,9 +114,9 @@ const Gameplay = ({soundPlaying}) =>{
                 qCounter = snapshot.val()
             })
 
-            // //update next isPlaying on true 
-            // const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[qCounter]['uuid']}/`), orderByChild('createdAt'))
-            // update(updateUserPlaying ,{isPlaying: true}) 
+            //update next isPlaying on true 
+            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[qCounter]['uuid']}/`), orderByChild('createdAt'))
+            update(updateUserPlaying ,{isPlaying: true}) 
 
             //set queue of users
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), userList[qCounter])
@@ -239,7 +240,7 @@ const Gameplay = ({soundPlaying}) =>{
                     <div className="gameplay__main-content">
                         <div className="mb-4">
                             <div className="gameplay__cur-word-block">
-                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={speak({ text: synthWord })}>
+                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord})}>
                                     <span className="icon-repeat-btn"></span>
                                 </button>
                                 <p className="gameplay__cur-word-title">Произнеси:</p>
