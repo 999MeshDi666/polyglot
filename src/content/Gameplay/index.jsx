@@ -64,8 +64,7 @@ const Gameplay = ({soundPlaying}) =>{
         
     }
     
-  
-
+   
     const {listen, listening, stop } = useSpeechRecognition({
         onResult,
         onEnd
