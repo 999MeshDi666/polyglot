@@ -10,18 +10,18 @@ import UserBar from "../User-bar";
 
 
 
-const synth = window.speechSynthesis;
-let voices = [];
+// const synth = window.speechSynthesis;
+// let voices = [];
 
 
 
-const getVoices = () => {
-    voices = synth.getVoices();
-    console.log(voices)
-};
-if(synth.onvoiceschanged !== undefined) {
-    synth.onvoiceschanged = getVoices;
-}
+// const getVoices = () => {
+//     voices = synth.getVoices();
+//     console.log(voices)
+// };
+// if(synth.onvoiceschanged !== undefined) {
+//     synth.onvoiceschanged = getVoices;
+// }
 
 
 const Gameplay = ({soundPlaying}) =>{
@@ -40,12 +40,13 @@ const Gameplay = ({soundPlaying}) =>{
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
     const [synthWord, setSynthWord] = useState('');
-    const [speaker, setSpeaker] = useState(null);
+    const [voiceIndex, setVoiceIndex] = useState(null);
     const [lang, setLang] = useState('')
     // const [score, setScore] = useState(0)
     const [speechWord, setSpeechWord] = useState();
-    const { speak } = useSpeechSynthesis();
+    const { speak, voices } = useSpeechSynthesis();
     console.log('voices', voices)
+    let curVoice = voices[voiceIndex] || null
 
     const handleRedirectToScoreTable = () =>{
         //update current users path 
@@ -73,14 +74,14 @@ const Gameplay = ({soundPlaying}) =>{
         onEnd
     });
 
-    const handleSynthWord = () => {
-        voices.forEach((voice) => {
-            if (speaker === voice.name) {
+    // const handleSynthWord = () => {
+    //     voices.forEach((voice) => {
+    //         if (speaker === voice.name) {
                 
-                setSpeaker(voice)
-            }
-        }); 
-    }
+    //             setSpeaker(voice)
+    //         }
+    //     }); 
+    // }
 
 
     //redirect to scores table
@@ -174,7 +175,7 @@ const Gameplay = ({soundPlaying}) =>{
 
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
                 word: gameData['words'][randWordIndex],
-                speakerIndex: gameData['speakerIndex'],
+                voiceIndex: gameData['voiceIndex'],
                 lang: gameData['lang']
             }).then(()=>{
                 console.info('current word has been sended')
@@ -219,11 +220,12 @@ const Gameplay = ({soundPlaying}) =>{
             // console.log('voicess',{voices});
             setSynthWord(currentWordData['word']); 
             setLang(currentWordData['lang'])
-            voices.forEach((voice) => {
-                if (currentWordData['speakerIndex'] === voice.name) {
-                    setSpeaker(voice)
-                }
-            }); 
+            setVoiceIndex(currentWordData['voiceIndex'])
+            // voices.forEach((voice) => {
+            //     if (currentWordData['speakerIndex'] === voice.name) {
+            //         setSpeaker(voice)
+            //     }
+            // }); 
            
             
         })
@@ -236,7 +238,7 @@ const Gameplay = ({soundPlaying}) =>{
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
     }, [counter]);
-    console.log('speaker', speaker);
+    console.log('speaker', curVoice);
     return(
         <main className="gameplay"> 
             <UserBar/>
@@ -252,7 +254,7 @@ const Gameplay = ({soundPlaying}) =>{
                     <div className="gameplay__main-content">
                         <div className="mb-4">
                             <div className="gameplay__cur-word-block">
-                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord, voice: speaker })}>
+                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord, voice: curVoice })}>
                                     <span className="icon-repeat-btn"></span>
                                 </button>
                                 <p className="gameplay__cur-word-title">Произнеси:</p>
