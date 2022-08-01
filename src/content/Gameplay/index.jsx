@@ -13,7 +13,7 @@ import UserBar from "../User-bar";
 const synth = window.speechSynthesis;
 let voices = [];
 
-let myWord;
+
 
 const getVoices = () => {
     voices = synth.getVoices();
@@ -32,12 +32,16 @@ const Gameplay = ({soundPlaying}) =>{
 
     const [isPlaying, setIsPlaying] = useState()
     const [counter, setCounter] = useState(10);
+    const [quserNickname, setquserNickname] = useState('')
+    const [userWord, setUserWord] = useState('')
 
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
     const [synthWord, setSynthWord] = useState('');
     const [speaker, setSpeaker] = useState('');
+    const [lang, setLang] = useState('')
+    // const [score, setScore] = useState(0)
     const [speechWord, setSpeechWord] = useState();
     const { speak } = useSpeechSynthesis();
 
@@ -48,12 +52,23 @@ const Gameplay = ({soundPlaying}) =>{
         set(updateUsersPath,{userPath: gamePath})    
     }
 
+    const onResult = (result) => {
+        setSpeechWord(result);
+        setUserWord(result)
+        console.log(result); 
+    }
+    const onEnd = ()=>{
+        if(userWord === synthWord){
 
-    const {listen, stop } = useSpeechRecognition({
-        onResult: (result) => {
-            setSpeechWord(result);
-            console.log(result); 
-        },
+        }
+        
+    }
+    
+  
+
+    const {listen, listening, stop } = useSpeechRecognition({
+        onResult,
+        onEnd
     });
 
     const handleSynthWord = () => {
@@ -63,6 +78,7 @@ const Gameplay = ({soundPlaying}) =>{
             }
         }); 
     }
+
 
     //redirect to scores table
     useEffect(()=>{
@@ -106,6 +122,7 @@ const Gameplay = ({soundPlaying}) =>{
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), userList[qCounter])
 
 
+
             onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
                
                 let userList = []
@@ -124,11 +141,19 @@ const Gameplay = ({soundPlaying}) =>{
             
         });
     }
-    //set queue again
+    
     useEffect(()=>{
 
         //update hasStarted on true 
         set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/start-game/`), {hasStarted: true})
+
+        onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), (snapshot)=>{
+            const quser = snapshot.val()
+            setquserNickname(quser['nickname'])
+
+        })
+
+        //set queue again
         createQueue()
     
     },[roomIDFromUrl])
@@ -146,7 +171,8 @@ const Gameplay = ({soundPlaying}) =>{
 
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
                 word: gameData['words'][randWordIndex],
-                speaker: gameData['speaker']
+                speaker: gameData['speaker'],
+                lang: gameData['lang']
             }).then(()=>{
                 console.info('current word has been sended')
             }).catch((error)=>{
@@ -187,6 +213,7 @@ const Gameplay = ({soundPlaying}) =>{
             const currentWordData = snapshot.val();
             setSpeaker(currentWordData['speaker'])
             setSynthWord(currentWordData['word']); 
+            setLang(currentWordData['lang'])
        })
     
     },[roomIDFromUrl])
@@ -205,7 +232,7 @@ const Gameplay = ({soundPlaying}) =>{
             <Container>
                 <article className="gameplay__block content-block">
                     <div className="gameplay__userName-timer">
-                        <h4 className="gameplay__user-name">говорит: Name</h4>
+                        <h4 className="gameplay__user-name">говорит: {quserNickname}</h4>
                         <span className="gameplay__timer">
                             <p className="gameplay__timer-nums">{counter}</p>
                         </span>
