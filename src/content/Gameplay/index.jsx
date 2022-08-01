@@ -10,17 +10,17 @@ import UserBar from "../User-bar";
 
 
 
-const synth = window.speechSynthesis;
-let voices = [];
+// const synth = window.speechSynthesis;
+// let voices = [];
 
 
 
-const getVoices = () => {
-    voices = synth.getVoices();
-};
-if(synth.onvoiceschanged !== undefined) {
-    synth.onvoiceschanged = getVoices;
-}
+// const getVoices = () => {
+//     voices = synth.getVoices();
+// };
+// if(synth.onvoiceschanged !== undefined) {
+//     synth.onvoiceschanged = getVoices;
+// }
 
 
 const Gameplay = ({soundPlaying}) =>{
@@ -39,11 +39,13 @@ const Gameplay = ({soundPlaying}) =>{
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
     const [synthWord, setSynthWord] = useState('');
-    const [speaker, setSpeaker] = useState('');
+    const [speaker, setSpeaker] = useState(null);
     const [lang, setLang] = useState('')
     // const [score, setScore] = useState(0)
     const [speechWord, setSpeechWord] = useState();
-    const { speak } = useSpeechSynthesis();
+    const { speak, voices } = useSpeechSynthesis();
+
+    const voice = voices[speaker] || null
 
     const handleRedirectToScoreTable = () =>{
         //update current users path 
@@ -66,7 +68,7 @@ const Gameplay = ({soundPlaying}) =>{
     
   
 
-    const {listen, listening, stop } = useSpeechRecognition({
+    const {listen, stop } = useSpeechRecognition({
         onResult,
         onEnd
     });
@@ -212,10 +214,10 @@ const Gameplay = ({soundPlaying}) =>{
         const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
         onValue(getCurrentWord, (snapshot) => { 
             currentWordData = snapshot.val();
+        
             voices.forEach((voice) => {
                 if (currentWordData['speaker'] === voice.name) {
                     setSpeaker(voice)
-                   
                 }
             });
             setSynthWord(currentWordData['word']); 
@@ -246,7 +248,7 @@ const Gameplay = ({soundPlaying}) =>{
                     <div className="gameplay__main-content">
                         <div className="mb-4">
                             <div className="gameplay__cur-word-block">
-                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord, voice: speaker })}>
+                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord, voice: voice })}>
                                     <span className="icon-repeat-btn"></span>
                                 </button>
                                 <p className="gameplay__cur-word-title">Произнеси:</p>
