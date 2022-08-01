@@ -45,7 +45,6 @@ const Gameplay = ({soundPlaying}) =>{
     const [speechWord, setSpeechWord] = useState();
     const { speak, voices } = useSpeechSynthesis();
 
-    const voice = voices[speaker] || null
 
     const handleRedirectToScoreTable = () =>{
         //update current users path 
@@ -248,7 +247,7 @@ const Gameplay = ({soundPlaying}) =>{
                     <div className="gameplay__main-content">
                         <div className="mb-4">
                             <div className="gameplay__cur-word-block">
-                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord, voice: voice })}>
+                                <button className="repeat-btn gameplay__repeat-btn" title="Повторить" onClick={()=> speak({ text: synthWord, voice: speaker })}>
                                     <span className="icon-repeat-btn"></span>
                                 </button>
                                 <p className="gameplay__cur-word-title">Произнеси:</p>
