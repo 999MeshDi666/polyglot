@@ -61,8 +61,11 @@ const Gameplay = ({soundPlaying}) =>{
         console.log(result); 
     }
     const onEnd = ()=>{
-        if(userWord === synthWord){
+        if(userWord.toLocaleLowerCase() === synthWord.toLocaleLowerCase()){
+            alert('Хорош')
 
+        }else{
+            alert('Woooooooooooo')
         }
         
     }
@@ -131,7 +134,7 @@ const Gameplay = ({soundPlaying}) =>{
             //set queue of users
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), userList[qCounter])
 
-            // setNewQueue(userList, totalUserSize)    
+            setNewQueue(userList, totalUserSize)    
         });
     }
     
@@ -157,10 +160,9 @@ const Gameplay = ({soundPlaying}) =>{
                 
         const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/${chosenRandLang}`)
         onValue(getGameplayData, (snapshot) => {
-
             const gameData = snapshot.val()
             let randWordIndex = Math.floor(Math.random() * gameData['words'].length);
-
+            console.log(gameData['words'][randWordIndex])
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`), {
                 word: gameData['words'][randWordIndex],
                 voiceIndex: gameData['voiceIndex'],
