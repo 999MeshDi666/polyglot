@@ -45,7 +45,7 @@ const Gameplay = ({soundPlaying}) =>{
     // const [score, setScore] = useState(0)
     const [speechWord, setSpeechWord] = useState();
     const { speak, voices } = useSpeechSynthesis();
-    console.log('voices', voices)
+    // console.log('voices', voices)
     let curVoice = voices[voiceIndex] || null
 
     const handleRedirectToScoreTable = () =>{
@@ -74,16 +74,7 @@ const Gameplay = ({soundPlaying}) =>{
         onEnd
     });
 
-    // const handleSynthWord = () => {
-    //     voices.forEach((voice) => {
-    //         if (speaker === voice.name) {
-                
-    //             setSpeaker(voice)
-    //         }
-    //     }); 
-    // }
-
-
+ 
     //redirect to scores table
     useEffect(()=>{
         const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
@@ -108,8 +99,8 @@ const Gameplay = ({soundPlaying}) =>{
                
             if(snapshot.val() === totalUserSize){
 
-                const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}`), orderByChild('createdAt'))
-                update(updateUserPlaying , {isPlaying: true}) 
+                // const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}`), orderByChild('createdAt'))
+                // update(updateUserPlaying , {isPlaying: true}) 
                 set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
                     queueCounter: 0
                 })
@@ -134,16 +125,13 @@ const Gameplay = ({soundPlaying}) =>{
             })
 
             //update next isPlaying on true 
-            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[qCounter]['uuid']}/`), orderByChild('createdAt'))
-            update(updateUserPlaying ,{isPlaying: true}) 
+            // const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[qCounter]['uuid']}/`), orderByChild('createdAt'))
+            // update(updateUserPlaying ,{isPlaying: true}) 
 
             //set queue of users
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), userList[qCounter])
 
-
-            setNewQueue(userList, totalUserSize)
-           
-            
+            // setNewQueue(userList, totalUserSize)    
         });
     }
     
@@ -238,7 +226,7 @@ const Gameplay = ({soundPlaying}) =>{
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
     }, [counter]);
-    console.log('speaker', curVoice);
+ 
     return(
         <main className="gameplay"> 
             <UserBar/>

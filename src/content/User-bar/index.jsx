@@ -40,7 +40,14 @@ const UserBar = () =>{
             setUsers(userList)
             const newOwnerData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}/`), orderByChild('createdAt'))
             update(newOwnerData,{isOwner: true}) 
-            console.log('currentOwner:', userList[0]['uuid'])   
+            let qCounter;
+            onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
+                qCounter = snapshot.val()
+            })
+
+            //update next isPlaying on true 
+            const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[qCounter]['uuid']}/`), orderByChild('createdAt'))
+            update(updateUserPlaying ,{isPlaying: true})   
         });
     },[roomIDFromUrl.substring(1)])
 
