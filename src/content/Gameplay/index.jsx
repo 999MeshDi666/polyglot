@@ -65,7 +65,6 @@ const Gameplay = ({soundPlaying}) =>{
         let scoreCounter = score + 10
         update(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[queue]['uuid']}/`), {score: scoreCounter})
 
-       
     }
 
     const onResult = (result) => {

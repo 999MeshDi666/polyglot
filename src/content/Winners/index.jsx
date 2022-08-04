@@ -19,6 +19,9 @@ const WinnersPage = ({soundPlaying}) =>{
 
     
     const handleRedirectToRoom = () =>{
+        const resetScore = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/`);
+        update(resetScore, {score: 0})
+
         const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
         set(updateUsersPath,{userPath: ''})    
         navigateToRoom(`/room/:${roomIDFromUrl.substring(1)}`);

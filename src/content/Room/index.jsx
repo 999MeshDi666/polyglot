@@ -68,6 +68,9 @@ const Room = ({soundPlaying}) =>{
         setShowOptions((prevOpt)=>!prevOpt)
     }
 
+    // useEffect(()=>{
+        
+    // },[])
    
     useEffect(()=>{
         const getOwner = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isOwner/`), orderByChild('createdAt'));
