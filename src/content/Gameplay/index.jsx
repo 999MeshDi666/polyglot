@@ -51,6 +51,10 @@ const Gameplay = ({soundPlaying}) =>{
     let curVoice = voices[voiceIndex] || null
 
     const handleRedirectToScoreTable = () =>{
+        //update current users path 
+        const gamePath = `scores/`;
+        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
+        set(updateUsersPath,{userPath: gamePath})    
 
         let userList = []
         onValue(usersDataRef, (snapshot)=>{
@@ -61,10 +65,7 @@ const Gameplay = ({soundPlaying}) =>{
         let scoreCounter = score + 10
         update(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[queue]['uuid']}/`), {score: scoreCounter})
 
-        //update current users path 
-        const gamePath = `scores/`;
-        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-        set(updateUsersPath,{userPath: gamePath})    
+       
     }
 
     const onResult = (result) => {
@@ -118,12 +119,12 @@ const Gameplay = ({soundPlaying}) =>{
             setIsPlaying(snapshot.val())
         })
     },[roomIDFromUrl, userID])
+    
 
     const setNewQueue = (userList, totalUserSize) =>{
         onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
                
             if(snapshot.val() === totalUserSize){
-
                 // const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}`), orderByChild('createdAt'))
                 // update(updateUserPlaying , {isPlaying: true}) 
                 set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
@@ -131,7 +132,6 @@ const Gameplay = ({soundPlaying}) =>{
                 })
                 //set queue of users
                 set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), userList[0])
-               
             }
         })
     }

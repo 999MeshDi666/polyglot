@@ -32,12 +32,23 @@ const ScoreTable = ({soundPlaying}) =>{
 
         update(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}`), orderByChild('createdAt')),{isPlaying: false})
         
-        //update current users path 
-        navigateToGameplay('gameplay/${gameIDFromUrl}/')
-        
-        // navigateToGameplay('winners/')
-        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-        set(updateUsersPath,{userPath: ''})  
+        onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/score/`), (snapshot)=>{
+    
+            if(snapshot.val() === 20){
+                navigateToGameplay('winners/')
+                const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
+                set(updateUsersPath,{userPath: 'winners/'})  
+    
+            }else{
+                //update current users path 
+                navigateToGameplay('gameplay/${gameIDFromUrl}/')
+            
+                const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
+                set(updateUsersPath,{userPath: ''})  
+            }
+        })
+       
+       
     }
 
     useEffect(()=>{
