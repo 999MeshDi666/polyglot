@@ -17,7 +17,12 @@ const WinnersPage = ({soundPlaying}) =>{
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
-   
+    
+    const handleRedirectToRoom = () =>{
+        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
+        set(updateUsersPath,{userPath: ''})    
+        navigateToRoom(`/room/:${roomIDFromUrl.substring(1)}`);
+    }
 
     //get users playing state
     useEffect(()=>{
@@ -38,7 +43,7 @@ const WinnersPage = ({soundPlaying}) =>{
                         
                     </div>
                     {isPlaying ? 
-                        <button className="next-page-btn">Дальше</button> : 
+                        <button className="next-page-btn" onClick = {handleRedirectToRoom}>Дальше</button> : 
                         null
                     }        
                 </article>
