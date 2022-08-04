@@ -1,6 +1,7 @@
 .gameplay{
     &__block{
         padding: 20px 16px;
+        text-align: right;
     }
     &__userName-timer{
         margin-bottom: 40px;
@@ -13,7 +14,6 @@
         letter-spacing: 0.08em;
         font-weight: 800;
         text-transform: uppercase;
-    
     }
     &__timer{
         background-color: $prpl6;
@@ -30,11 +30,13 @@
         font-size: 20px;
         text-transform: uppercase;
     }
+    &__main-content{
+        text-align: left;
+
+    }
     &__cur-word-block{
         display: flex;
         align-items: center;
-       
-    
     }
     &__cur-word-title{
         font-size: 14px;

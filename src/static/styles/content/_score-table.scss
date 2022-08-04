@@ -1,6 +1,8 @@
 .score-table{
+    text-align: right;
     &__block{
         padding: 8px 12px 24px 12px;
+        
     }
     &__subtitles{
         display: flex;

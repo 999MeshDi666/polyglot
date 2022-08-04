@@ -102,7 +102,7 @@ const ScoreTable = ({soundPlaying}) =>{
                     </div>
                 </article>
                 {isPlaying ? 
-                    <button className="gameplay__nextPage" onClick={handleRedirectToGameplay}>Дальше</button> : 
+                    <button className="next-page-btn" onClick={handleRedirectToGameplay}>Дальше</button> : 
                     null
                 }        
             </Container>
