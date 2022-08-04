@@ -37,10 +37,11 @@ fieldset, input {
 }
 a { 
   text-decoration:none;  
-  cursor:pointer; 
-  &:hover{
-    color: $wht1;
-  }
+ ; 
+}
+a,button{
+  cursor:pointer
+
 }
 
 
@@ -55,7 +56,7 @@ a,button{
 .container{
   padding: 0 20px;
 }
-:is(.room,.gameplay,.score-table){
+:is(.room,.gameplay,.score-table,.winners){
   padding: 26px 0 80px 0;
 }
 .general-btn {
@@ -71,12 +72,17 @@ a,button{
   background: none;
   border: none;
   margin-top: 40px;
+  margin-right: 8px;
   color: $wht1;
   text-transform: uppercase;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.08em;
+  transition: .2s;
 
+  &:active{
+    color: rgb(232, 232, 232);
+  }
 }
 
 .user-image{

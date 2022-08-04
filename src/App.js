@@ -10,6 +10,7 @@ import Main from "./content/Main"
 import Room from "./content/Room"
 import Gameplay from './content/Gameplay';
 import ScoreTable from './content/ScoreTable';
+import WinnersPage from './content/Winners';
 
 
 
@@ -56,6 +57,7 @@ function App() {
               <Route path="/room/:roomIDFromUrl" element={<Room soundPlaying={soundPlaying}/>}/>
               <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl/" element={<Gameplay soundPlaying={soundPlaying}/>}/>
               <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl/scores/" element={<ScoreTable soundPlaying={soundPlaying}/>}/>
+              <Route path="/room/:roomIDFromUrl/gameplay/:gameIDFromUrl/winners/" element={<WinnersPage soundPlaying={soundPlaying}/>}/>
             </Routes>
         </div>
        
