@@ -62,13 +62,21 @@
     }
    
   }
-  .icon-mute:before {
-    content: "\e905";
-    color: #fff;
+  .icon-mute {
+    &:before{
+      content: "\e905";
+      color: #fff;
+    }
+    
   }
-  .icon-unmute:before {
-    content: "\e907";
-    color: #fff;
+  .icon-unmute {
+    margin-right: 2px;
+    &:before{
+      content: "\e907";
+      color: #fff;
+
+    }
+   
   }
   // .icon-pause:before {
   //   content: "\e904";
