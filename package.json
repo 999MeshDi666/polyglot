@@ -18,6 +18,7 @@
     "react-scripts": "5.0.1",
     "react-speech-kit": "^3.0.1",
     "react-uuid": "^1.0.2",
+    "use-clipboard-copy": "^0.2.0",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },

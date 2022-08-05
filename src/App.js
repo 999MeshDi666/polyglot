@@ -16,25 +16,25 @@ import WinnersPage from './content/Winners';
 
 const audio = new Audio(funnySound);
 
-const play =  "icon-play"
-const pause = "icon-pause"
+const unmute =  "icon-unmute"
+const mute = "icon-mute"
 
 function App() {
   
-  const [soundPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || pause);
+  const [soundPlaying, setPlaySound] = useState(JSON.parse(localStorage.getItem('audioPlaying')) || mute);
    
   const handlePlaySound = () =>{
-    if(soundPlaying === pause){
-      setPlaySound(play) 
+    if(soundPlaying === mute){
+      setPlaySound(unmute) 
       audio.pause()
     }else{
-      setPlaySound(pause) 
+      setPlaySound(mute) 
       audio.play() 
     }
   } 
   
   useEffect(()=>{
-    if(soundPlaying === pause){
+    if(soundPlaying === mute){
       window.addEventListener('load', ()=>{
         audio.play()
         audio.loop = true;

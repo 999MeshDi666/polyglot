@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import {Container, Row, Col} from 'react-bootstrap'
+import { useClipboard } from 'use-clipboard-copy';
 import {fbaseDB} from '../../utils/firebase-config'
 import { ref, onValue, orderByChild, query } from "firebase/database";
 import {OptionModalWindow, DescModalWindow} from "../ModalWindows/";
@@ -42,6 +43,7 @@ const gameCards = [
 
 const Room = ({soundPlaying}) =>{
     
+    const clipboard = useClipboard();
     const {roomIDFromUrl} = useParams();
 
     const [showDesc, setShowDesc] = useState(false);
@@ -51,6 +53,7 @@ const Room = ({soundPlaying}) =>{
    
     
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
+
 
     const handleShowDesc = (game) =>{
         setShowDesc((prevDesc)=>!prevDesc)
@@ -68,9 +71,7 @@ const Room = ({soundPlaying}) =>{
         setShowOptions((prevOpt)=>!prevOpt)
     }
 
-    // useEffect(()=>{
-        
-    // },[])
+
    
     useEffect(()=>{
         const getOwner = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/isOwner/`), orderByChild('createdAt'));
@@ -90,6 +91,9 @@ const Room = ({soundPlaying}) =>{
                         <span className='room__code-wrapper'>
                             <p>{roomIDFromUrl.substring(1)}</p>
                         </span>
+                        <button className="cpy-code-btn" onClick={clipboard.copy(roomIDFromUrl.substring(1))} title='копировать текст'>
+                            <span className="icon-copy"></span>
+                        </button>
                     </div>
                     <div className='room__games'>
                         {ownerPermissions ? <button className='room__option-btn general-btn' onClick = {handleShowOptions}>Настройки</button> : null}

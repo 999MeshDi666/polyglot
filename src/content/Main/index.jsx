@@ -177,7 +177,7 @@ const Main = ({soundPlaying}) =>{
                     <form className="main__auth-form auth-form">
                         <fieldset className="main__chg-img-block">
                             <img src={characterList[characterCounter]} name="characters" id="characters"/>
-                            <button className="main__chg-img-btn" onClick={handleChangeCharacter}>
+                            <button className="chg-img-btn" onClick={handleChangeCharacter}>
                                 <span className="icon-arrow-next"></span>
                             </button>
                         </fieldset>

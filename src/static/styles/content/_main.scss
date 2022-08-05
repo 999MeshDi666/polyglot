@@ -52,32 +52,6 @@
     &__chg-img-block{
         position: relative;
     }
-    &__chg-img-btn{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 30px;
-        height: 30px;
-        padding-top: 2px;
-       
-        border-radius: 50%;
-        border: $border_blc;
-        background-color: $gry1;
-
-        position: absolute;
-        bottom: -3px;
-        right: 2px;
-
-        transition: 0.2s;
-        &:active{
-            background-color: $gry4;
-            &:active{
-                -webkit-box-shadow: 0px 0px 6px 4px rgb(104 104 104 / 50%) inset;
-                -moz-box-shadow: 0px 0px 6px 4px rgb(104 104 104 / 50%) inset;
-                box-shadow: 0px 0px 6px 4px rgb(104 104 104 / 50%) inset;
-            }
-        }
-    }
 }
 .auth-form{
     margin-top: 16px;

@@ -5,10 +5,13 @@
         background-color: $prpl8;
     }
     &__cur-code-block{
+        width: 250px;
+        margin: 34px auto 44px auto;
         margin-top: 34px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
        
     }
     &__code-wrapper{
@@ -30,7 +33,6 @@
 
     }
     &__games{
-        margin-top: 44px;
         text-align: end;
     }
     &__option-btn{
