@@ -39,7 +39,6 @@ const Gameplay = ({soundPlaying}) =>{
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
     const [queue, setQueue] = useState()
-    const [score, setScore] = useState()
 
     const [synthWord, setSynthWord] = useState(null);
     const [voiceIndex, setVoiceIndex] = useState(null);
@@ -47,14 +46,13 @@ const Gameplay = ({soundPlaying}) =>{
    
     const [speechWord, setSpeechWord] = useState();
     const { speak, voices } = useSpeechSynthesis();
-    // console.log('voices', voices)
+
     let curVoice = voices[voiceIndex] || null
 
     const handleRedirectToScoreTable = () =>{
         //update current users path 
-        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
+        const updateUsersPath = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`)
         set(updateUsersPath,{userPath: `scores/`})    
-
     }
 
     const onResult = (result) => {
@@ -94,7 +92,7 @@ const Gameplay = ({soundPlaying}) =>{
     //redirect to scores table
     useEffect(()=>{
 
-        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`), orderByChild('createdAt'));
+        const startGameData = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`)
         onValue(startGameData, (snapshot)=>{
             if(snapshot.val() === 'scores/'){
                 navigateToScoreTable(snapshot.val())

@@ -177,18 +177,17 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
    
 
     const handleStartGame = ({index}) =>{
-        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
+        const updateUsersPath = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`)
         set(updateUsersPath,{userPath: `gameplay/${index}/`})   
     }
 
     //redirect to minigame page
     useEffect(()=>{
-        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`), orderByChild('createdAt'));
+        const startGameData = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`)
         onValue(startGameData, (snapshot)=>{
             if(snapshot.val() !== ' '){
                 navigateToGame(snapshot.val())
             }
-            
         })
 
         //update queueCounter
@@ -196,6 +195,8 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
             queueCounter: 0
         })
     },[roomIDFromUrl])
+
+
     console.log('gamePath:', gamePath)
     return (
         <>

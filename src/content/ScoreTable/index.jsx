@@ -17,45 +17,50 @@ const ScoreTable = ({soundPlaying}) =>{
     const navigate = useNavigate();
     const [isPlaying, setIsPlaying] = useState()
     const [users, setUsers] = useState();
-    const [qcounter, setQCounter] = useState()
+    const [score, setScore] = useState()
 
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
     const handleRedirect = () =>{
-        
-       //update queueCounter
-       set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
-           queueCounter: increment(1)
-       })
-  
-       update(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}`), orderByChild('createdAt')),{isPlaying: false})
 
-        onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/score/`), (snapshot)=>{
-    
-            if(snapshot.val() === 20){
-                const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-                set(updateUsersPath,{userPath: 'winners/'})  
-    
-            }else{
-                //update current users path 
-                const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-                set(updateUsersPath,{userPath: `gameplay/${gameIDFromUrl}/`})  
-            }
+       
+        //update queueCounter
+        set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
+           queueCounter: increment(1)
         })
+  
+        if(score === 20){
+            const updateUsersPath = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`)
+            set(updateUsersPath,{userPath: 'winners/'})  
+
+        }else{
+            const updateUsersPath = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`)
+            set(updateUsersPath,{userPath: `gameplay/${gameIDFromUrl}/`})  
+        }
+        update(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}`),{isPlaying: false})
        
     }
 
     useEffect(()=>{
-        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`), orderByChild('createdAt'));
+        const startGameData = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`);
         onValue(startGameData, (snapshot)=>{
             if(snapshot.val() === 'winners/'){
-                navigate(snapshot.val())
+                navigate('winners/')
             }
             else if(snapshot.val() === `gameplay/${gameIDFromUrl}`){
                 navigate(-1)
+                
             }
         })
+    },[roomIDFromUrl])
+
+    useEffect(()=>{
+      
+        onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/score/`), (snapshot)=>{
+            setScore(snapshot.val())
+        })
+
     },[roomIDFromUrl])
 
     //get users data
