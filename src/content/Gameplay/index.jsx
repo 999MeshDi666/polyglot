@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, set, orderByChild, query, update, child} from "firebase/database";
+import { ref, onValue, set, orderByChild, query, update, child, increment} from "firebase/database";
 
 import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import SoundBtn  from "../SoundController/index";
@@ -52,18 +52,8 @@ const Gameplay = ({soundPlaying}) =>{
 
     const handleRedirectToScoreTable = () =>{
         //update current users path 
-        const gamePath = `scores/`;
         const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-        set(updateUsersPath,{userPath: gamePath})    
-
-        let userList = []
-        onValue(usersDataRef, (snapshot)=>{
-            snapshot.forEach((child) =>{
-                userList.push(child.val())
-            })
-        })
-        let scoreCounter = score + 10
-        update(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[queue]['uuid']}/`), {score: scoreCounter})
+        set(updateUsersPath,{userPath: `scores/`})    
 
     }
 
@@ -75,14 +65,16 @@ const Gameplay = ({soundPlaying}) =>{
     const onEnd = ()=>{
         if(userWord.toLocaleLowerCase() === synthWord.toLocaleLowerCase()){
             alert('nice')
+
+
             let userList = []
             onValue(usersDataRef, (snapshot)=>{
                 snapshot.forEach((child) =>{
                     userList.push(child.val())
                 })
             })
-            onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[queue]['uuid']}/score/`), (snapshot)=>{
-                setScore(snapshot.val());
+            update(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[queue]['uuid']}/`), {
+                score: increment(10)
             })
 
         }else{
@@ -102,11 +94,12 @@ const Gameplay = ({soundPlaying}) =>{
     //redirect to scores table
     useEffect(()=>{
 
-        const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-        set(updateUsersPath,{userPath: ''})    
         const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`), orderByChild('createdAt'));
         onValue(startGameData, (snapshot)=>{
-            navigateToScoreTable(snapshot.val())
+            if(snapshot.val() === 'scores/'){
+                navigateToScoreTable(snapshot.val())
+            }
+           
         })
     },[roomIDFromUrl, userID])
 

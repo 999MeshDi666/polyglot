@@ -6,7 +6,7 @@ import SoundBtn  from "../SoundController/index";
 import UserBar from "../User-bar";
 
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref,set, onValue, orderByChild, query, update  } from "firebase/database";
+import { ref,set, onValue, orderByChild, query, update, increment } from "firebase/database";
 
 
 const ScoreTable = ({soundPlaying}) =>{
@@ -14,8 +14,7 @@ const ScoreTable = ({soundPlaying}) =>{
   
     const {roomIDFromUrl} = useParams();
     const {gameIDFromUrl} = useParams();
-    const navigateToGameplay = useNavigate();
-    
+    const navigate = useNavigate();
     const [isPlaying, setIsPlaying] = useState()
     const [users, setUsers] = useState();
     const [qcounter, setQCounter] = useState()
@@ -23,41 +22,42 @@ const ScoreTable = ({soundPlaying}) =>{
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
-    const handleRedirectToGameplay = () =>{
-        //update queueCounter
-        const userSize = qcounter + 1
-        set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
-            queueCounter: userSize
-        })
-
-        update(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}`), orderByChild('createdAt')),{isPlaying: false})
+    const handleRedirect = () =>{
         
+       //update queueCounter
+       set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
+           queueCounter: increment(1)
+       })
+  
+       update(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}`), orderByChild('createdAt')),{isPlaying: false})
+
         onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/score/`), (snapshot)=>{
     
             if(snapshot.val() === 20){
-              
                 const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
                 set(updateUsersPath,{userPath: 'winners/'})  
-                navigateToGameplay('winners/')
     
             }else{
                 //update current users path 
                 const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
-                set(updateUsersPath,{userPath: ''})  
-                navigateToGameplay('gameplay/${gameIDFromUrl}/')
+                set(updateUsersPath,{userPath: `gameplay/${gameIDFromUrl}/`})  
             }
         })
-       
        
     }
 
     useEffect(()=>{
-      
-        onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
-            setQCounter(snapshot.val())
+        const startGameData = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`), orderByChild('createdAt'));
+        onValue(startGameData, (snapshot)=>{
+            if(snapshot.val() === 'winners/'){
+                navigate(snapshot.val())
+            }
+            else if(snapshot.val() === `gameplay/${gameIDFromUrl}`){
+                navigate(-1)
+            }
         })
+    },[roomIDFromUrl])
 
-    },[roomIDFromUrl, qcounter])
     //get users data
     useEffect(()=>{
         onValue(usersDataRef, (snapshot) => {
@@ -110,7 +110,7 @@ const ScoreTable = ({soundPlaying}) =>{
                         </div>
                     </div>
                     {isPlaying ? 
-                        <button className="next-page-btn" onClick={handleRedirectToGameplay}>Дальше</button> : 
+                        <button className="next-page-btn" onClick={handleRedirect}>Дальше</button> : 
                         null
                     }        
                 </article>
