@@ -35,16 +35,16 @@ const ScoreTable = ({soundPlaying}) =>{
         onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/score/`), (snapshot)=>{
     
             if(snapshot.val() === 20){
-                navigateToGameplay('winners/')
+              
                 const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
                 set(updateUsersPath,{userPath: 'winners/'})  
+                navigateToGameplay('winners/')
     
             }else{
                 //update current users path 
-                navigateToGameplay('gameplay/${gameIDFromUrl}/')
-            
                 const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
                 set(updateUsersPath,{userPath: ''})  
+                navigateToGameplay('gameplay/${gameIDFromUrl}/')
             }
         })
        

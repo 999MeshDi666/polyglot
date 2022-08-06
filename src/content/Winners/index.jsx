@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {fbaseDB} from '../../utils/firebase-config'
-import { ref, onValue, set, orderByChild, query, update, child, remove} from "firebase/database";
+import { ref, onValue, set, orderByChild, query, update, child, remove, limitToLast} from "firebase/database";
 
 
 import SoundBtn  from "../SoundController/index";
@@ -19,10 +19,8 @@ const WinnersPage = ({soundPlaying}) =>{
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
 
     
-    
     const handleRedirectToRoom = () =>{
-        const resetScore = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/`);
-        update(resetScore, {score: 0})
+        
         const updateUsersPath = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`), orderByChild('createdAt'))
         set(updateUsersPath,{userPath: ''})    
     }
@@ -32,24 +30,26 @@ const WinnersPage = ({soundPlaying}) =>{
         onValue(redirectToRoom, (snapshot)=>{
             if(snapshot.val() === ''){
                 navigateResetToRoom(`/room/:${roomIDFromUrl.substring(1)}`);
+                const resetScore = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/`);
+                update(resetScore, {score: 0})
             }
         })
     },[])
 
     //get users data
     useEffect(()=>{
-        onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userID}/score/`), orderByChild('score')), (snapshot) => {
+        onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('score'), limitToLast(3)), (snapshot) => {
             const userList = []
             snapshot.forEach((child) =>{
                 userList.push(child.val())
             })
-            setUsers(userList)
+           
+            setUsers(userList.reverse())
+           
         });
     },[])
+    console.log('users', users[0])
 
-   
-
-    
 
     //get users playing state
     useEffect(()=>{
@@ -66,7 +66,26 @@ const WinnersPage = ({soundPlaying}) =>{
             <Container>
                 <article className="winners__block content-block">
                     <h1 className="content-block__title">Победители</h1>
-                    <div>
+                    <div className="winners__wrapper">
+                        <div className="winners__winner-third">
+                            <div className="winners__winner">
+                                <img src={users[0]['image']}/>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div className="winners__winner-first">
+                            <div className="winners__winner">
+                                <img src={users[1]['image']}/>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div className="winners__winner-second">
+                            <div className="winners__winner">
+                                <img src={users[2]['image']}/>
+                                <p></p>
+                            </div>
+                        </div>
+
                         
                     </div>
                     {isPlaying ? 
