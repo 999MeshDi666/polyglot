@@ -34,11 +34,11 @@ const WinnersPage = ({soundPlaying}) =>{
                 update(resetScore, {score: 0})
             }
         })
-    },[])
+    },[roomIDFromUrl])
 
     //get users data
     useEffect(()=>{
-        onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('score'), limitToLast(3)), (snapshot) => {
+        onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`),orderByChild('score'),limitToLast(3)), (snapshot) => {
             const userList = []
             snapshot.forEach((child) =>{
                 userList.push(child.val())
@@ -47,8 +47,8 @@ const WinnersPage = ({soundPlaying}) =>{
             setUsers(userList.reverse())
            
         });
-    },[])
-    console.log('users', users[0])
+    },[roomIDFromUrl])
+    // console.log('users', users[0]['image'])
 
 
     //get users playing state
@@ -67,7 +67,7 @@ const WinnersPage = ({soundPlaying}) =>{
                 <article className="winners__block content-block">
                     <h1 className="content-block__title">Победители</h1>
                     <div className="winners__wrapper">
-                        <div className="winners__winner-third">
+                        {/* <div className="winners__winner-third">
                             <div className="winners__winner">
                                 <img src={users[0]['image']}/>
                                 <p></p>
@@ -84,7 +84,7 @@ const WinnersPage = ({soundPlaying}) =>{
                                 <img src={users[2]['image']}/>
                                 <p></p>
                             </div>
-                        </div>
+                        </div> */}
 
                         
                     </div>

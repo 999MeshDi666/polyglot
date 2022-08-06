@@ -14,7 +14,8 @@ const ScoreTable = ({soundPlaying}) =>{
   
     const {roomIDFromUrl} = useParams();
     const {gameIDFromUrl} = useParams();
-    const navigate = useNavigate();
+    const navigateToGameplay = useNavigate();
+    const navigateToRoom = useNavigate();
     const [isPlaying, setIsPlaying] = useState()
     const [users, setUsers] = useState();
     const [score, setScore] = useState()
@@ -46,10 +47,10 @@ const ScoreTable = ({soundPlaying}) =>{
         const startGameData = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/userPath/`);
         onValue(startGameData, (snapshot)=>{
             if(snapshot.val() === 'winners/'){
-                navigate('winners/')
+                navigateToRoom(snapshot.val())
             }
             else if(snapshot.val() === `gameplay/${gameIDFromUrl}`){
-                navigate(-1)
+                navigateToGameplay(-1)
                 
             }
         })
