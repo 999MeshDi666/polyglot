@@ -98,7 +98,7 @@ const ScoreTable = ({soundPlaying}) =>{
                         </span>
                         <div>
                             {users ? users.map((user)=>(
-                                <div className = "score-table__user-score" key={user.nickname}>
+                                <div className = "score-table__user-score" key={user.uuid}>
                                     <div className = "score-table__user">
                                         <div className='user-crown-pos'>
                                             <img src={user.image} className="user-image"/>

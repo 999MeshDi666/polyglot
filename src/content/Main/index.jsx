@@ -67,7 +67,6 @@ const Main = ({soundPlaying}) =>{
             for (let key in roomData){
                 roomDataList.push(key)
             }
-            console.log(roomDataList)
             setRoomList(roomDataList) 
         });
     },[])

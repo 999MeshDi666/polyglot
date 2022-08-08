@@ -198,7 +198,7 @@ const Gameplay = ({soundPlaying}) =>{
     
             console.log('langListData', langListData)
             
-            if(langListData[0] === 'all'){
+            if(langListData.includes('all')){
                 const getGameplayData = ref(fbaseDB, `polyglot/gameplay/${gameIDFromUrl}/`)
                 let langKeys = []
                 onValue(getGameplayData, (snapshot)=>{

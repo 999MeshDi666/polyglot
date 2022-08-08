@@ -195,9 +195,6 @@ export const DescModalWindow = ({handleShowDesc, showDesc, descData, ownerPermis
             queueCounter: 0
         })
     },[roomIDFromUrl])
-
-
-    console.log('gamePath:', gamePath)
     return (
         <>
             <Modal show={showDesc} onHide={handleShowDesc}>
