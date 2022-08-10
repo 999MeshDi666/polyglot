@@ -10,20 +10,6 @@ import UserBar from "../User-bar";
 
 
 
-// const synth = window.speechSynthesis;
-// let voices = [];
-
-
-
-// const getVoices = () => {
-//     voices = synth.getVoices();
-//     console.log(voices)
-// };
-// if(synth.onvoiceschanged !== undefined) {
-//     synth.onvoiceschanged = getVoices;
-// }
-
-
 const Gameplay = ({soundPlaying}) =>{
 
   
@@ -63,8 +49,6 @@ const Gameplay = ({soundPlaying}) =>{
     const onEnd = ()=>{
         if(userWord.toLocaleLowerCase() === synthWord.toLocaleLowerCase()){
             alert('nice')
-
-
             let userList = []
             onValue(usersDataRef, (snapshot)=>{
                 snapshot.forEach((child) =>{
@@ -115,8 +99,7 @@ const Gameplay = ({soundPlaying}) =>{
         onValue(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/queueCounter`), (snapshot) => {
                
             if(snapshot.val() === totalUserSize){
-                // const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[0]['uuid']}`), orderByChild('createdAt'))
-                // update(updateUserPlaying , {isPlaying: true}) 
+
                 set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue-counter/`), {
                     queueCounter: 0
                 })
@@ -141,10 +124,7 @@ const Gameplay = ({soundPlaying}) =>{
 
             })
 
-            //update next isPlaying on true 
-            // const updateUserPlaying = query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/${userList[qCounter]['uuid']}/`), orderByChild('createdAt'))
-            // update(updateUserPlaying ,{isPlaying: true}) 
-
+    
             //set queue of users
             set(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/queue/`), userList[qCounter])
 
@@ -220,28 +200,20 @@ const Gameplay = ({soundPlaying}) =>{
         const getCurrentWord = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-word/`)
         onValue(getCurrentWord, (snapshot) => { 
             currentWordData = snapshot.val();
-        
-            // console.log('voicess',{voices});
             setSynthWord(currentWordData['word']); 
             setLang(currentWordData['lang'])
             setVoiceIndex(currentWordData['voiceIndex'])
-            // voices.forEach((voice) => {
-            //     if (currentWordData['speakerIndex'] === voice.name) {
-            //         setSpeaker(voice)
-            //     }
-            // }); 
            
-            
         })
         
     },[roomIDFromUrl])
 
     //downcount timer
-    useEffect(() => {
-        const timer =
-          counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-        return () => clearInterval(timer);
-    }, [counter]);
+    // useEffect(() => {
+    //     const timer =
+    //       counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+    //     return () => clearInterval(timer);
+    // }, [counter]);
  
     return(
         <main className="gameplay"> 
@@ -251,9 +223,9 @@ const Gameplay = ({soundPlaying}) =>{
                 <article className="gameplay__block content-block">
                     <div className="gameplay__userName-timer">
                         <h4 className="gameplay__user-name">говорит: {quserNickname}</h4>
-                        <span className="gameplay__timer">
+                        {/* <span className="gameplay__timer">
                             <p className="gameplay__timer-nums">{counter}</p>
-                        </span>
+                        </span> */}
                     </div>
                     <div className="gameplay__main-content">
                         <div className="mb-4">

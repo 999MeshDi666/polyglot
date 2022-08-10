@@ -31,7 +31,7 @@ const ScoreTable = ({soundPlaying}) =>{
            queueCounter: increment(1)
         })
   
-        if(score === 20){
+        if(score === 30){
             const updateUsersPath = ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/current-path/`)
             set(updateUsersPath,{userPath: 'winners/'})  
 

@@ -11,11 +11,11 @@ import UserBar from "../User-bar";
 
 const WinnersPage = ({soundPlaying}) =>{
 
-    let userSize;
     const {roomIDFromUrl} = useParams();
     const {gameIDFromUrl} = useParams();
     const navigateResetToRoom = useNavigate();
     const [isPlaying, setIsPlaying] = useState()
+    const [userSize, setUserSize] = useState()
     const [users, setUsers] = useState();
     const userID = JSON.parse(sessionStorage.getItem('current-user'))['uid']
     const usersDataRef =  query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`), orderByChild('createdAt'))
@@ -41,7 +41,7 @@ const WinnersPage = ({soundPlaying}) =>{
     //get users data
     useEffect(()=>{
         onValue(query(ref(fbaseDB, `polyglot/rooms/${roomIDFromUrl.substring(1)}/users/`),orderByChild('score'),limitToLast(3)), (snapshot) => {
-            userSize = snapshot.size
+            setUserSize(snapshot.size)
             const userList = []
             const winnerList = [
                 {
@@ -104,15 +104,16 @@ const WinnersPage = ({soundPlaying}) =>{
             <h4 className="winners__winner-name">{users[2]['nickname']}</h4>
         </div> : ' ';
 
+
     return (
         <main className="winners">
             <UserBar/>
             <SoundBtn soundPlaying = {soundPlaying} mod_class = 'sound-btn_room'/>
             <Container>
                 <article className="winners__block content-block">
-                    <h1 className="content-block__title">{userSize <  3 ? 'Победители' : 'Победитель'}</h1>
+                    <h1 className="content-block__title">{userSize > 2 ? 'Победители' : 'Победитель'}</h1>
                     <div className="winners__wrapper">
-                        {userSize <  3 ? showWinners : showWinner}
+                        {userSize > 2 ?  showWinners : showWinner}
                     </div>
                     {isPlaying ? 
                         <button className="next-page-btn winners__next-page-btn" onClick = {handleRedirectToRoom}>Дальше</button> : 
